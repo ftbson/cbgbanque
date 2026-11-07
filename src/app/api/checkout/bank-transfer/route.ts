@@ -6,6 +6,13 @@ import { getBankTransferSettings } from "@/lib/bank-transfer";
 
 export async function POST(request: Request) {
   try {
+    if (productsData.length === 0) {
+      return NextResponse.json(
+        { error: "Le catalogue de produits n'est pas configuré." },
+        { status: 503 },
+      );
+    }
+
     const { customer, items } = await request.json();
     const bankDetails = await getBankTransferSettings();
     if (!bankDetails.enabled || !bankDetails.accountName || !bankDetails.iban) {

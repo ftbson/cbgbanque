@@ -5,6 +5,13 @@ import { productsData } from "@/data/products";
 
 export async function POST(request: Request) {
   try {
+    if (productsData.length === 0) {
+      return NextResponse.json(
+        { error: "Le catalogue de produits n'est pas configuré." },
+        { status: 503 },
+      );
+    }
+
     const { customer, items } = await request.json();
     const [settings] = await db.select().from(bizumSettings).limit(1);
 

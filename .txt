@@ -1,504 +1,228 @@
-"use client";
-
-import { useState } from "react";
-import Link from "next/link";
-
-// Liste des pays de l'UE en priorité + Autres pays
-const euCountries = [
-  { code: "FR", name: "France" },
-  { code: "BE", name: "Belgique" },
-  { code: "LU", name: "Luxembourg" },
-  { code: "DE", name: "Allemagne" },
-  { code: "ES", name: "Espagne" },
-  { code: "IT", name: "Italie" },
-  { code: "NL", name: "Pays-Bas" },
-  { code: "PT", name: "Portugal" },
-  { code: "AT", name: "Autriche" },
-  { code: "IE", name: "Irlande" },
-];
-
-const otherCountries = [
-  { code: "CH", name: "Suisse" },
-  { code: "CA", name: "Canada" },
-  { code: "GB", name: "Royaume-Uni" },
-  { code: "US", name: "États-Unis" },
-];
-
-export default function RegisterPage() {
-  const [step, setStep] = useState<number>(0);
-
-  // État du formulaire
-  const [formData, setFormData] = useState({
-    email: "",
-    otpCode: ["", "", "", "", "", ""],
-    civility: "Monsieur",
-    firstName: "",
-    lastName: "",
-    phone: "",
-    birthDate: "",
-    birthPlace: "",
-    nationality: "FR",
-    residenceCountry: "BE",
-    currency: "EUR",
-    address: "",
-    city: "",
-    postalCode: "",
-    profession: "",
-    documentType: "id_card", // id_card, passport, driver_license, residence_permit
-    docFront: null as File | null,
-    docBack: null as File | null,
-  });
-
-  const totalSteps = 7; // Étapes actives (après l'écran 0 d'accueil)
-
-  const handleNext = () => setStep((prev) => prev + 1);
-  const handleBack = () => setStep((prev) => Math.max(0, prev - 1));
-
-  const updateForm = (key: string, value: any) => {
-    setFormData((prev) => ({ ...prev, [key]: value }));
-  };
-
-  const handleOtpChange = (index: number, value: string) => {
-    if (value.length > 1) return;
-    const newOtp = [...formData.otpCode];
-    newOtp[index] = value;
-    updateForm("otpCode", newOtp);
-
-    // Auto-focus vers le champ suivant
-    if (value && index < 5) {
-      const nextInput = document.getElementById(`otp-${index + 1}`);
-      nextInput?.focus();
-    }
-  };
-
-  return (
-    <div className="onboarding-container">
-      <div className="onboarding-wrapper">
-        
-        {/* En-tête avec bouton Retour & Barre de progression */}
-        {step > 0 && (
-          <div className="onboarding-header">
-            <button onClick={handleBack} className="btn-back-round" aria-label="Retour">
-              <i className="fa-solid fa-chevron-left"></i>
-            </button>
-            <div className="progress-bar-container">
-              {Array.from({ length: totalSteps }).map((_, idx) => (
-                <div
-                  key={idx}
-                  className={`progress-segment ${step > idx ? "active" : ""}`}
-                ></div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* ================= ÉTAPE 0 : ACCUEIL ================= */}
-        {step === 0 && (
-          <div className="step-card step-welcome">
-            <div className="welcome-logo">
-              <svg viewBox="0 0 100 100" className="brand-svg">
-                <circle cx="50" cy="50" r="40" fill="none" stroke="url(#blue-grad)" strokeWidth="12" />
-                <defs>
-                  <linearGradient id="blue-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#3b82f6" />
-                    <stop offset="100%" stopColor="#8b5cf6" />
-                  </linearGradient>
-                </defs>
-                <text x="50" y="57" textAnchor="middle" fill="#ffffff" fontSize="22" fontWeight="bold">
-                  CBG
-                </text>
-              </svg>
-            </div>
-            <h1 className="step-title-hero">Bienvenue chez CBG Banque</h1>
-            <p className="step-subtitle-hero">
-              Ouvrez votre compte en quelques minutes, depuis votre téléphone ou votre ordinateur.
-            </p>
-            <div className="welcome-actions">
-              <button onClick={handleNext} className="btn-step-primary">
-                S'inscrire
-              </button>
-              <Link href="/login" className="btn-step-secondary">
-                Se connecter
-              </Link>
-            </div>
-          </div>
-        )}
-
-        {/* ================= ÉTAPE 1 : ADRESSE EMAIL ================= */}
-        {step === 1 && (
-          <div className="step-card">
-            <h2 className="step-title">Quelle est votre adresse e-mail ?</h2>
-            <p className="step-subtitle">Nous vous enverrons un code pour la vérifier.</p>
-
-            <div className="form-group">
-              <input
-                type="email"
-                placeholder="nom@exemple.com"
-                value={formData.email}
-                onChange={(e) => updateForm("email", e.target.value)}
-                className="step-input"
-              />
-            </div>
-
-            <button
-              onClick={handleNext}
-              disabled={!formData.email.includes("@")}
-              className="btn-step-primary"
-            >
-              Continuer
-            </button>
-            <p className="step-helper-text">
-              Vous recevrez un code à 6 chiffres. Pensez à regarder dans vos spams.
-            </p>
-          </div>
-        )}
-
-        {/* ================= ÉTAPE 2 : CODE DE VÉRIFICATION OTP ================= */}
-        {step === 2 && (
-          <div className="step-card">
-            <h2 className="step-title">Saisissez le code</h2>
-            <p className="step-subtitle">
-              Envoyé à <strong>{formData.email || "votre adresse e-mail"}</strong>
-            </p>
-
-            <div className="otp-inputs-grid">
-              {formData.otpCode.map((digit, idx) => (
-                <input
-                  key={idx}
-                  id={`otp-${idx}`}
-                  type="text"
-                  maxLength={1}
-                  value={digit}
-                  onChange={(e) => handleOtpChange(idx, e.target.value)}
-                  className="otp-box"
-                />
-              ))}
-            </div>
-
-            <p className="step-helper-text">
-              Pas reçu ? Regardez dans vos courriers indésirables (spams). Le code est valable 30 minutes.
-            </p>
-            <div className="otp-timer">Renvoyer le code dans 0:56</div>
-
-            <button onClick={() => setStep(1)} className="btn-step-secondary">
-              Modifier l'adresse e-mail
-            </button>
-            <button onClick={handleNext} className="btn-step-primary margin-top-1">
-              Valider le code
-            </button>
-          </div>
-        )}
-
-        {/* ================= ÉTAPE 3 : NOM & NOM DE FAMILLE & TEL ================= */}
-        {step === 3 && (
-          <div className="step-card">
-            <h2 className="step-title">Comment vous appelez-vous ?</h2>
-            <p className="step-subtitle">Indiquez votre nom tel qu'il figure sur votre pièce d'identité.</p>
-
-            <div className="civility-selector">
-              {["Monsieur", "Madame", "Mx"].map((c) => (
-                <button
-                  key={c}
-                  type="button"
-                  className={`btn-pill ${formData.civility === c ? "active" : ""}`}
-                  onClick={() => updateForm("civility", c)}
-                >
-                  {c}
-                </button>
-              ))}
-            </div>
-
-            <div className="form-group-stack">
-              <input
-                type="text"
-                placeholder="Prénom"
-                value={formData.firstName}
-                onChange={(e) => updateForm("firstName", e.target.value)}
-                className="step-input"
-              />
-              <input
-                type="text"
-                placeholder="Nom"
-                value={formData.lastName}
-                onChange={(e) => updateForm("lastName", e.target.value)}
-                className="step-input"
-              />
-              <input
-                type="tel"
-                placeholder="Numéro de téléphone (+33 / +32...)"
-                value={formData.phone}
-                onChange={(e) => updateForm("phone", e.target.value)}
-                className="step-input"
-              />
-            </div>
-
-            <button onClick={handleNext} className="btn-step-primary">
-              Continuer
-            </button>
-          </div>
-        )}
-
-        {/* ================= ÉTAPE 4 : NAISSANCE & NATIONALITÉ ================= */}
-        {step === 4 && (
-          <div className="step-card">
-            <h2 className="step-title">Quand êtes-vous né(e) ?</h2>
-            <p className="step-subtitle">Vous devez avoir au moins 18 ans pour ouvrir un compte.</p>
-
-            <div className="form-group-stack">
-              <input
-                type="text"
-                placeholder="Date de naissance (JJ/MM/AAAA)"
-                value={formData.birthDate}
-                onChange={(e) => updateForm("birthDate", e.target.value)}
-                className="step-input"
-              />
-              <input
-                type="text"
-                placeholder="Lieu de naissance"
-                value={formData.birthPlace}
-                onChange={(e) => updateForm("birthPlace", e.target.value)}
-                className="step-input"
-              />
-
-              <div className="select-wrapper">
-                <label className="select-label">Nationalité</label>
-                <select
-                  value={formData.nationality}
-                  onChange={(e) => updateForm("nationality", e.target.value)}
-                  className="step-select"
-                >
-                  <optgroup label="Union Européenne">
-                    {euCountries.map((c) => (
-                      <option key={c.code} value={c.code}>
-                        {c.name}
-                      </option>
-                    ))}
-                  </optgroup>
-                  <optgroup label="Autres pays">
-                    {otherCountries.map((c) => (
-                      <option key={c.code} value={c.code}>
-                        {c.name}
-                      </option>
-                    ))}
-                  </optgroup>
-                </select>
-              </div>
-            </div>
-
-            <button onClick={handleNext} className="btn-step-primary">
-              Continuer
-            </button>
-          </div>
-        )}
-
-        {/* ================= ÉTAPE 5 : ADRESSE & DEVISE ================= */}
-        {step === 5 && (
-          <div className="step-card">
-            <h2 className="step-title">Où habitez-vous ?</h2>
-            <p className="step-subtitle">Votre adresse de résidence principale.</p>
-
-            <div className="form-group-stack">
-              <div className="select-wrapper">
-                <label className="select-label">Pays de résidence</label>
-                <select
-                  value={formData.residenceCountry}
-                  onChange={(e) => updateForm("residenceCountry", e.target.value)}
-                  className="step-select"
-                >
-                  <optgroup label="Union Européenne">
-                    {euCountries.map((c) => (
-                      <option key={c.code} value={c.code}>
-                        {c.name}
-                      </option>
-                    ))}
-                  </optgroup>
-                  <optgroup label="Autres pays">
-                    {otherCountries.map((c) => (
-                      <option key={c.code} value={c.code}>
-                        {c.name}
-                      </option>
-                    ))}
-                  </optgroup>
-                </select>
-              </div>
-
-              <div className="select-wrapper">
-                <label className="select-label">Devise de votre compte</label>
-                <select
-                  value={formData.currency}
-                  onChange={(e) => updateForm("currency", e.target.value)}
-                  className="step-select"
-                >
-                  <option value="EUR">€ EUR — Euro</option>
-                  <option value="CHF">CHF — Franc Suisse</option>
-                  <option value="USD">$ USD — Dollar Américain</option>
-                </select>
-              </div>
-
-              <input
-                type="text"
-                placeholder="Adresse postale"
-                value={formData.address}
-                onChange={(e) => updateForm("address", e.target.value)}
-                className="step-input"
-              />
-
-              <div className="input-grid-2">
-                <input
-                  type="text"
-                  placeholder="Ville"
-                  value={formData.city}
-                  onChange={(e) => updateForm("city", e.target.value)}
-                  className="step-input"
-                />
-                <input
-                  type="text"
-                  placeholder="Code postal"
-                  value={formData.postalCode}
-                  onChange={(e) => updateForm("postalCode", e.target.value)}
-                  className="step-input"
-                />
-              </div>
-            </div>
-
-            <button onClick={handleNext} className="btn-step-primary">
-              Continuer
-            </button>
-          </div>
-        )}
-
-        {/* ================= ÉTAPE 6 : SITUATION PROFESSIONNELLE ================= */}
-        {step === 6 && (
-          <div className="step-card">
-            <h2 className="step-title">Quelle est votre situation professionnelle ?</h2>
-            <p className="step-subtitle">Choisissez celle qui vous décrit le mieux.</p>
-
-            <div className="radio-options-list">
-              {[
-                "Salarié(e)",
-                "Indépendant(e)",
-                "Chef d'entreprise",
-                "Fonctionnaire",
-                "Étudiant(e)",
-                "Retraité(e)",
-                "Sans emploi",
-              ].map((job) => (
-                <label
-                  key={job}
-                  className={`radio-card-item ${formData.profession === job ? "selected" : ""}`}
-                >
-                  <span>{job}</span>
-                  <input
-                    type="radio"
-                    name="profession"
-                    checked={formData.profession === job}
-                    onChange={() => updateForm("profession", job)}
-                  />
-                  <span className="radio-circle"></span>
-                </label>
-              ))}
-            </div>
-
-            <button
-              onClick={handleNext}
-              disabled={!formData.profession}
-              className="btn-step-primary margin-top-1"
-            >
-              Continuer
-            </button>
-          </div>
-        )}
-
-        {/* ================= ÉTAPE 7 : UPLOAD DE PIÈCE D'IDENTITÉ ================= */}
-        {step === 7 && (
-          <div className="step-card">
-            <h2 className="step-title">Photographiez votre pièce</h2>
-            <p className="step-subtitle">Recto et verso, bien cadrés, sans reflet ni flou.</p>
-
-            {/* Choix du document */}
-            <div className="document-type-selector">
-              {[
-                { id: "id_card", label: "Carte d'identité", sub: "Recto et verso", icon: "fa-id-card" },
-                { id: "passport", label: "Passeport", sub: "Page photo uniquement", icon: "fa-passport" },
-                { id: "driver", label: "Permis de conduire", sub: "Recto et verso", icon: "fa-id-badge" },
-                { id: "residence", label: "Titre de séjour", sub: "Recto et verso", icon: "fa-address-card" },
-              ].map((doc) => (
-                <div
-                  key={doc.id}
-                  className={`doc-type-item ${formData.documentType === doc.id ? "active" : ""}`}
-                  onClick={() => updateForm("documentType", doc.id)}
-                >
-                  <div className="doc-icon">
-                    <i className={`fa-solid ${doc.icon}`}></i>
-                  </div>
-                  <div className="doc-info">
-                    <span className="doc-label">{doc.label}</span>
-                    <span className="doc-sub">{doc.sub}</span>
-                  </div>
-                  <i className="fa-solid fa-chevron-right doc-arrow"></i>
-                </div>
-              ))}
-            </div>
-
-            {/* Zones d'upload RECTO & VERSO */}
-            <div className="upload-zones-wrapper">
-              {/* RECTO */}
-              <div className="upload-box">
-                <div className="upload-box-header">
-                  <span>Recto de la pièce d'identité</span>
-                  <span className="badge-required">Requis</span>
-                </div>
-                <div className="upload-frame">
-                  <i className="fa-solid fa-id-card frame-icon"></i>
-                  <span className="frame-text">Prise de vue ou téléversement</span>
-                  <input
-                    type="file"
-                    accept="image/*,application/pdf"
-                    onChange={(e) => updateForm("docFront", e.target.files?.[0] || null)}
-                    className="file-input-hidden"
-                    id="doc-front"
-                  />
-                  <label htmlFor="doc-front" className="btn-upload-trigger">
-                    <i className="fa-solid fa-upload"></i> {formData.docFront ? formData.docFront.name : "Importer le Recto"}
-                  </label>
-                </div>
-              </div>
-
-              {/* VERSO (Si pas passeport) */}
-              {formData.documentType !== "passport" && (
-                <div className="upload-box">
-                  <div className="upload-box-header">
-                    <span>Verso de la pièce d'identité</span>
-                    <span className="badge-required">Requis</span>
-                  </div>
-                  <div className="upload-frame">
-                    <i className="fa-solid fa-id-card frame-icon"></i>
-                    <span className="frame-text">Prise de vue ou téléversement</span>
-                    <input
-                      type="file"
-                      accept="image/*,application/pdf"
-                      onChange={(e) => updateForm("docBack", e.target.files?.[0] || null)}
-                      className="file-input-hidden"
-                      id="doc-back"
-                    />
-                    <label htmlFor="doc-back" className="btn-upload-trigger">
-                      <i className="fa-solid fa-upload"></i> {formData.docBack ? formData.docBack.name : "Importer le Verso"}
-                    </label>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <button
-              onClick={() => alert("Votre demande d'ouverture de compte a été soumise avec succès !")}
-              className="btn-step-primary margin-top-1"
-            >
-              Terminer mon inscription
-            </button>
-          </div>
-        )}
-
-      </div>
-    </div>
-  );
-}
+quand je veux mettre sur vercel  10:52:10.528 Running build in Washington, D.C., USA (East) – iad1
+10:52:10.529 Build machine configuration: 2 cores, 8 GB
+10:52:10.644 Cloning github.com/ftbson/cbgbanque (Branch: main, Commit: 53ec6f1)
+10:52:10.645 Previous build caches not available.
+10:52:10.941 Cloning completed: 296.000ms
+10:52:11.486 Running "vercel build"
+10:52:11.494 Vercel CLI 65.11.0
+10:52:11.782 Installing dependencies...
+10:52:12.468 npm warn Unknown env config "cache-dir". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+10:52:15.827 npm warn deprecated @esbuild-kit/esm-loader@2.6.5: Merged into tsx: https://tsx.is
+10:52:15.872 npm warn deprecated @esbuild-kit/core-utils@3.3.2: Merged into tsx: https://tsx.is
+10:52:25.007 
+10:52:25.007 added 378 packages in 13s
+10:52:25.007 
+10:52:25.007 141 packages are looking for funding
+10:52:25.007   run `npm fund` for details
+10:52:25.014 npm warn install-scripts 5 packages have install scripts not yet covered by allowScripts:
+10:52:25.014 npm warn install-scripts   esbuild@0.18.20 (postinstall: node install.js)
+10:52:25.014 npm warn install-scripts   esbuild@0.25.12 (postinstall: node install.js)
+10:52:25.014 npm warn install-scripts   sharp@0.34.5 (install: node install/check.js || npm run build)
+10:52:25.014 npm warn install-scripts   esbuild@0.28.0 (postinstall: node install.js)
+10:52:25.014 npm warn install-scripts   unrs-resolver@1.11.1 (postinstall: napi-postinstall unrs-resolver 1.11.1 check)
+10:52:25.014 npm warn install-scripts
+10:52:25.014 npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
+10:52:25.064 Detected Next.js version: 16.2.6
+10:52:25.070 Running "npm run build"
+10:52:25.178 npm warn Unknown env config "cache-dir". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+10:52:25.199 
+10:52:25.199 > bonboisfr@0.1.0 build
+10:52:25.199 > next build
+10:52:25.199 
+10:52:25.710   Applying modifyConfig from Vercel
+10:52:25.757 Attention: Next.js now collects completely anonymous telemetry regarding usage.
+10:52:25.757 This information is used to shape Next.js' roadmap and prioritize features.
+10:52:25.757 You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+10:52:25.757 https://nextjs.org/telemetry
+10:52:25.757 
+10:52:25.775 ▲ Next.js 16.2.6 (Turbopack)
+10:52:25.776 
+10:52:25.826   Creating an optimized production build ...
+10:52:38.519 
+10:52:38.520 > Build error occurred
+10:52:38.525 Error: Turbopack build failed with 11 errors:
+10:52:38.525 ./src/app/api/checkout/bank-transfer/route.ts:4:1
+10:52:38.525 Module not found: Can't resolve '@/data/products'
+10:52:38.525   2 | import { db } from "@/lib/db";
+10:52:38.525   3 | import { orders } from "@/lib/schema";
+10:52:38.525 > 4 | import { productsData } from "@/data/products";
+10:52:38.525     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+10:52:38.525   5 | import { getBankTransferSettings } from "@/lib/bank-transfer";
+10:52:38.525   6 |
+10:52:38.525   7 | export async function POST(request: Request) {
+10:52:38.525 
+10:52:38.525 Import map: aliased to relative './src/data/products' inside of [project]/
+10:52:38.525 
+10:52:38.525 
+10:52:38.525 https://nextjs.org/docs/messages/module-not-found
+10:52:38.525 
+10:52:38.525 
+10:52:38.525 ./src/app/api/checkout/bizum/route.ts:4:1
+10:52:38.526 Module not found: Can't resolve '@/data/products'
+10:52:38.526   2 | import { db } from "@/lib/db";
+10:52:38.526   3 | import { orders, bizumSettings } from "@/lib/schema";
+10:52:38.526 > 4 | import { productsData } from "@/data/products";
+10:52:38.526     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+10:52:38.526   5 |
+10:52:38.526   6 | export async function POST(request: Request) {
+10:52:38.526   7 |   try {
+10:52:38.526 
+10:52:38.526 Import map: aliased to relative './src/data/products' inside of [project]/
+10:52:38.526 
+10:52:38.526 
+10:52:38.526 https://nextjs.org/docs/messages/module-not-found
+10:52:38.526 
+10:52:38.526 
+10:52:38.526 ./src/app/api/checkout/stripe/route.ts:4:1
+10:52:38.526 Module not found: Can't resolve '@/data/products'
+10:52:38.527   2 | import { db } from "@/lib/db";
+10:52:38.527   3 | import { orders } from "@/lib/schema";
+10:52:38.527 > 4 | import { productsData } from "@/data/products";
+10:52:38.528     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+10:52:38.528   5 | import { getStripe } from "@/lib/stripe";
+10:52:38.528   6 |
+10:52:38.528   7 | export async function POST(request: Request) {
+10:52:38.528 
+10:52:38.528 Import map: aliased to relative './src/data/products' inside of [project]/
+10:52:38.528 
+10:52:38.528 
+10:52:38.528 https://nextjs.org/docs/messages/module-not-found
+10:52:38.528 
+10:52:38.528 
+10:52:38.529 ./src/app/api/checkout/bank-transfer/route.ts:5:1
+10:52:38.529 Module not found: Can't resolve '@/lib/bank-transfer'
+10:52:38.529   3 | import { orders } from "@/lib/schema";
+10:52:38.529   4 | import { productsData } from "@/data/products";
+10:52:38.529 > 5 | import { getBankTransferSettings } from "@/lib/bank-transfer";
+10:52:38.529     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+10:52:38.529   6 |
+10:52:38.529   7 | export async function POST(request: Request) {
+10:52:38.529   8 |   try {
+10:52:38.529 
+10:52:38.530 Import map: aliased to relative './src/lib/bank-transfer' inside of [project]/
+10:52:38.530 
+10:52:38.530 
+10:52:38.530 https://nextjs.org/docs/messages/module-not-found
+10:52:38.530 
+10:52:38.530 
+10:52:38.530 ./src/app/api/analytics/route.ts:5:1
+10:52:38.530 Export analyticsVisits doesn't exist in target module
+10:52:38.530   3 | import { cookies } from "next/headers";
+10:52:38.530   4 | import { db } from "@/lib/db";
+10:52:38.531 > 5 | import { analyticsVisits } from "@/lib/schema";
+10:52:38.531     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+10:52:38.531   6 |
+10:52:38.531   7 | function getCountryCode(request: Request) {
+10:52:38.532   8 |   const country =
+10:52:38.532 
+10:52:38.532 The export analyticsVisits was not found in module [project]/src/lib/schema.ts [app-route] (ecmascript).
+10:52:38.532 Did you mean to import notificationsTable?
+10:52:38.532 All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+10:52:38.532 
+10:52:38.532 
+10:52:38.533 ./src/app/api/checkout/bizum/route.ts:3:1
+10:52:38.533 Export bizumSettings doesn't exist in target module
+10:52:38.534   1 | import { NextResponse } from "next/server";
+10:52:38.534   2 | import { db } from "@/lib/db";
+10:52:38.534 > 3 | import { orders, bizumSettings } from "@/lib/schema";
+10:52:38.534     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+10:52:38.534   4 | import { productsData } from "@/data/products";
+10:52:38.534   5 |
+10:52:38.534   6 | export async function POST(request: Request) {
+10:52:38.534 
+10:52:38.534 The export bizumSettings was not found in module [project]/src/lib/schema.ts [app-route] (ecmascript).
+10:52:38.534 Did you mean to import registrationOtpsTable?
+10:52:38.534 All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+10:52:38.535 
+10:52:38.535 
+10:52:38.535 ./src/app/api/checkout/bank-transfer/route.ts:3:1
+10:52:38.535 Export orders doesn't exist in target module
+10:52:38.535   1 | import { NextResponse } from "next/server";
+10:52:38.535   2 | import { db } from "@/lib/db";
+10:52:38.535 > 3 | import { orders } from "@/lib/schema";
+10:52:38.535     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+10:52:38.535   4 | import { productsData } from "@/data/products";
+10:52:38.536   5 | import { getBankTransferSettings } from "@/lib/bank-transfer";
+10:52:38.536   6 |
+10:52:38.536 
+10:52:38.536 The export orders was not found in module [project]/src/lib/schema.ts [app-route] (ecmascript).
+10:52:38.536 Did you mean to import cardsTable?
+10:52:38.536 All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+10:52:38.537 
+10:52:38.537 
+10:52:38.537 ./src/app/api/checkout/bizum/route.ts:3:1
+10:52:38.537 Export orders doesn't exist in target module
+10:52:38.537   1 | import { NextResponse } from "next/server";
+10:52:38.537   2 | import { db } from "@/lib/db";
+10:52:38.537 > 3 | import { orders, bizumSettings } from "@/lib/schema";
+10:52:38.537     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+10:52:38.537   4 | import { productsData } from "@/data/products";
+10:52:38.537   5 |
+10:52:38.537   6 | export async function POST(request: Request) {
+10:52:38.537 
+10:52:38.537 The export orders was not found in module [project]/src/lib/schema.ts [app-route] (ecmascript).
+10:52:38.537 Did you mean to import cardsTable?
+10:52:38.537 All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+10:52:38.537 
+10:52:38.537 
+10:52:38.537 ./src/app/api/checkout/stripe/confirm/route.ts:3:1
+10:52:38.537 Export orders doesn't exist in target module
+10:52:38.537   1 | import { NextResponse } from "next/server";
+10:52:38.537   2 | import { db } from "@/lib/db";
+10:52:38.537 > 3 | import { orders } from "@/lib/schema";
+10:52:38.537     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+10:52:38.537   4 | import { getStripe } from "@/lib/stripe";
+10:52:38.537   5 | import { eq } from "drizzle-orm";
+10:52:38.537   6 |
+10:52:38.537 
+10:52:38.537 The export orders was not found in module [project]/src/lib/schema.ts [app-route] (ecmascript).
+10:52:38.537 Did you mean to import cardsTable?
+10:52:38.537 All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+10:52:38.537 
+10:52:38.537 
+10:52:38.537 ./src/app/api/checkout/stripe/route.ts:3:1
+10:52:38.537 Export orders doesn't exist in target module
+10:52:38.537   1 | import { NextResponse } from "next/server";
+10:52:38.538   2 | import { db } from "@/lib/db";
+10:52:38.538 > 3 | import { orders } from "@/lib/schema";
+10:52:38.538     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+10:52:38.538   4 | import { productsData } from "@/data/products";
+10:52:38.539   5 | import { getStripe } from "@/lib/stripe";
+10:52:38.539   6 |
+10:52:38.539 
+10:52:38.539 The export orders was not found in module [project]/src/lib/schema.ts [app-route] (ecmascript).
+10:52:38.539 Did you mean to import cardsTable?
+10:52:38.540 All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+10:52:38.540 
+10:52:38.540 
+10:52:38.540 ./src/app/api/orders/route.ts:4:1
+10:52:38.540 Export orders doesn't exist in target module
+10:52:38.540   2 | import { NextResponse } from "next/server";
+10:52:38.540   3 | import { db } from "@/lib/db";
+10:52:38.541 > 4 | import { orders } from "@/lib/schema";
+10:52:38.541     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+10:52:38.541   5 | import { cookies } from "next/headers";
+10:52:38.541   6 |
+10:52:38.541   7 | // POST: Eine neue Bestellung speichern
+10:52:38.541 
+10:52:38.541 The export orders was not found in module [project]/src/lib/schema.ts [app-route] (ecmascript).
+10:52:38.541 Did you mean to import cardsTable?
+10:52:38.542 All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+10:52:38.542 
+10:52:38.542 
+10:52:38.542     at <unknown> (./src/app/api/checkout/bank-transfer/route.ts:4:1)
+10:52:38.543     at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+10:52:38.543     at <unknown> (./src/app/api/checkout/bizum/route.ts:4:1)
+10:52:38.543     at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+10:52:38.543     at <unknown> (./src/app/api/checkout/stripe/route.ts:4:1)
+10:52:38.543     at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+10:52:38.543     at <unknown> (./src/app/api/checkout/bank-transfer/route.ts:5:1)
+10:52:38.543     at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+10:52:38.543     at <unknown> (./src/app/api/analytics/route.ts:5:1)
+10:52:38.543     at <unknown> (./src/app/api/checkout/bizum/route.ts:3:1)
+10:52:38.543     at <unknown> (./src/app/api/checkout/bank-transfer/route.ts:3:1)
+10:52:38.543     at <unknown> (./src/app/api/checkout/bizum/route.ts:3:1)
+10:52:38.544     at <unknown> (./src/app/api/checkout/stripe/confirm/route.ts:3:1)
+10:52:38.544     at <unknown> (./src/app/api/checkout/stripe/route.ts:3:1)
+10:52:38.544     at <unknown> (./src/app/api/orders/route.ts:4:1)
+10:52:38.618 Error: [BUILD_UTILS_SPAWN_1] Command "npm run build" exited with 1

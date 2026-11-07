@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 interface User {
   id: string;
@@ -26,15 +26,13 @@ interface User {
 
 export default function AdminPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const hasError = searchParams.get("error") === "1";
 
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [loadingAuth, setLoadingAuth] = useState<boolean>(true);
 
   const [usernameInput, setUsernameInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
-  const [errorMsg, setErrorMsg] = useState(hasError ? "Identifiants incorrects" : "");
+  const [errorMsg, setErrorMsg] = useState("");
 
   // Données de l'application admin
   const [users, setUsers] = useState<User[]>([]);

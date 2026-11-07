@@ -1,5 +1,5 @@
 // src/lib/schema.ts
-import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, integer, real } from "drizzle-orm/sqlite-core";
 
 export const usersTable = sqliteTable("users", {
   id: text("id").primaryKey(),
@@ -81,4 +81,38 @@ export const vaultsTable = sqliteTable("vaults", {
   targetCents: integer("target_cents").notNull(),
   currentCents: integer("current_cents").default(0).notNull(),
   createdAt: text("created_at").notNull(),
+});
+
+export const orders = sqliteTable("orders", {
+  id: text("id").primaryKey(),
+  firstName: text("first_name").notNull(),
+  lastName: text("last_name").notNull(),
+  country: text("country").notNull(),
+  streetAddress: text("street_address").notNull(),
+  whatsapp: text("whatsapp").notNull(),
+  email: text("email").notNull(),
+  subtotal: real("subtotal").notNull(),
+  shippingCost: real("shipping_cost").notNull(),
+  grandTotal: real("grand_total").notNull(),
+  status: text("status", { enum: ["pending", "paid"] }).default("pending").notNull(),
+  paymentMethod: text("payment_method", {
+    enum: ["stripe", "bizum", "bank_transfer"],
+  }).notNull(),
+  paymentStatus: text("payment_status", { enum: ["pending", "paid"] }).default("pending").notNull(),
+  stripeSessionId: text("stripe_session_id"),
+  createdAt: text("created_at").notNull(),
+});
+
+export const bizumSettings = sqliteTable("bizum_settings", {
+  id: integer("id").primaryKey(),
+  enabled: integer("enabled", { mode: "boolean" }).default(false).notNull(),
+  recipientName: text("recipient_name"),
+  phoneNumber: text("phone_number"),
+});
+
+export const analyticsVisits = sqliteTable("analytics_visits", {
+  id: text("id").primaryKey(),
+  visitDate: text("visit_date").notNull(),
+  country: text("country").notNull(),
+  visits: integer("visits").default(0).notNull(),
 });

@@ -29,11 +29,17 @@ The authentication migration adds password hashes and temporary OTP challenges
 to the existing `users` database. The dashboard migration adds zero-initialized
 accounts, demo-only virtual cards, activity and notification tables, and
 user-scoped savings vaults. Existing vault amounts are converted to cents.
-Back up the database before applying migrations to a production database.
+The commerce/analytics migration creates the orders, Bizum-settings, and visit
+analytics tables if they do not already exist. Back up the database before
+applying migrations to a production database.
 
 Dashboard balances start at zero. No deposits, card payments, or bank transfers
 are simulated or executed. Withdrawal submissions are pending requests that
 reserve available funds; demo cards never contain a payment-card number or CVV.
+Checkout remains unavailable until authoritative product prices are added to
+`src/data/products.ts`. Bank transfers are disabled unless
+`BANK_TRANSFER_ENABLED=true`, `BANK_TRANSFER_ACCOUNT_NAME`, and
+`BANK_TRANSFER_IBAN` are configured.
 
 Configure these server-only variables before using registration and login:
 `AUTH_SECRET` (at least 32 characters), `GMAIL_USER`, `GMAIL_APP_PASSWORD`,

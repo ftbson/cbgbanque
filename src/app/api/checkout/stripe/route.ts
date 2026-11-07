@@ -6,6 +6,13 @@ import { getStripe } from "@/lib/stripe";
 
 export async function POST(request: Request) {
   try {
+    if (productsData.length === 0) {
+      return NextResponse.json(
+        { error: "Le catalogue de produits n'est pas configuré." },
+        { status: 503 },
+      );
+    }
+
     const stripe = getStripe();
     const body = await request.json();
     const { customer, items } = body;
