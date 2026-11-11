@@ -1,9 +1,3 @@
-ALTER TABLE `users` ADD `monthly_income` text;
---> statement-breakpoint
-ALTER TABLE `users` ADD `id_card_front` text;
---> statement-breakpoint
-ALTER TABLE `users` ADD `id_card_back` text;
---> statement-breakpoint
 ALTER TABLE `transactions` ADD `related_id` text;
 --> statement-breakpoint
 DELETE FROM `cards` WHERE `type` = 'virtual_demo';
