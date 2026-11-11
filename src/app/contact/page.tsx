@@ -4,32 +4,34 @@ import { useState } from "react";
 
 export default function ContactPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const faqs = [
     {
-      question: "Welche Brennholzsorten kann ich finden?",
+      question: "Comment puis-je ouvrir un compte chez CBG Banque ?",
       answer:
-        "Unser Katalog umfasst vor allem Harthölzer mit einem hohen Heizwert wie Eiche, Buche, Hainbuche und Esche. Ihre gleichmäßige und langanhaltende Verbrennung eignet sich ideal für Öfen, Kamine und geschlossene Feuerstätten.",
+        "L'ouverture d'un compte s'effectue intégralement en ligne en moins de 5 minutes. Remplissez le formulaire, téléversez votre pièce d'identité (recto et verso), et notre équipe validera votre compte sous 24h ouvrées.",
     },
     {
-      question: "Kann das Brennholz sofort nach Erhalt verwendet werden?",
+      question: "Quels sont les délais d'obtention d'un prêt ?",
       answer:
-        "Ja. Das Brennholz ist kammergetrocknet und hat eine Restfeuchte von unter 20 %, sodass es sofort einsatzbereit ist und eine effiziente Verbrennung mit weniger Rauch gewährleistet.",
+        "Après avoir simulé et validé votre demande de prêt depuis votre espace client, nos analystes étudient votre dossier sous 24 à 48 heures. Dès approbation par l'administrateur, les fonds sont crédités directement sur votre compte.",
     },
     {
-      question: "In welchen Längen werden die Holzscheite verkauft?",
+      question: "Comment activer une carte bancaire virtuelle ?",
       answer:
-        "Wir bieten Scheite in 25 cm und 33 cm an, gängige Maße, die sich perfekt für viele moderne Öfen und Kamine eignen.",
+        "Depuis votre Dashboard, rendez-vous dans la section « Cartes ». Vous pouvez créer instantanément une carte virtuelle avec numéro chiffré, date d'expiration et cryptogramme CVV.",
     },
     {
-      question: "Wie erfolgt die Anlieferung der Paletten?",
+      question: "Mes dépôts et données personnelles sont-ils protégés ?",
       answer:
-        "Wir liefern die Paletten direkt zu Ihnen nach Hause und stellen sie mithilfe eines Hubwagens so nah wie möglich an Ihren Lagerort ab.",
+        "Absolument. CBG Banque applique les normes de sécurité bancaire les plus strictes (chiffrement TLS 1.3 / AES-256) et se conforme rigoureusement à la réglementation européenne RGPD.",
     },
     {
-      question: "Wie viel Brennholz benötige ich für die Heizsaison?",
+      question: "Que faire en cas d'urgence ou de carte perdue ?",
       answer:
-        "Wenn Sie Ihren Kamin nur gelegentlich anzünden, reicht meist eine halbe Palette aus. Ist Holz Ihre Hauptwärmequelle im Winter, benötigen je nach Wohnungsgröße zwei bis drei Paletten.",
+        "Vous pouvez verrouiller ou geler instantanément votre carte en un clic depuis votre Dashboard. Notre centre d'urgence est joignable 24h/24 et 7j/7.",
     },
   ];
 
@@ -37,14 +39,23 @@ export default function ContactPage() {
     setOpenFaq(openFaq === index ? null : index);
   };
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setSubmitted(true);
+    }, 800);
+  };
+
   return (
     <section className="contact-section">
       <div className="contact-container">
         <div className="contact-grid">
-          {/* COLUMNA IZQUIERDA: preguntas frecuentes */}
+          {/* COLONNE GAUCHE : QUESTIONS FRÉQUENTES */}
           <div className="faq-column">
-            <span className="section-subtitle">WIR HELFEN IHNEN</span>
-            <h2 className="section-title">Häufige Fragen zu Brennholz und Bestellungen</h2>
+            <span className="section-subtitle">ASSISTANCE & CONSEILS</span>
+            <h2 className="section-title">Questions fréquentes sur nos services</h2>
 
             <div className="faq-accordion">
               {faqs.map((faq, index) => (
@@ -75,62 +86,65 @@ export default function ContactPage() {
             </div>
           </div>
 
-          {/* SEPARADOR VERTICAL */}
+          {/* SÉPARATEUR VERTICAL */}
           <div className="vertical-divider"></div>
 
-          {/* COLUMNA DERECHA: FORMULARIO */}
+          {/* COLONNE DROITE : FORMULAIRE */}
           <div className="form-column">
-            <span className="section-subtitle">BRAUCHEN SIE HILFE?</span>
+            <span className="section-subtitle">BESOIN D&apos;AIDE ?</span>
             <h2 className="section-title">
-              Wir sind hier, um Ihre Fragen zu Produkten, Lieferungen oder Bestellungen zu beantworten.
+              Notre équipe d&apos;experts bancaires est à votre écoute pour vous accompagner.
             </h2>
 
-            <form className="contact-form" onSubmit={(e) => e.preventDefault()}>
-              {/* Campo de texto oculto / anti-spam */}
-              <input
-                type="text"
-                className="input-full-bordered"
-                placeholder=""
-              />
-
-              {/* Campos del formulario */}
-              <div className="input-grid">
-                <input
-                  type="text"
-                  className="input-underline"
-                  placeholder="Ihr Name"
-                  required
-                />
-                <input
-                  type="email"
-                  className="input-underline"
-                  placeholder="Ihre E-Mail-Adresse"
-                  required
-                />
-                <input
-                  type="tel"
-                  className="input-underline"
-                  placeholder="Ihre Telefonnummer"
-                />
-                <input
-                  type="text"
-                  className="input-underline"
-                  placeholder="Betreff der Anfrage"
-                />
+            {submitted ? (
+              <div style={{ background: "rgba(34,197,94,0.15)", border: "1px solid rgba(34,197,94,0.3)", color: "#22c55e", padding: "1.5rem", borderRadius: "14px", marginTop: "1.5rem", textAlign: "center" }}>
+                <i className="fa-solid fa-circle-check" style={{ fontSize: "2rem", marginBottom: "0.5rem" }}></i>
+                <h4 style={{ margin: "0.5rem 0", color: "#ffffff" }}>Message envoyé avec succès</h4>
+                <p style={{ margin: 0, fontSize: "0.9rem", color: "#cbd5e1" }}>
+                  Un conseiller CBG Banque vous recontactera sous 24h ouvrées.
+                </p>
               </div>
+            ) : (
+              <form className="contact-form" onSubmit={handleSubmit}>
+                <div className="input-grid">
+                  <input
+                    type="text"
+                    className="input-underline"
+                    placeholder="Votre nom complet"
+                    required
+                  />
+                  <input
+                    type="email"
+                    className="input-underline"
+                    placeholder="Votre adresse e-mail"
+                    required
+                  />
+                  <input
+                    type="tel"
+                    className="input-underline"
+                    placeholder="Numéro de téléphone"
+                  />
+                  <input
+                    type="text"
+                    className="input-underline"
+                    placeholder="Objet de la demande"
+                    required
+                  />
+                </div>
 
-              {/* Mensaje */}
-              <textarea
-                className="input-underline textarea"
-                placeholder="Teilen Sie uns mit, wie wir Ihnen helfen können"
-                rows={3}
-                required
-              ></textarea>
+                {/* Message */}
+                <textarea
+                  className="input-underline textarea"
+                  placeholder="Décrivez votre projet ou votre demande en quelques lignes..."
+                  rows={4}
+                  required
+                ></textarea>
 
-              <button type="submit" className="btn-submit-contact">
-                ANFRAGE SENDEN
-              </button>
-            </form>
+                <button type="submit" className="btn-submit-contact" disabled={loading}>
+                  {loading ? "ENVOI EN COURS..." : "ENVOYER MON MESSAGE"}
+                </button>
+              </form>
+            )}
           </div>
         </div>
       </div>

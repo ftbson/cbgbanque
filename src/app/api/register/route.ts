@@ -90,11 +90,18 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, message: "Veuillez d'abord vérifier votre adresse e-mail." }, { status: 400 });
     }
 
+    const monthlyIncome = typeof payload.monthlyIncome === "string" ? payload.monthlyIncome.trim() : null;
+    const idCardFront = typeof payload.idCardFront === "string" ? payload.idCardFront.trim() : null;
+    const idCardBack = typeof payload.idCardBack === "string" ? payload.idCardBack.trim() : null;
+
     await db.insert(usersTable).values({
       id: `usr_${randomUUID()}`,
       email,
       passwordHash: await hashPassword(body.password),
       ...profile,
+      monthlyIncome,
+      idCardFront,
+      idCardBack,
       status: "pending",
       createdAt: new Date().toISOString(),
     });

@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import CookieBanner from "@/components/CookieBanner";
 
 interface SiteFrameProps {
   children: React.ReactNode;
@@ -22,6 +23,7 @@ export default function SiteFrame({ children }: SiteFrameProps) {
       {!hideSiteNavFooter && <Navbar />}
       <main className="main-content">{children}</main>
       {!hideSiteNavFooter && <Footer />}
+      <CookieBanner />
     </div>
   );
 }

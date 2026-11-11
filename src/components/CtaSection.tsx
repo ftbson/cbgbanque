@@ -45,10 +45,10 @@ export default function CtaSection() {
       const easeOut = 1 - Math.pow(1 - progress, 3); // Easing fluide
 
       setCounts({
-        clients: Math.floor(easeOut * 2000000),
-        capital: Math.floor(easeOut * 50000000),
+        clients: Math.floor(easeOut * 50000),
+        capital: Math.floor(easeOut * 2000000),
         languages: Math.floor(easeOut * 12),
-        year: Math.floor(easeOut * 2026),
+        year: Math.floor(easeOut * 2018),
       });
 
       if (progress < 1) {

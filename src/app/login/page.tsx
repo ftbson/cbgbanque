@@ -43,8 +43,11 @@ export default function LoginPage() {
     <div className="auth-section">
       <div className="auth-container">
         
-        {/* Top right switch button (e.g. Register) */}
-        <div className="auth-top-action">
+        {/* Top navigation actions */}
+        <div className="auth-top-action" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%", maxWidth: "460px", margin: "0 auto 1.5rem auto" }}>
+          <Link href="/" className="btn-auth-switch">
+            <i className="fa-solid fa-arrow-left" style={{ marginRight: "0.5rem" }}></i> Accueil
+          </Link>
           <Link href="/register" className="btn-auth-switch">
             S&apos;inscrire
           </Link>

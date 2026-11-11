@@ -48,10 +48,27 @@ export default function RegisterPage() {
     city: "",
     postalCode: "",
     profession: "",
+    monthlyIncome: "2500",
     documentType: "id_card", // id_card, passport, driver_license, residence_permit
     docFront: null as File | null,
+    docFrontBase64: "",
     docBack: null as File | null,
+    docBackBase64: "",
   });
+
+  const handleFileChange = (type: "front" | "back", file: File | null) => {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const base64 = (e.target?.result as string) || "";
+      if (type === "front") {
+        setFormData((prev) => ({ ...prev, docFront: file, docFrontBase64: base64 }));
+      } else {
+        setFormData((prev) => ({ ...prev, docBack: file, docBackBase64: base64 }));
+      }
+    };
+    reader.readAsDataURL(file);
+  };
 
   const totalSteps = 7; // Étapes actives (après l'écran 0 d'accueil)
 
@@ -150,7 +167,10 @@ export default function RegisterPage() {
           city: formData.city,
           postalCode: formData.postalCode,
           profession: formData.profession,
+          monthlyIncome: formData.monthlyIncome,
           documentType: formData.documentType,
+          idCardFront: formData.docFrontBase64,
+          idCardBack: formData.docBackBase64,
         }),
       });
 
@@ -188,6 +208,19 @@ export default function RegisterPage() {
 
   return (
     <div className="onboarding-container">
+      {/* Top action bar: Aller à la page d'accueil */}
+      
+
+      {/* Top action bar: Aller à la page d'accueil */}
+      <div style={{ width: "100%", maxWidth: "480px", margin: "0 auto 1rem auto", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <Link href="/" className="btn-auth-switch" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem" }}>
+          <i className="fa-solid fa-arrow-left"></i> Aller à l&apos;accueil
+        </Link>
+        <Link href="/login" className="btn-auth-switch">
+          Se connecter
+        </Link>
+      </div>
+
       <div className="onboarding-wrapper">
         
         {/* En-tête avec bouton Retour & Barre de progression */}
@@ -241,6 +274,10 @@ export default function RegisterPage() {
               <Link href="/login" className="btn-step-secondary">
                 Se connecter
               </Link>
+              <Link href="/" className="btn-step-secondary">
+                <i className="fa-solid fa-arrow-left"></i> Aller à l&apos;accueil
+              </Link>
+              
             </div>
           </div>
         )}
@@ -506,11 +543,11 @@ export default function RegisterPage() {
           </div>
         )}
 
-        {/* ================= ÉTAPE 6 : SITUATION PROFESSIONNELLE ================= */}
+        {/* ================= ÉTAPE 6 : SITUATION PROFESSIONNELLE & SALAIRE ================= */}
         {step === 6 && (
           <div className="step-card">
             <h2 className="step-title">Quelle est votre situation professionnelle ?</h2>
-            <p className="step-subtitle">Choisissez celle qui vous décrit le mieux.</p>
+            <p className="step-subtitle">Renseignez votre activité et vos revenus mensuels nets.</p>
 
             <div className="radio-options-list">
               {[
@@ -538,9 +575,49 @@ export default function RegisterPage() {
               ))}
             </div>
 
+            <div style={{ marginTop: "1.5rem" }}>
+              <label className="select-label" style={{ display: "block", marginBottom: "0.5rem", fontWeight: 600, color: "#e2e8f0" }}>
+                Revenu mensuel net estimé (salaire en €)
+              </label>
+              <div style={{ position: "relative" }}>
+                <input
+                  type="number"
+                  min="0"
+                  placeholder="Ex : 2500"
+                  value={formData.monthlyIncome}
+                  onChange={(e) => updateForm("monthlyIncome", e.target.value)}
+                  className="step-input"
+                  style={{ paddingRight: "3rem" }}
+                />
+                <span style={{ position: "absolute", right: "1rem", top: "50%", transform: "translateY(-50%)", color: "#94a3b8", fontWeight: 600 }}>
+                  € / mois
+                </span>
+              </div>
+              <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginTop: "0.5rem" }}>
+                {["1500", "2200", "3000", "4500", "6000"].map((val) => (
+                  <button
+                    key={val}
+                    type="button"
+                    onClick={() => updateForm("monthlyIncome", val)}
+                    style={{
+                      background: formData.monthlyIncome === val ? "#2563eb" : "rgba(255,255,255,0.06)",
+                      color: "#fff",
+                      border: "1px solid rgba(255,255,255,0.1)",
+                      borderRadius: "6px",
+                      padding: "0.3rem 0.65rem",
+                      fontSize: "0.78rem",
+                      cursor: "pointer",
+                    }}
+                  >
+                    {val} €
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <button
               onClick={handleNext}
-              disabled={!formData.profession}
+              disabled={!formData.profession || !formData.monthlyIncome}
               className="btn-step-primary margin-top-1"
             >
               Continuer
@@ -585,15 +662,25 @@ export default function RegisterPage() {
               <div className="upload-box">
                 <div className="upload-box-header">
                   <span>Recto de la pièce d&apos;identité</span>
-                  <span className="badge-required">Requis</span>
+                  <span className="badge-required" style={{ background: formData.docFrontBase64 ? "rgba(34,197,94,0.2)" : undefined, color: formData.docFrontBase64 ? "#22c55e" : undefined }}>
+                    {formData.docFrontBase64 ? "✓ Chargé" : "Requis"}
+                  </span>
                 </div>
                 <div className="upload-frame">
-                  <i className="fa-solid fa-id-card frame-icon"></i>
-                  <span className="frame-text">Prise de vue ou téléversement</span>
+                  {formData.docFrontBase64 ? (
+                    <div style={{ position: "relative", width: "100%", maxHeight: "120px", overflow: "hidden", borderRadius: "8px", margin: "0.5rem 0" }}>
+                      <img src={formData.docFrontBase64} alt="Recto aperçu" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    </div>
+                  ) : (
+                    <>
+                      <i className="fa-solid fa-id-card frame-icon"></i>
+                      <span className="frame-text">Prise de vue ou téléversement</span>
+                    </>
+                  )}
                   <input
                     type="file"
-                    accept="image/*,application/pdf"
-                    onChange={(e) => updateForm("docFront", e.target.files?.[0] || null)}
+                    accept="image/*"
+                    onChange={(e) => handleFileChange("front", e.target.files?.[0] || null)}
                     className="file-input-hidden"
                     id="doc-front"
                   />
@@ -608,15 +695,25 @@ export default function RegisterPage() {
                 <div className="upload-box">
                   <div className="upload-box-header">
                     <span>Verso de la pièce d&apos;identité</span>
-                    <span className="badge-required">Requis</span>
+                    <span className="badge-required" style={{ background: formData.docBackBase64 ? "rgba(34,197,94,0.2)" : undefined, color: formData.docBackBase64 ? "#22c55e" : undefined }}>
+                      {formData.docBackBase64 ? "✓ Chargé" : "Requis"}
+                    </span>
                   </div>
                   <div className="upload-frame">
-                    <i className="fa-solid fa-id-card frame-icon"></i>
-                    <span className="frame-text">Prise de vue ou téléversement</span>
+                    {formData.docBackBase64 ? (
+                      <div style={{ position: "relative", width: "100%", maxHeight: "120px", overflow: "hidden", borderRadius: "8px", margin: "0.5rem 0" }}>
+                        <img src={formData.docBackBase64} alt="Verso aperçu" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                      </div>
+                    ) : (
+                      <>
+                        <i className="fa-solid fa-id-card frame-icon"></i>
+                        <span className="frame-text">Prise de vue ou téléversement</span>
+                      </>
+                    )}
                     <input
                       type="file"
-                      accept="image/*,application/pdf"
-                      onChange={(e) => updateForm("docBack", e.target.files?.[0] || null)}
+                      accept="image/*"
+                      onChange={(e) => handleFileChange("back", e.target.files?.[0] || null)}
                       className="file-input-hidden"
                       id="doc-back"
                     />

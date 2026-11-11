@@ -18,7 +18,10 @@ export const usersTable = sqliteTable("users", {
   city: text("city").notNull(),
   postalCode: text("postal_code").notNull(),
   profession: text("profession").notNull(),
+  monthlyIncome: text("monthly_income"),
   documentType: text("document_type").notNull(),
+  idCardFront: text("id_card_front"),
+  idCardBack: text("id_card_back"),
   status: text("status", { enum: ["pending", "approved", "rejected"] })
     .default("pending")
     .notNull(),
@@ -38,6 +41,8 @@ export const accountsTable = sqliteTable("accounts", {
   balanceCents: integer("balance_cents").default(0).notNull(),
   reservedCents: integer("reserved_cents").default(0).notNull(),
   currency: text("currency").default("EUR").notNull(),
+  iban: text("iban"),
+  bic: text("bic").default("C23QBEBB"),
   createdAt: text("created_at").notNull(),
 });
 
@@ -47,7 +52,28 @@ export const cardsTable = sqliteTable("cards", {
   name: text("name").notNull(),
   type: text("type", { enum: ["virtual_demo"] }).default("virtual_demo").notNull(),
   reference: text("reference").notNull().unique(),
+  cardNumber: text("card_number"),
+  expiry: text("expiry"),
+  cvv: text("cvv"),
+  cardHolder: text("card_holder"),
+  cardTier: text("card_tier").default("Classic"),
   status: text("status", { enum: ["active", "frozen"] }).default("active").notNull(),
+  createdAt: text("created_at").notNull(),
+});
+
+export const loansTable = sqliteTable("loans", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").notNull(),
+  amount: real("amount").notNull(),
+  durationMonths: integer("duration_months").notNull(),
+  interestRate: real("interest_rate").notNull(),
+  monthlyPayment: real("monthly_payment").notNull(),
+  totalPayment: real("total_payment").notNull(),
+  dossierFees: real("dossier_fees").notNull(),
+  purpose: text("purpose").notNull(),
+  status: text("status", { enum: ["pending", "approved", "rejected"] })
+    .default("pending")
+    .notNull(),
   createdAt: text("created_at").notNull(),
 });
 

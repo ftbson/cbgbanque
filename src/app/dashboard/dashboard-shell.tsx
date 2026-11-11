@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
 interface DashboardIdentity {
-  user: { firstName: string };
+  user: { firstName: string; lastName?: string };
   unreadNotifications: number;
 }
 
@@ -17,6 +17,7 @@ export default function DashboardShell({
   const pathname = usePathname();
   const router = useRouter();
   const [identity, setIdentity] = useState<DashboardIdentity | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     fetch("/api/dashboard")
@@ -38,39 +39,80 @@ export default function DashboardShell({
     router.refresh();
   };
 
+  const getInitials = () => {
+    if (!identity?.user) return "CB";
+    const fn = identity.user.firstName?.[0] || "";
+    const ln = identity.user.lastName?.[0] || "";
+    return `${fn}${ln}`.toUpperCase() || "CH";
+  };
+
   return (
     <div className="dashboard-layout">
+      {/* ================= REPRODUCED TOPBAR (SCREENSHOT 1) ================= */}
       <header className="dashboard-topbar">
-        <div className="topbar-left">
-          <div className="user-avatar-badge" aria-label="Compte utilisateur">
-            {identity?.user.firstName.slice(0, 2).toUpperCase() ?? "…"}
-          </div>
+        {/* User Avatar Circle (CH) linking to Paramètres */}
+        <Link
+          href="/dashboard/parametres"
+          className="topbar-avatar-round"
+          title={`${identity?.user.firstName || ""} ${identity?.user.lastName || ""} - Ouvrir les paramètres`}
+          style={{ textDecoration: "none" }}
+        >
+          {getInitials()}
+        </Link>
+
+        {/* Center Search Pill */}
+        <div className="topbar-search-pill">
+          <i className="fa-solid fa-magnifying-glass"></i>
+          <input
+            type="text"
+            placeholder="Rechercher"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="topbar-search-input"
+          />
         </div>
-        <span>{identity?.user.firstName ?? "Mon compte"}</span>
+
+        {/* Right Action Icons */}
         <div className="topbar-actions">
           <Link
             href="/dashboard/analyse"
-            className="topbar-icon-btn"
-            aria-label="Statistiques"
+            className="topbar-icon-round"
+            title="Analyses & Statistiques"
           >
-            <i className="fa-solid fa-chart-bar"></i>
+            <i className="fa-solid fa-chart-simple"></i>
           </Link>
+
           <Link
-            href="/dashboard/notifications"
-            className="topbar-icon-btn notification-btn"
-            aria-label="Notifications"
+            href="/dashboard/carte"
+            className="topbar-icon-round card-icon-wrap"
+            title="Mes Cartes"
           >
-            <i className="fa-regular fa-bell"></i>
-            {Boolean(identity?.unreadNotifications) && <span className="notification-dot"></span>}
+            <i className="fa-regular fa-credit-card"></i>
+            <span className="card-red-badge-dot"></span>
           </Link>
-          <button type="button" className="topbar-icon-btn" onClick={handleLogout} aria-label="Se déconnecter">
-            <i className="fa-solid fa-right-from-bracket"></i>
+
+          <Link
+            href="/dashboard/parametres"
+            className="topbar-icon-round"
+            title="Paramètres du compte"
+          >
+            <i className="fa-solid fa-gear"></i>
+          </Link>
+
+          <button
+            type="button"
+            className="topbar-icon-round"
+            onClick={handleLogout}
+            title="Se déconnecter"
+          >
+            <i className="fa-solid fa-arrow-right-from-bracket"></i>
           </button>
         </div>
       </header>
 
       <main className="dashboard-main-content">{children}</main>
 
+      {/* ================= REPRODUCED BOTTOM NAVIGATION (SCREENSHOT 1 & 7) ================= */}
       <nav className="dashboard-bottom-nav">
         <Link
           href="/dashboard"
@@ -80,33 +122,33 @@ export default function DashboardShell({
           <span>Accueil</span>
         </Link>
         <Link
-          href="/dashboard/activite"
-          className={`nav-item-bottom ${pathname === "/dashboard/activite" ? "active" : ""}`}
+          href="/dashboard/pret"
+          className={`nav-item-bottom ${pathname === "/dashboard/pret" ? "active" : ""}`}
         >
-          <i className="fa-solid fa-chart-line"></i>
-          <span>Activité</span>
+          <i className="fa-solid fa-arrow-trend-up"></i>
+          <span>Prêts</span>
         </Link>
         <Link
           href="/dashboard/envoyer"
           className={`nav-item-bottom ${pathname === "/dashboard/envoyer" ? "active" : ""}`}
         >
-          <i className="fa-solid fa-paper-plane"></i>
-          <span>Envoyer</span>
+          <i className="fa-solid fa-arrow-right-arrow-left"></i>
+          <span>Virements</span>
         </Link>
         <Link
           href="/dashboard/carte"
           className={`nav-item-bottom ${pathname === "/dashboard/carte" ? "active" : ""}`}
         >
           <i className="fa-regular fa-credit-card"></i>
-          <span>Carte</span>
+          <span>Cartes</span>
         </Link>
-        {/* <Link
+        <Link
           href="/dashboard/epargne"
           className={`nav-item-bottom ${pathname === "/dashboard/epargne" ? "active" : ""}`}
         >
-          <i className="fa-solid fa-piggy-bank"></i>
-          <span>Épargne</span>
-        </Link> */}
+          <i className="fa-solid fa-bag-shopping"></i>
+          <span>Lifestyle</span>
+        </Link>
       </nav>
     </div>
   );

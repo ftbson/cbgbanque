@@ -28,7 +28,10 @@ export async function GET() {
       city: usersTable.city,
       postalCode: usersTable.postalCode,
       profession: usersTable.profession,
+      monthlyIncome: usersTable.monthlyIncome,
       documentType: usersTable.documentType,
+      idCardFront: usersTable.idCardFront,
+      idCardBack: usersTable.idCardBack,
       status: usersTable.status,
       createdAt: usersTable.createdAt,
     }).from(usersTable);
