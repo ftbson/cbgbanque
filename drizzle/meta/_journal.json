@@ -22,6 +22,13 @@
       "when": 1794000002000,
       "tag": "0003_commerce_analytics",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1794000003000,
+      "tag": "0004_dashboard_real_data",
+      "breakpoints": true
     }
   ]
 }

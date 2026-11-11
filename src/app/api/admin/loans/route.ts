@@ -1,10 +1,9 @@
 import { randomUUID } from "node:crypto";
-import { desc, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { isAdminAuthenticated } from "@/lib/auth";
-import { getOrCreateAccount } from "@/lib/dashboard-data";
 import { db } from "@/lib/db";
-import { accountsTable, loansTable, notificationsTable, transactionsTable, usersTable } from "@/lib/schema";
+import { loansTable, notificationsTable, transactionsTable, usersTable } from "@/lib/schema";
 
 export async function GET() {
   try {
@@ -18,10 +17,7 @@ export async function GET() {
         userId: loansTable.userId,
         amount: loansTable.amount,
         durationMonths: loansTable.durationMonths,
-        interestRate: loansTable.interestRate,
-        monthlyPayment: loansTable.monthlyPayment,
-        totalPayment: loansTable.totalPayment,
-        dossierFees: loansTable.dossierFees,
+        currency: usersTable.currency,
         purpose: loansTable.purpose,
         status: loansTable.status,
         createdAt: loansTable.createdAt,
@@ -49,16 +45,26 @@ export async function PATCH(request: Request) {
       return NextResponse.json({ success: false, message: "Non autorisé" }, { status: 401 });
     }
 
-    const body = await request.json();
+    const body: unknown = await request.json();
+    if (!body || typeof body !== "object" || !("loanId" in body) || !("status" in body)) {
+      return NextResponse.json({ success: false, message: "Données invalides" }, { status: 400 });
+    }
     const { loanId, status } = body;
 
-    if (!loanId || (status !== "approved" && status !== "rejected")) {
+    if (typeof loanId !== "string" || (status !== "approved" && status !== "rejected")) {
       return NextResponse.json({ success: false, message: "Données invalides" }, { status: 400 });
     }
 
     const [loan] = await db
-      .select()
+      .select({
+        id: loansTable.id,
+        userId: loansTable.userId,
+        amount: loansTable.amount,
+        status: loansTable.status,
+        currency: usersTable.currency,
+      })
       .from(loansTable)
+      .leftJoin(usersTable, eq(loansTable.userId, usersTable.id))
       .where(eq(loansTable.id, loanId))
       .limit(1);
 
@@ -66,62 +72,50 @@ export async function PATCH(request: Request) {
       return NextResponse.json({ success: false, message: "Demande de prêt introuvable." }, { status: 404 });
     }
 
-    if (loan.status === status) {
-      return NextResponse.json({ success: true, message: "Statut déjà appliqué." });
+    const createdAt = new Date().toISOString();
+    if (!loan.currency) {
+      return NextResponse.json({ success: false, message: "Devise du compte introuvable." }, { status: 409 });
     }
 
-    const createdAt = new Date().toISOString();
+    const formattedAmount = new Intl.NumberFormat("fr-FR", {
+      style: "currency",
+      currency: loan.currency,
+    }).format(loan.amount);
 
-    await db.transaction(async (tx) => {
-      await tx
-        .update(loansTable)
+    const updated = await db.transaction(async (tx) => {
+      const [updatedLoan] = await tx.update(loansTable)
         .set({ status })
-        .where(eq(loansTable.id, loanId));
+        .where(and(eq(loansTable.id, loanId), eq(loansTable.status, "pending")))
+        .returning({ id: loansTable.id });
+      if (!updatedLoan) return false;
 
-      if (status === "approved") {
-        const account = await getOrCreateAccount(loan.userId);
-        const amountCents = Math.round(loan.amount * 100);
+      await tx.update(transactionsTable)
+        .set({ status: "completed" })
+        .where(and(
+          eq(transactionsTable.relatedId, loanId),
+          eq(transactionsTable.userId, loan.userId),
+          eq(transactionsTable.type, "loan_request"),
+        ));
 
-        // Créditer le compte du montant du prêt
-        await tx
-          .update(accountsTable)
-          .set({ balanceCents: account.balanceCents + amountCents })
-          .where(eq(accountsTable.userId, loan.userId));
-
-        // Enregistrer la transaction
-        await tx.insert(transactionsTable).values({
-          id: randomUUID(),
-          userId: loan.userId,
-          type: "vault_deposit",
-          description: `Déblocage des fonds - Prêt accordé (${loan.purpose})`,
-          amountCents,
-          currency: account.currency,
-          status: "completed",
-          createdAt,
-        });
-
-        // Notifier le client
-        await tx.insert(notificationsTable).values({
-          id: randomUUID(),
-          userId: loan.userId,
-          type: "transaction",
-          title: "Prêt accordé !",
-          message: `Félicitations, votre demande de prêt de ${new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(loan.amount)} a été approuvée et les fonds sont crédités sur votre compte.`,
-          createdAt,
-        });
-      } else {
-        await tx.insert(notificationsTable).values({
-          id: randomUUID(),
-          userId: loan.userId,
-          type: "transaction",
-          title: "Demande de prêt non retenue",
-          message: `Votre demande de prêt de ${new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(loan.amount)} n'a pas pu être acceptée par notre comité.`,
-          createdAt,
-        });
-      }
+      await tx.insert(notificationsTable).values({
+        id: randomUUID(),
+        userId: loan.userId,
+        type: "transaction",
+        title: "Demande de financement traitée",
+        message: `Votre demande de ${formattedAmount} a été ${status === "approved" ? "acceptée" : "refusée"}. Cette décision ne déclenche aucun versement automatique.`,
+        createdAt,
+      });
+      return true;
     });
 
-    return NextResponse.json({ success: true, message: `Prêt mis à jour : ${status}` });
+    if (!updated) {
+      return NextResponse.json({ success: false, message: "Cette demande a déjà été traitée." }, { status: 409 });
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: `Demande mise à jour : ${status === "approved" ? "acceptée" : "refusée"}. Aucun fonds n'a été crédité.`,
+    });
   } catch (error) {
     console.error("Erreur modification prêt admin :", error);
     return NextResponse.json({ success: false, message: "Erreur serveur" }, { status: 500 });

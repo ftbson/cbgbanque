@@ -41,8 +41,6 @@ export const accountsTable = sqliteTable("accounts", {
   balanceCents: integer("balance_cents").default(0).notNull(),
   reservedCents: integer("reserved_cents").default(0).notNull(),
   currency: text("currency").default("EUR").notNull(),
-  iban: text("iban"),
-  bic: text("bic").default("C23QBEBB"),
   createdAt: text("created_at").notNull(),
 });
 
@@ -50,14 +48,8 @@ export const cardsTable = sqliteTable("cards", {
   id: text("id").primaryKey(),
   userId: text("user_id").notNull(),
   name: text("name").notNull(),
-  type: text("type", { enum: ["virtual_demo"] }).default("virtual_demo").notNull(),
+  type: text("type").default("internal_reference").notNull(),
   reference: text("reference").notNull().unique(),
-  cardNumber: text("card_number"),
-  expiry: text("expiry"),
-  cvv: text("cvv"),
-  cardHolder: text("card_holder"),
-  cardTier: text("card_tier").default("Classic"),
-  status: text("status", { enum: ["active", "frozen"] }).default("active").notNull(),
   createdAt: text("created_at").notNull(),
 });
 
@@ -66,10 +58,10 @@ export const loansTable = sqliteTable("loans", {
   userId: text("user_id").notNull(),
   amount: real("amount").notNull(),
   durationMonths: integer("duration_months").notNull(),
-  interestRate: real("interest_rate").notNull(),
-  monthlyPayment: real("monthly_payment").notNull(),
-  totalPayment: real("total_payment").notNull(),
-  dossierFees: real("dossier_fees").notNull(),
+  interestRate: real("interest_rate").default(0).notNull(),
+  monthlyPayment: real("monthly_payment").default(0).notNull(),
+  totalPayment: real("total_payment").default(0).notNull(),
+  dossierFees: real("dossier_fees").default(0).notNull(),
   purpose: text("purpose").notNull(),
   status: text("status", { enum: ["pending", "approved", "rejected"] })
     .default("pending")
@@ -81,8 +73,19 @@ export const transactionsTable = sqliteTable("transactions", {
   id: text("id").primaryKey(),
   userId: text("user_id").notNull(),
   type: text("type", {
-    enum: ["withdrawal_request", "card_created", "card_status", "vault_created", "vault_deposit", "vault_withdrawal"],
+    enum: [
+      "withdrawal_request",
+      "card_created",
+      "card_status",
+      "card_reference_added",
+      "card_reference_deleted",
+      "loan_request",
+      "vault_created",
+      "vault_deposit",
+      "vault_withdrawal",
+    ],
   }).notNull(),
+  relatedId: text("related_id"),
   description: text("description").notNull(),
   amountCents: integer("amount_cents").notNull(),
   currency: text("currency").notNull(),

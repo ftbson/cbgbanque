@@ -17,7 +17,6 @@ export default function DashboardShell({
   const pathname = usePathname();
   const router = useRouter();
   const [identity, setIdentity] = useState<DashboardIdentity | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     fetch("/api/dashboard")
@@ -60,19 +59,6 @@ export default function DashboardShell({
           {getInitials()}
         </Link>
 
-        {/* Center Search Pill */}
-        <div className="topbar-search-pill">
-          <i className="fa-solid fa-magnifying-glass"></i>
-          <input
-            type="text"
-            placeholder="Rechercher"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="topbar-search-input"
-          />
-        </div>
-
-        {/* Right Action Icons */}
         <div className="topbar-actions">
           <Link
             href="/dashboard/analyse"
@@ -88,15 +74,15 @@ export default function DashboardShell({
             title="Mes Cartes"
           >
             <i className="fa-regular fa-credit-card"></i>
-            <span className="card-red-badge-dot"></span>
           </Link>
 
           <Link
             href="/dashboard/parametres"
-            className="topbar-icon-round"
+            className="topbar-icon-round topbar-settings-link"
             title="Paramètres du compte"
           >
             <i className="fa-solid fa-gear"></i>
+            <span>Paramètres</span>
           </Link>
 
           <button
@@ -146,8 +132,8 @@ export default function DashboardShell({
           href="/dashboard/epargne"
           className={`nav-item-bottom ${pathname === "/dashboard/epargne" ? "active" : ""}`}
         >
-          <i className="fa-solid fa-bag-shopping"></i>
-          <span>Lifestyle</span>
+          <i className="fa-solid fa-piggy-bank"></i>
+          <span>Épargne</span>
         </Link>
       </nav>
     </div>

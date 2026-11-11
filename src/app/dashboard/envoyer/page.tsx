@@ -15,7 +15,7 @@ function formatMoney(cents: number, currency: string) {
 export default function EnvoyerPage() {
   const [account, setAccount] = useState<AccountData | null>(null);
   const [amount, setAmount] = useState("");
-  const [description, setDescription] = useState("Demande de retrait");
+  const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
@@ -56,6 +56,7 @@ export default function EnvoyerPage() {
       if (!response.ok) throw new Error(data.message ?? "La demande de retrait a échoué.");
       setMessage(data.message ?? "Demande enregistrée en attente de traitement.");
       setAmount("");
+      setDescription("");
       await loadAccount();
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Erreur lors de la demande.");
@@ -81,7 +82,9 @@ export default function EnvoyerPage() {
         {error && <p role="alert">{error}</p>}
         {message && <p role="status">{message}</p>}
         <form onSubmit={requestWithdrawal} className="iban-form-container">
-          <label className="field-label" htmlFor="withdrawal-amount">Montant ({account?.currency ?? "EUR"})</label>
+          <label className="field-label" htmlFor="withdrawal-amount">
+            Montant{account ? ` (${account.currency})` : ""}
+          </label>
           <input
             id="withdrawal-amount"
             type="number"
@@ -101,6 +104,7 @@ export default function EnvoyerPage() {
             required
             value={description}
             onChange={(event) => setDescription(event.target.value)}
+            placeholder="Décrivez le motif de votre demande"
             className="step-input"
           />
           <p role="note">

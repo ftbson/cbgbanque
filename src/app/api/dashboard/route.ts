@@ -45,7 +45,12 @@ export async function GET() {
         .orderBy(desc(transactionsTable.createdAt))
         .limit(10),
       db
-        .select()
+        .select({
+          id: cardsTable.id,
+          name: cardsTable.name,
+          reference: cardsTable.reference,
+          createdAt: cardsTable.createdAt,
+        })
         .from(cardsTable)
         .where(eq(cardsTable.userId, sessionUser.id))
         .orderBy(desc(cardsTable.createdAt)),
@@ -55,7 +60,14 @@ export async function GET() {
         .where(eq(vaultsTable.userId, sessionUser.id))
         .orderBy(desc(vaultsTable.createdAt)),
       db
-        .select()
+        .select({
+          id: loansTable.id,
+          amount: loansTable.amount,
+          durationMonths: loansTable.durationMonths,
+          purpose: loansTable.purpose,
+          status: loansTable.status,
+          createdAt: loansTable.createdAt,
+        })
         .from(loansTable)
         .where(eq(loansTable.userId, sessionUser.id))
         .orderBy(desc(loansTable.createdAt)),
@@ -65,21 +77,6 @@ export async function GET() {
         .where(sql`${notificationsTable.userId} = ${sessionUser.id} AND ${notificationsTable.readAt} IS NULL`),
     ]);
 
-    // Calculate real total expenses and real total received this month from transactions
-    let monthSpentCents = 0;
-    let monthReceivedCents = 0;
-    for (const t of transactions) {
-      if (t.status === "completed") {
-        if (t.amountCents > 0) {
-          if (t.type === "withdrawal_request") {
-            monthSpentCents += t.amountCents;
-          } else {
-            monthReceivedCents += t.amountCents;
-          }
-        }
-      }
-    }
-
     return NextResponse.json({
       success: true,
       user,
@@ -87,12 +84,8 @@ export async function GET() {
         currency: account.currency,
         balanceCents: account.balanceCents,
         reservedCents: account.reservedCents,
-        iban: account.iban,
-        bic: account.bic,
       },
       availableBalanceCents: account.balanceCents - account.reservedCents,
-      monthSpentCents,
-      monthReceivedCents,
       transactions,
       cards,
       vaults,

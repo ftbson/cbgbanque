@@ -48,7 +48,7 @@ export default function RegisterPage() {
     city: "",
     postalCode: "",
     profession: "",
-    monthlyIncome: "2500",
+    monthlyIncome: "",
     documentType: "id_card", // id_card, passport, driver_license, residence_permit
     docFront: null as File | null,
     docFrontBase64: "",

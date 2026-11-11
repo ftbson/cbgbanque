@@ -32,10 +32,7 @@ interface AdminLoan {
   userId: string;
   amount: number;
   durationMonths: number;
-  interestRate: number;
-  monthlyPayment: number;
-  totalPayment: number;
-  dossierFees: number;
+  currency: string;
   purpose: string;
   status: "pending" | "approved" | "rejected";
   createdAt: string;
@@ -433,8 +430,7 @@ export default function AdminPage() {
                   <tr>
                     <th>Demandeur</th>
                     <th>Montant demandé</th>
-                    <th>Durée & Mensualité</th>
-                    <th>Frais & Coût total</th>
+                    <th>Durée</th>
                     <th>Motif</th>
                     <th>Statut</th>
                     <th>Actions</th>
@@ -443,7 +439,7 @@ export default function AdminPage() {
                 <tbody>
                   {loans.length === 0 ? (
                     <tr>
-                      <td colSpan={7} style={{ textAlign: "center", padding: "2rem", color: "#94a3b8" }}>
+                      <td colSpan={6} style={{ textAlign: "center", padding: "2rem", color: "#94a3b8" }}>
                         Aucune demande de prêt enregistrée.
                       </td>
                     </tr>
@@ -455,24 +451,19 @@ export default function AdminPage() {
                             <strong>{loan.userName || "Client"} {loan.userLastName || ""}</strong>
                             <div style={{ fontSize: "0.78rem", color: "#94a3b8" }}>{loan.userEmail}</div>
                             {loan.monthlyIncome && (
-                              <div style={{ fontSize: "0.75rem", color: "#60a5fa" }}>Salaire : {loan.monthlyIncome} €/mois</div>
+                              <div style={{ fontSize: "0.75rem", color: "#60a5fa" }}>
+                                Revenu déclaré : {loan.monthlyIncome} {loan.currency}/mois
+                              </div>
                             )}
                           </div>
                         </td>
                         <td>
                           <strong style={{ fontSize: "1.05rem", color: "#60a5fa" }}>
-                            {new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(loan.amount)}
+                            {new Intl.NumberFormat("fr-FR", { style: "currency", currency: loan.currency }).format(loan.amount)}
                           </strong>
                         </td>
                         <td>
-                          <div>{loan.durationMonths} mois</div>
-                          <div style={{ fontSize: "0.8rem", color: "#22c55e", fontWeight: 600 }}>
-                            {new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(loan.monthlyPayment)} / mois
-                          </div>
-                        </td>
-                        <td>
-                          <div>Frais : {loan.dossierFees} €</div>
-                          <div style={{ fontSize: "0.8rem", color: "#94a3b8" }}>Total : {loan.totalPayment} €</div>
+                          {loan.durationMonths} mois
                         </td>
                         <td>
                           <span className="doc-badge-table">{loan.purpose}</span>
@@ -498,28 +489,28 @@ export default function AdminPage() {
                                   : "#f59e0b",
                             }}
                           >
-                            {loan.status === "approved" ? "Approuvé" : loan.status === "rejected" ? "Rejeté" : "En attente"}
+                            {loan.status === "approved" ? "Acceptée" : loan.status === "rejected" ? "Refusée" : "En attente"}
                           </span>
                         </td>
                         <td>
                           <div className="table-actions-row">
-                            {loan.status !== "approved" && (
-                              <button
-                                className="btn-table-approve"
-                                onClick={() => updateLoanStatus(loan.id, "approved")}
-                                title="Approuver et créditer les fonds"
-                              >
-                                <i className="fa-solid fa-check"></i> Valider prêt
-                              </button>
-                            )}
-                            {loan.status !== "rejected" && (
-                              <button
-                                className="btn-table-reject"
-                                onClick={() => updateLoanStatus(loan.id, "rejected")}
-                                title="Refuser le prêt"
-                              >
-                                <i className="fa-solid fa-xmark"></i> Rejeter
-                              </button>
+                            {loan.status === "pending" && (
+                              <>
+                                <button
+                                  className="btn-table-approve"
+                                  onClick={() => updateLoanStatus(loan.id, "approved")}
+                                  title="Accepter la demande sans crédit automatique"
+                                >
+                                  <i className="fa-solid fa-check"></i> Accepter la demande
+                                </button>
+                                <button
+                                  className="btn-table-reject"
+                                  onClick={() => updateLoanStatus(loan.id, "rejected")}
+                                  title="Refuser la demande"
+                                >
+                                  <i className="fa-solid fa-xmark"></i> Refuser
+                                </button>
+                              </>
                             )}
                           </div>
                         </td>
