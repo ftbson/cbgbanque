@@ -96,12 +96,13 @@ export async function DELETE(request: Request) {
     if (!body || typeof body !== "object" || !("cardId" in body) || typeof body.cardId !== "string") {
       return NextResponse.json({ success: false, message: "Référence invalide." }, { status: 400 });
     }
+    const cardId = body.cardId;
 
     const account = await getOrCreateAccount(user.id);
     const createdAt = new Date().toISOString();
     const [deleted] = await db.transaction(async (tx) => {
       const [reference] = await tx.delete(cardsTable)
-        .where(and(eq(cardsTable.id, body.cardId), eq(cardsTable.userId, user.id)))
+        .where(and(eq(cardsTable.id, cardId), eq(cardsTable.userId, user.id)))
         .returning({ id: cardsTable.id, name: cardsTable.name });
       if (!reference) return [null];
 
