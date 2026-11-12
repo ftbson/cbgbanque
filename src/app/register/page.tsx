@@ -208,18 +208,7 @@ export default function RegisterPage() {
 
   return (
     <div className="onboarding-container">
-      {/* Top action bar: Aller à la page d'accueil */}
-      
-
-      {/* Top action bar: Aller à la page d'accueil */}
-      <div style={{ width: "100%", maxWidth: "480px", margin: "0 auto 1rem auto", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <Link href="/" className="btn-auth-switch" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem" }}>
-          <i className="fa-solid fa-arrow-left"></i> Aller à l&apos;accueil
-        </Link>
-        <Link href="/login" className="btn-auth-switch">
-          Se connecter
-        </Link>
-      </div>
+     
 
       <div className="onboarding-wrapper">
         
