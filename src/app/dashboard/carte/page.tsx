@@ -87,20 +87,20 @@ export default function CartePage() {
         <Link href="/dashboard" className="btn-back-circle" aria-label="Retour au tableau de bord">
           <i className="fa-solid fa-chevron-left"></i>
         </Link>
-        <h1 className="screen-title-center">Références de carte</h1>
+        <h1 className="screen-title-center">Mes cartes</h1>
         <div style={{ width: "38px" }}></div>
       </div>
 
       <p role="note">
-        Aucun émetteur de carte n&apos;est configuré. Ces références sont des repères internes; elles ne permettent pas de payer et aucun numéro de carte, CVV ou carte physique n&apos;est émis.
+        Gérez vos références personnelles. Aucune carte bancaire, numéro de paiement ou carte physique n&apos;est émis depuis cet espace.
       </p>
       {error && <p role="alert">{error}</p>}
       {message && <p role="status">{message}</p>}
 
       <section className="section-my-vaults">
-        <h2 className="section-heading-title">Ajouter une référence</h2>
+        <h2 className="section-heading-title">Ajouter une référence de carte</h2>
         <form onSubmit={addReference} className="modal-form">
-          <label className="field-label" htmlFor="card-reference-name">Libellé choisi par vous</label>
+          <label className="field-label" htmlFor="card-reference-name">Nom de la référence</label>
           <input
             id="card-reference-name"
             type="text"
@@ -109,34 +109,58 @@ export default function CartePage() {
             value={name}
             onChange={(event) => setName(event.target.value)}
             className="modal-input"
+            autoComplete="off"
           />
           <button type="submit" className="btn-modal-action" disabled={saving}>
-            {saving ? "Enregistrement…" : "Enregistrer"}
+            {saving ? "Enregistrement…" : "Ajouter ma référence"}
           </button>
         </form>
       </section>
 
-      {!loading && cards.length > 0 && (
-        <section className="section-my-vaults">
-          <h2 className="section-heading-title">Mes références</h2>
-          <div className="vaults-list">
+      <section className="section-my-vaults">
+        <h2 className="section-heading-title">Références enregistrées</h2>
+        {loading ? (
+          <p aria-live="polite">Chargement de vos références…</p>
+        ) : error ? null : cards.length === 0 ? (
+          <p className="dashboard-empty-state">Aucune référence enregistrée. Ajoutez-en une avec le formulaire ci-dessus.</p>
+        ) : (
+          <div className="card-reference-grid">
             {cards.map((card) => (
-              <article key={card.id} className="vault-item-card">
-                <div className="vault-texts">
-                  <h3 className="vault-name">{card.name}</h3>
-                  <span className="vault-progress-sub">Référence interne : {card.reference}</span>
-                  <time className="vault-progress-sub" dateTime={card.createdAt}>
-                    {new Date(card.createdAt).toLocaleDateString("fr-FR")}
-                  </time>
+              <article key={card.id} className="card-reference-item">
+                <div className="card-reference-visual">
+                  <div className="card-reference-glow" aria-hidden="true"></div>
+                  <div className="card-reference-top">
+                    <div className="card-reference-brand">
+                      <strong>CBG</strong>
+                      <span>RÉFÉRENCE</span>
+                    </div>
+                    <i className="fa-solid fa-wifi card-reference-contactless" aria-hidden="true"></i>
+                  </div>
+                  <div className="card-reference-chip" aria-hidden="true">
+                    <span></span><span></span><span></span><span></span>
+                  </div>
+                  <div className="card-reference-bottom">
+                    <div>
+                      <span>RÉFÉRENCE INTERNE · NON BANCAIRE</span>
+                      <strong>{card.name}</strong>
+                      <code>{card.reference}</code>
+                    </div>
+                    <span className="card-reference-mark">CBG</span>
+                  </div>
                 </div>
-                <button type="button" className="btn-table-details" onClick={() => void deleteReference(card.id)}>
-                  Supprimer
-                </button>
+                <div className="card-reference-details">
+                  <time dateTime={card.createdAt}>
+                    Ajoutée le {new Date(card.createdAt).toLocaleDateString("fr-FR")}
+                  </time>
+                  <button type="button" className="btn-table-details" onClick={() => void deleteReference(card.id)}>
+                    Supprimer
+                  </button>
+                </div>
               </article>
             ))}
           </div>
-        </section>
-      )}
+        )}
+      </section>
     </div>
   );
 }

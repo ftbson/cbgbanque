@@ -135,6 +135,13 @@ export default function DashboardShell({
           <i className="fa-solid fa-piggy-bank"></i>
           <span>Épargne</span>
         </Link>
+        <Link
+          href="/dashboard/parametres"
+          className={`nav-item-bottom ${pathname === "/dashboard/parametres" ? "active" : ""}`}
+        >
+          <i className="fa-solid fa-gear"></i>
+          <span>Paramètres</span>
+        </Link>
       </nav>
     </div>
   );

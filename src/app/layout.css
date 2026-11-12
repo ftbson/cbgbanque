@@ -5360,32 +5360,6 @@ a {
   color: #ffffff;
 }
 
-.topbar-search-pill {
-  flex: 1;
-  max-width: 220px;
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.topbar-search-pill i {
-  position: absolute;
-  left: 0.85rem;
-  color: #94a3b8;
-  font-size: 0.8rem;
-}
-
-.topbar-search-input {
-  width: 100%;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 999px;
-  padding: 0.4rem 0.75rem 0.4rem 2.2rem;
-  color: #ffffff;
-  font-size: 0.82rem;
-  outline: none;
-}
-
 .topbar-icon-round {
   width: 36px;
   height: 36px;
@@ -5410,12 +5384,191 @@ a {
   white-space: nowrap;
 }
 
-.card-icon-wrap .card-red-badge-dot {
+.dashboard-welcome p {
+  color: #94a3b8;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+}
+
+.dashboard-welcome h1 {
+  color: #ffffff;
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+.dashboard-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.45rem;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.025);
+  color: #94a3b8;
+  font-size: 0.85rem;
+}
+
+.dashboard-empty-state p {
+  margin: 0;
+}
+
+.dashboard-card-reference,
+.dashboard-data-tile {
+  justify-content: space-between;
+}
+
+.dashboard-data-tile > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.card-reference-grid {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.card-reference-item {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.card-reference-visual {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  aspect-ratio: 1.586;
+  overflow: hidden;
+  padding: clamp(1rem, 5vw, 1.5rem);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 22px;
+  background:
+    radial-gradient(ellipse at 98% 105%, rgba(0, 213, 203, 0.8), transparent 36%),
+    linear-gradient(125deg, #777ef2 0%, #4936c4 42%, #11175f 100%);
+  box-shadow: 0 22px 45px rgba(34, 45, 196, 0.24);
+  color: #fff;
+  isolation: isolate;
+}
+
+.card-reference-glow {
   position: absolute;
-  top: 5px;
-  right: 5px;
-  width: 7px;
-  height: 7px;
+  z-index: -1;
+  top: -45%;
+  left: 30%;
+  width: 65%;
+  aspect-ratio: 1;
   border-radius: 50%;
-  background: #ef4444;
+  background: rgba(255, 255, 255, 0.18);
+  filter: blur(35px);
+}
+
+.card-reference-top,
+.card-reference-brand,
+.card-reference-bottom {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.card-reference-brand {
+  align-items: baseline;
+  justify-content: flex-start;
+  gap: 0.5rem;
+}
+
+.card-reference-brand strong {
+  font-size: 1.3rem;
+  font-weight: 900;
+}
+
+.card-reference-brand span,
+.card-reference-bottom > div > span {
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.card-reference-contactless {
+  transform: rotate(90deg);
+  font-size: 1.1rem;
+}
+
+.card-reference-chip {
+  position: relative;
+  display: grid;
+  width: 42px;
+  height: 32px;
+  grid-template: 1fr 1fr / 1fr 1fr;
+  overflow: hidden;
+  border: 1px solid rgba(92, 63, 0, 0.65);
+  border-radius: 7px;
+  background: linear-gradient(135deg, #f8df83, #b98719 52%, #edd36a);
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.7);
+}
+
+.card-reference-chip span {
+  border: 1px solid rgba(92, 63, 0, 0.35);
+}
+
+.card-reference-bottom {
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+
+.card-reference-bottom > div {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.card-reference-bottom > div > span {
+  opacity: 0.8;
+}
+
+.card-reference-bottom strong {
+  overflow: hidden;
+  font-size: clamp(0.8rem, 3.5vw, 1rem);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card-reference-bottom code {
+  font-size: clamp(0.65rem, 3vw, 0.8rem);
+  letter-spacing: 0.08em;
+}
+
+.card-reference-mark {
+  font-size: 1.1rem;
+  font-style: italic;
+  font-weight: 900;
+  opacity: 0.85;
+}
+
+.card-reference-details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  color: #94a3b8;
+  font-size: 0.75rem;
+}
+
+@media (max-width: 520px) {
+  .dashboard-bottom-nav {
+    padding-right: 0.2rem;
+    padding-left: 0.2rem;
+  }
+
+  .nav-item-bottom {
+    font-size: 0.65rem;
+  }
+
+  .nav-item-bottom i {
+    font-size: 1rem;
+  }
 }

@@ -287,7 +287,7 @@ export default function AdminPage() {
           </div>
 
           <div className="admin-stat-card">
-            <span className="stat-card-label">Prêts en attente</span>
+            <span className="stat-card-label">Demandes de financement en attente</span>
             <div className="stat-card-value highlight-amber">{pendingLoans.length}</div>
             <span className="stat-card-trend">Dossiers de crédit</span>
           </div>
@@ -332,7 +332,7 @@ export default function AdminPage() {
               cursor: "pointer",
             }}
           >
-            <i className="fa-solid fa-hand-holding-dollar"></i> Demandes de Prêt ({pendingLoans.length} en attente)
+            <i className="fa-solid fa-file-lines"></i> Demandes de financement ({pendingLoans.length} en attente)
           </button>
         </div>
 
@@ -420,7 +420,7 @@ export default function AdminPage() {
         {activeTab === "loans" && (
           <div className="admin-section">
             <div className="section-header-admin">
-              <h3 className="admin-section-title">Gestion des demandes de prêt & crédit</h3>
+              <h3 className="admin-section-title">Demandes de financement</h3>
               <span className="badge-count">{loans.length} dossiers</span>
             </div>
 
@@ -440,7 +440,7 @@ export default function AdminPage() {
                   {loans.length === 0 ? (
                     <tr>
                       <td colSpan={6} style={{ textAlign: "center", padding: "2rem", color: "#94a3b8" }}>
-                        Aucune demande de prêt enregistrée.
+                        Aucune demande de financement enregistrée.
                       </td>
                     </tr>
                   ) : (

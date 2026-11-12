@@ -144,51 +144,57 @@ export default function EpargnePage() {
         </form>
       </section>
 
-      {!loading && vaults.length > 0 && <section className="section-my-vaults">
+      <section className="section-my-vaults">
         <h2 className="section-heading-title">Mes coffres</h2>
-        <div className="vaults-list">
-          {vaults.map((vault) => {
-            const progress = vault.targetCents > 0
-              ? Math.min(100, Math.round(vault.currentCents / vault.targetCents * 100))
-              : 0;
-            return (
-              <article key={vault.id} className="vault-item-card">
-                <div className="vault-item-left">
-                  <div className="vault-icon-badge"><i className="fa-solid fa-piggy-bank"></i></div>
-                  <div className="vault-texts">
-                    <h3 className="vault-name">{vault.name}</h3>
-                    <span className="vault-progress-sub">
-                      {formatMoney(vault.currentCents, currency)} / {formatMoney(vault.targetCents, currency)}
-                    </span>
+        {loading ? (
+          <p aria-live="polite">Chargement de vos coffres…</p>
+        ) : error ? null : vaults.length === 0 ? (
+          <p className="dashboard-empty-state">Aucun coffre enregistré. Créez votre premier coffre avec le formulaire ci-dessus.</p>
+        ) : (
+          <div className="vaults-list">
+            {vaults.map((vault) => {
+              const progress = vault.targetCents > 0
+                ? Math.min(100, Math.round(vault.currentCents / vault.targetCents * 100))
+                : 0;
+              return (
+                <article key={vault.id} className="vault-item-card">
+                  <div className="vault-item-left">
+                    <div className="vault-icon-badge"><i className="fa-solid fa-piggy-bank"></i></div>
+                    <div className="vault-texts">
+                      <h3 className="vault-name">{vault.name}</h3>
+                      <span className="vault-progress-sub">
+                        {formatMoney(vault.currentCents, currency)} / {formatMoney(vault.targetCents, currency)}
+                      </span>
+                    </div>
                   </div>
-                </div>
-                <span className="vault-percent-badge">{progress}%</span>
-                <div className="form-field">
-                  <label className="field-label" htmlFor={`vault-amount-${vault.id}`}>Montant ({currency})</label>
-                  <input
-                    id={`vault-amount-${vault.id}`}
-                    type="number"
-                    min="0.01"
-                    step="0.01"
-                    value={selectedId === vault.id ? amount : ""}
-                    onFocus={() => setSelectedId(vault.id)}
-                    onChange={(event) => { setSelectedId(vault.id); setAmount(event.target.value); }}
-                    className="modal-input"
-                  />
-                  <div className="table-actions-row">
-                    <button type="button" className="btn-table-details" disabled={saving || selectedId !== vault.id || !amount} onClick={() => void moveFunds("deposit")}>
-                      Verser
-                    </button>
-                    <button type="button" className="btn-table-details" disabled={saving || selectedId !== vault.id || !amount} onClick={() => void moveFunds("withdraw")}>
-                      Retirer
-                    </button>
+                  <span className="vault-percent-badge">{progress}%</span>
+                  <div className="form-field">
+                    <label className="field-label" htmlFor={`vault-amount-${vault.id}`}>Montant ({currency})</label>
+                    <input
+                      id={`vault-amount-${vault.id}`}
+                      type="number"
+                      min="0.01"
+                      step="0.01"
+                      value={selectedId === vault.id ? amount : ""}
+                      onFocus={() => setSelectedId(vault.id)}
+                      onChange={(event) => { setSelectedId(vault.id); setAmount(event.target.value); }}
+                      className="modal-input"
+                    />
+                    <div className="table-actions-row">
+                      <button type="button" className="btn-table-details" disabled={saving || selectedId !== vault.id || !amount} onClick={() => void moveFunds("deposit")}>
+                        Verser
+                      </button>
+                      <button type="button" className="btn-table-details" disabled={saving || selectedId !== vault.id || !amount} onClick={() => void moveFunds("withdraw")}>
+                        Retirer
+                      </button>
+                    </div>
                   </div>
-                </div>
-              </article>
-            );
-          })}
-        </div>
-      </section>}
+                </article>
+              );
+            })}
+          </div>
+        )}
+      </section>
     </div>
   );
 }

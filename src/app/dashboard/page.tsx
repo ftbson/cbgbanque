@@ -79,12 +79,17 @@ export default function DashboardHomePage() {
 
   return (
     <div className="dashboard-home-redesign">
+      <header className="dashboard-welcome">
+        <p>Votre espace personnel</p>
+        <h1>Bonjour, {data.user.firstName}</h1>
+      </header>
+
       <section className="cbg-balance-card">
         <span className="balance-account-type">Solde disponible · {data.account.currency}</span>
         <div className="balance-huge-row">
-          <h1 className="balance-huge-value">
+          <p className="balance-huge-value">
             {isBalanceHidden ? "••••••" : formatMoney(data.availableBalanceCents, data.account.currency)}
-          </h1>
+          </p>
           <button
             type="button"
             onClick={() => setIsBalanceHidden((hidden) => !hidden)}
@@ -123,96 +128,126 @@ export default function DashboardHomePage() {
         </section>
       )}
 
-      {data.transactions.length > 0 && (
-        <section className="cbg-transactions-section">
-          <div className="section-head-title-row">
-            <h2 className="cbg-title-bold">Activité récente</h2>
-            <Link href="/dashboard/activite" className="cbg-sublink">Historique complet</Link>
-          </div>
-          <div className="history-list-wrapper">
-            {data.transactions.map((transaction) => {
-              const isOutgoing = transaction.type === "withdrawal_request" || transaction.type === "vault_deposit";
-              return (
-                <article key={transaction.id} className="history-item-row">
-                  <div className="history-item-texts">
-                    <span className="history-item-title">{transaction.description}</span>
-                    <span className="history-item-sub">
-                      {new Date(transaction.createdAt).toLocaleString("fr-FR")} · {statusLabel(transaction.status)}
+      <section className="cbg-transactions-section">
+        {data.transactions.length > 0 ? (
+          <>
+            <div className="section-head-title-row">
+              <h2 className="cbg-title-bold">Activité récente</h2>
+              <Link href="/dashboard/activite" className="cbg-sublink">Historique complet</Link>
+            </div>
+            <div className="history-list-wrapper">
+              {data.transactions.map((transaction) => {
+                const isOutgoing = transaction.type === "withdrawal_request" || transaction.type === "vault_deposit";
+                return (
+                  <article key={transaction.id} className="history-item-row">
+                    <div className="history-item-texts">
+                      <span className="history-item-title">{transaction.description}</span>
+                      <span className="history-item-sub">
+                        {new Date(transaction.createdAt).toLocaleString("fr-FR")} · {statusLabel(transaction.status)}
+                      </span>
+                    </div>
+                    <span className="history-item-amount">
+                      {transaction.amountCents === 0
+                        ? "—"
+                        : `${isOutgoing ? "−" : "+"}${formatMoney(transaction.amountCents, transaction.currency)}`}
                     </span>
-                  </div>
-                  <span className="history-item-amount">
-                    {transaction.amountCents === 0
-                      ? "—"
-                      : `${isOutgoing ? "−" : "+"}${formatMoney(transaction.amountCents, transaction.currency)}`}
-                  </span>
-                </article>
-              );
-            })}
+                  </article>
+                );
+              })}
+            </div>
+          </>
+        ) : (
+          <div className="dashboard-empty-state">
+            <h2 className="cbg-title-bold">Aucune activité pour le moment</h2>
+            <p>Vos opérations apparaîtront ici après leur enregistrement.</p>
+            <Link href="/dashboard/activite" className="cbg-sublink">Ouvrir l&apos;historique</Link>
           </div>
-        </section>
-      )}
+        )}
+      </section>
 
-      {data.cards.length > 0 && (
-        <section className="cbg-transactions-section">
-          <div className="section-head-title-row">
-            <h2 className="cbg-title-bold">Références de carte</h2>
-            <Link href="/dashboard/carte" className="cbg-sublink">Gérer</Link>
+      <section className="cbg-transactions-section">
+        {data.cards.length > 0 ? (
+          <>
+            <div className="section-head-title-row">
+              <h2 className="cbg-title-bold">Mes références de carte</h2>
+              <Link href="/dashboard/carte" className="cbg-sublink">Gérer</Link>
+            </div>
+            {data.cards.map((card) => (
+              <Link key={card.id} href="/dashboard/carte" className="discover-tile dashboard-card-reference">
+                <strong>{card.name}</strong>
+                <span>Réf. {card.reference}</span>
+              </Link>
+            ))}
+          </>
+        ) : (
+          <div className="dashboard-empty-state">
+            <h2 className="cbg-title-bold">Aucune référence de carte</h2>
+            <p>Ajoutez vos propres références pour les retrouver dans votre espace.</p>
+            <Link href="/dashboard/carte" className="cbg-sublink">Ajouter une référence</Link>
           </div>
-          {data.cards.map((card) => (
-            <Link key={card.id} href="/dashboard/carte" className="discover-tile" style={{ justifyContent: "space-between" }}>
-              <strong>{card.name}</strong>
-              <span>Réf. {card.reference}</span>
-            </Link>
-          ))}
-        </section>
-      )}
+        )}
+      </section>
 
-      {data.loans.length > 0 && (
-        <section className="cbg-transactions-section">
-          <div className="section-head-title-row">
-            <h2 className="cbg-title-bold">Demandes de financement</h2>
-            <Link href="/dashboard/pret" className="cbg-sublink">Voir les demandes</Link>
-          </div>
-          {data.loans.map((loan) => (
-            <article key={loan.id} className="discover-tile" style={{ justifyContent: "space-between" }}>
-              <div>
-                <strong>{loan.purpose}</strong>
-                <span style={{ display: "block" }}>
-                  {formatMoney(Math.round(loan.amount * 100), data.user.currency)} · {loan.durationMonths} mois
+      <section className="cbg-transactions-section">
+        {data.loans.length > 0 ? (
+          <>
+            <div className="section-head-title-row">
+              <h2 className="cbg-title-bold">Mes demandes de financement</h2>
+              <Link href="/dashboard/pret" className="cbg-sublink">Voir les demandes</Link>
+            </div>
+            {data.loans.map((loan) => (
+              <article key={loan.id} className="discover-tile dashboard-data-tile">
+                <div>
+                  <strong>{loan.purpose}</strong>
+                  <span>{formatMoney(Math.round(loan.amount * 100), data.user.currency)} · {loan.durationMonths} mois</span>
+                </div>
+                <span>
+                  {loan.status === "approved" ? "Acceptée" : loan.status === "rejected" ? "Refusée" : "En attente"}
                 </span>
-              </div>
-              <span>
-                {loan.status === "approved" ? "Acceptée" : loan.status === "rejected" ? "Refusée" : "En attente"}
-              </span>
-            </article>
-          ))}
-        </section>
-      )}
+              </article>
+            ))}
+          </>
+        ) : (
+          <div className="dashboard-empty-state">
+            <h2 className="cbg-title-bold">Aucune demande de financement</h2>
+            <p>Les demandes que vous enregistrez seront listées ici.</p>
+            <Link href="/dashboard/pret" className="cbg-sublink">Enregistrer une demande</Link>
+          </div>
+        )}
+      </section>
 
-      {data.vaults.length > 0 && (
-        <section className="cbg-budgets-section">
-          <div className="section-head-title-row">
-            <h2 className="cbg-title-bold">Coffres d&apos;épargne</h2>
-            <Link href="/dashboard/epargne" className="cbg-sublink">Gérer</Link>
+      <section className="cbg-budgets-section">
+        {data.vaults.length > 0 ? (
+          <>
+            <div className="section-head-title-row">
+              <h2 className="cbg-title-bold">Mes coffres d&apos;épargne</h2>
+              <Link href="/dashboard/epargne" className="cbg-sublink">Gérer</Link>
+            </div>
+            <div className="budget-gauges-grid">
+              {data.vaults.map((vault) => {
+                const progress = vault.targetCents > 0
+                  ? Math.min(100, Math.round(vault.currentCents / vault.targetCents * 100))
+                  : 0;
+                return (
+                  <article key={vault.id} className="gauge-card">
+                    <strong className="gauge-name">{vault.name}</strong>
+                    <span className="gauge-ratio">
+                      {formatMoney(vault.currentCents, data.account.currency)} / {formatMoney(vault.targetCents, data.account.currency)}
+                    </span>
+                    <span className="gauge-percent">{progress}%</span>
+                  </article>
+                );
+              })}
+            </div>
+          </>
+        ) : (
+          <div className="dashboard-empty-state">
+            <h2 className="cbg-title-bold">Aucun coffre d&apos;épargne</h2>
+            <p>Créez un coffre avec votre objectif pour commencer à suivre votre épargne.</p>
+            <Link href="/dashboard/epargne" className="cbg-sublink">Créer un coffre</Link>
           </div>
-          <div className="budget-gauges-grid">
-            {data.vaults.map((vault) => {
-              const progress = vault.targetCents > 0
-                ? Math.min(100, Math.round(vault.currentCents / vault.targetCents * 100))
-                : 0;
-              return (
-                <article key={vault.id} className="gauge-card">
-                  <strong className="gauge-name">{vault.name}</strong>
-                  <span className="gauge-ratio">
-                    {formatMoney(vault.currentCents, data.account.currency)} / {formatMoney(vault.targetCents, data.account.currency)}
-                  </span>
-                  <span className="gauge-percent">{progress}%</span>
-                </article>
-              );
-            })}
-          </div>
-        </section>
-      )}
+        )}
+      </section>
     </div>
   );
 }

@@ -49,17 +49,18 @@ export default function ParametresPage() {
     fetch("/api/dashboard/profile")
       .then(async (res) => {
         const data = await res.json();
-        if (data.success && data.user) {
-          setProfile(data.user);
-          setPhone(data.user.phone || "");
-          setAddress(data.user.address || "");
-          setCity(data.user.city || "");
-          setPostalCode(data.user.postalCode || "");
-          setProfession(data.user.profession || "");
-          setMonthlyIncome(data.user.monthlyIncome || "");
+        if (!res.ok || !data.success || !data.user) {
+          throw new Error(data.message || "Impossible de charger les paramètres.");
         }
+        setProfile(data.user);
+        setPhone(data.user.phone || "");
+        setAddress(data.user.address || "");
+        setCity(data.user.city || "");
+        setPostalCode(data.user.postalCode || "");
+        setProfession(data.user.profession || "");
+        setMonthlyIncome(data.user.monthlyIncome || "");
       })
-      .catch((e) => setErrorMsg("Impossible de charger les paramètres."))
+      .catch((cause: unknown) => setErrorMsg(cause instanceof Error ? cause.message : "Impossible de charger les paramètres."))
       .finally(() => setLoading(false));
   }, []);
 
@@ -88,7 +89,16 @@ export default function ParametresPage() {
     }
 
     try {
-      const payload: Record<string, any> = {
+      const payload: {
+        phone: string;
+        address: string;
+        city: string;
+        postalCode: string;
+        profession: string;
+        monthlyIncome: string;
+        currentPassword?: string;
+        newPassword?: string;
+      } = {
         phone,
         address,
         city,
@@ -127,6 +137,21 @@ export default function ParametresPage() {
 
   if (loading) {
     return <div className="pret-page-container"><p style={{ color: "#94a3b8", textAlign: "center", marginTop: "2rem" }}>Chargement de vos paramètres…</p></div>;
+  }
+
+  if (!profile) {
+    return (
+      <div className="pret-page-container">
+        <div className="carte-screen-header">
+          <Link href="/dashboard" className="btn-back-circle" aria-label="Retour au dashboard">
+            <i className="fa-solid fa-chevron-left"></i>
+          </Link>
+          <h1 className="screen-title-center">Paramètres du compte</h1>
+          <div style={{ width: "38px" }}></div>
+        </div>
+        <p role="alert">{errorMsg || "Impossible de charger les paramètres."}</p>
+      </div>
+    );
   }
 
   return (
