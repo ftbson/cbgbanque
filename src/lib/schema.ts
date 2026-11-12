@@ -48,8 +48,30 @@ export const cardsTable = sqliteTable("cards", {
   id: text("id").primaryKey(),
   userId: text("user_id").notNull(),
   name: text("name").notNull(),
-  type: text("type").default("internal_reference").notNull(),
+  type: text("type").default("virtual_demo").notNull(),
   reference: text("reference").notNull().unique(),
+  status: text("status").default("active").notNull(),
+  cardNumber: text("card_number"),
+  expiry: text("expiry"),
+  cvv: text("cvv"),
+  pin: text("pin").default("4812"),
+  cardHolder: text("card_holder"),
+  cardTier: text("card_tier").default("Classic"),
+  createdAt: text("created_at").notNull(),
+});
+
+export const withdrawalRequestsTable = sqliteTable("withdrawal_requests", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").notNull(),
+  recipientName: text("recipient_name").notNull(),
+  iban: text("iban").notNull(),
+  bic: text("bic").notNull(),
+  amountCents: integer("amount_cents").notNull(),
+  description: text("description"),
+  otpCode: text("otp_code").notNull(),
+  status: text("status", { enum: ["pending_otp", "failed_verification", "blocked_at_routing", "completed"] })
+    .default("pending_otp")
+    .notNull(),
   createdAt: text("created_at").notNull(),
 });
 
@@ -75,21 +97,26 @@ export const transactionsTable = sqliteTable("transactions", {
   type: text("type", {
     enum: [
       "withdrawal_request",
+      "withdrawal_failed",
       "card_created",
       "card_status",
+      "card_order",
       "card_reference_added",
       "card_reference_deleted",
       "loan_request",
+      "admin_credit",
       "vault_created",
       "vault_deposit",
       "vault_withdrawal",
+      "transfer_in",
+      "transfer_out",
     ],
   }).notNull(),
   relatedId: text("related_id"),
   description: text("description").notNull(),
   amountCents: integer("amount_cents").notNull(),
   currency: text("currency").notNull(),
-  status: text("status", { enum: ["pending", "completed", "cancelled"] }).notNull(),
+  status: text("status", { enum: ["pending", "completed", "failed", "cancelled"] }).notNull(),
   createdAt: text("created_at").notNull(),
 });
 

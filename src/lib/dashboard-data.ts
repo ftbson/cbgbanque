@@ -60,3 +60,26 @@ export async function createNotification(
     createdAt: new Date().toISOString(),
   });
 }
+
+export function getDeterministicIban(userId: string) {
+  let hash = 0;
+  for (let i = 0; i < userId.length; i++) {
+    hash = (hash * 31 + userId.charCodeAt(i)) >>> 0;
+  }
+  const cleanId = userId.replace(/[^A-Za-z0-9]/g, "").toUpperCase();
+  const codeBanque = "30092";
+  const codeGuichet = "70002";
+  const numeroCompte = (cleanId.slice(0, 11) || "23C23069369").padEnd(11, "0");
+  const cleRib = (Math.abs(hash % 89) + 10).toString();
+  const rawIban = `FR76${codeBanque}${codeGuichet}${numeroCompte}${cleRib}`;
+  const formattedIban = rawIban.match(/.{1,4}/g)?.join(" ") || rawIban;
+  return {
+    iban: formattedIban,
+    rawIban,
+    bic: "C23QBEBB",
+    codeBanque,
+    codeGuichet,
+    numeroCompte,
+    cleRib,
+  };
+}

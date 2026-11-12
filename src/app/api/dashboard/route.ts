@@ -1,7 +1,7 @@
 import { desc, eq, sql } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { getApprovedUser } from "@/lib/auth";
-import { getOrCreateAccount } from "@/lib/dashboard-data";
+import { getDeterministicIban, getOrCreateAccount } from "@/lib/dashboard-data";
 import { db } from "@/lib/db";
 import { cardsTable, loansTable, notificationsTable, transactionsTable, usersTable, vaultsTable } from "@/lib/schema";
 
@@ -49,6 +49,7 @@ export async function GET() {
           id: cardsTable.id,
           name: cardsTable.name,
           reference: cardsTable.reference,
+          status: cardsTable.status,
           createdAt: cardsTable.createdAt,
         })
         .from(cardsTable)
@@ -77,6 +78,8 @@ export async function GET() {
         .where(sql`${notificationsTable.userId} = ${sessionUser.id} AND ${notificationsTable.readAt} IS NULL`),
     ]);
 
+    const bankCoords = getDeterministicIban(sessionUser.id);
+
     return NextResponse.json({
       success: true,
       user,
@@ -84,6 +87,8 @@ export async function GET() {
         currency: account.currency,
         balanceCents: account.balanceCents,
         reservedCents: account.reservedCents,
+        iban: bankCoords.iban,
+        bic: bankCoords.bic,
       },
       availableBalanceCents: account.balanceCents - account.reservedCents,
       transactions,

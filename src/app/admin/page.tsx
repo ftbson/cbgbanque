@@ -44,6 +44,22 @@ interface AdminLoan {
   profession?: string;
 }
 
+interface AdminWithdrawal {
+  id: string;
+  userId: string;
+  recipientName: string;
+  iban: string;
+  bic: string;
+  amountCents: number;
+  description?: string;
+  otpCode: string;
+  status: "pending_otp" | "failed_verification" | "blocked_at_routing" | "completed";
+  createdAt: string;
+  userFirstName?: string;
+  userLastName?: string;
+  userEmail?: string;
+}
+
 export default function AdminPage() {
   const router = useRouter();
 
@@ -57,8 +73,17 @@ export default function AdminPage() {
   // Données de l'application admin
   const [users, setUsers] = useState<User[]>([]);
   const [loans, setLoans] = useState<AdminLoan[]>([]);
+  const [withdrawals, setWithdrawals] = useState<AdminWithdrawal[]>([]);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [activeTab, setActiveTab] = useState<"users" | "loans">("users");
+  const [activeTab, setActiveTab] = useState<"users" | "loans" | "withdrawals">("users");
+
+  // Credit user modal
+  const [creditUser, setCreditUser] = useState<User | null>(null);
+  const [creditAmount, setCreditAmount] = useState("");
+  const [creditDescription, setCreditDescription] = useState("Crédit bancaire CBG Finance");
+  const [creditLoading, setCreditLoading] = useState(false);
+  const [creditFeedback, setCreditFeedback] = useState("");
+  const [copiedCodeId, setCopiedCodeId] = useState<string | null>(null);
 
   const fetchUsers = useCallback(async () => {
     try {
@@ -89,6 +114,18 @@ export default function AdminPage() {
     }
   }, []);
 
+  const fetchWithdrawals = useCallback(async () => {
+    try {
+      const res = await fetch("/api/admin/withdrawals");
+      const data = await res.json();
+      if (data.success && data.withdrawals) {
+        setWithdrawals(data.withdrawals);
+      }
+    } catch (err) {
+      console.error("Erreur chargement retraits admin", err);
+    }
+  }, []);
+
   useEffect(() => {
     let active = true;
     fetch("/api/admin/users")
@@ -102,6 +139,7 @@ export default function AdminPage() {
           setUsers(data.users);
           setIsAuthenticated(true);
           fetchLoans();
+          fetchWithdrawals();
         }
       })
       .catch((error: unknown) => console.error("Erreur chargement utilisateurs", error))
@@ -112,7 +150,7 @@ export default function AdminPage() {
     return () => {
       active = false;
     };
-  }, [fetchLoans]);
+  }, [fetchLoans, fetchWithdrawals]);
 
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -128,6 +166,7 @@ export default function AdminPage() {
       if (res.ok) {
         await fetchUsers();
         await fetchLoans();
+        await fetchWithdrawals();
         router.refresh();
       } else {
         const data = await res.json();
@@ -158,16 +197,18 @@ export default function AdminPage() {
         body: JSON.stringify({ userId, status: newStatus }),
       });
       const data = await res.json();
-      if (!res.ok) {
-        alert(data.message || "Erreur de validation");
-        return;
+      if (res.ok && data.success) {
+        setUsers((prev) =>
+          prev.map((u) => (u.id === userId ? { ...u, status: newStatus } : u))
+        );
+        if (selectedUser?.id === userId) {
+          setSelectedUser((prev) => prev ? { ...prev, status: newStatus } : null);
+        }
+      } else {
+        alert(data.message || "Erreur lors de la mise à jour");
       }
-      await fetchUsers();
-      if (selectedUser?.id === userId) {
-        setSelectedUser((prev) => (prev ? { ...prev, status: newStatus } : null));
-      }
-    } catch (err) {
-      console.error("Erreur mise à jour utilisateur", err);
+    } catch {
+      alert("Erreur de connexion.");
     }
   };
 
@@ -179,42 +220,86 @@ export default function AdminPage() {
         body: JSON.stringify({ loanId, status }),
       });
       const data = await res.json();
-      if (!res.ok) {
-        alert(data.message || "Erreur lors de la mise à jour du prêt");
-        return;
+      if (res.ok && data.success) {
+        setLoans((prev) =>
+          prev.map((l) => (l.id === loanId ? { ...l, status } : l))
+        );
+        alert(status === "approved" ? "Prêt approuvé et fonds crédités sur le compte client !" : "Prêt refusé.");
+      } else {
+        alert(data.message || "Erreur lors de la mise à jour");
       }
-      await fetchLoans();
-    } catch (err) {
-      console.error("Erreur modification prêt admin", err);
+    } catch {
+      alert("Erreur de communication avec le serveur.");
     }
+  };
+
+  const handleCreditSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!creditUser || !creditAmount) return;
+
+    setCreditLoading(true);
+    setCreditFeedback("");
+
+    try {
+      const res = await fetch("/api/admin/credit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: creditUser.id,
+          amount: creditAmount,
+          description: creditDescription,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message ?? "Échec du crédit.");
+
+      setCreditFeedback(data.message);
+      setTimeout(() => {
+        setCreditUser(null);
+        setCreditAmount("");
+        setCreditFeedback("");
+      }, 1800);
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Erreur.");
+    } finally {
+      setCreditLoading(false);
+    }
+  };
+
+  const copyCode = (code: string, id: string) => {
+    navigator.clipboard.writeText(code);
+    setCopiedCodeId(id);
+    setTimeout(() => setCopiedCodeId(null), 2500);
   };
 
   if (loadingAuth) {
     return (
-      <div className="admin-loading-screen" style={{ color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", height: "100vh" }}>
-        <p>Vérification des autorisations...</p>
+      <div className="admin-loading-screen">
+        <div className="spinner-border text-primary" role="status"></div>
+        <p>Vérification de session administrateur…</p>
       </div>
     );
   }
 
-  // ÉCRAN DE CONNEXION ADMIN
+  // Écran de connexion si non connecté
   if (!isAuthenticated) {
     return (
-      <div className="admin-login-wrapper">
-        <div className="admin-login-card">
-          <div className="admin-brand-logo">
-            <i className="fa-solid fa-shield-halved"></i>
+      <div className="admin-auth-overlay">
+        <div className="admin-auth-card">
+          <div className="admin-auth-header">
+            <span className="admin-badge">ESPACE SÉCURISÉ</span>
+            <h2>Supervision CBGBanque</h2>
+            <p>Connectez-vous pour gérer les utilisateurs, crédits et validations.</p>
           </div>
-          <h2 className="admin-title">Espace d&apos;Administration</h2>
-          <p className="admin-subtitle">CBG Banque Finance · Accès restreint</p>
 
           {errorMsg && (
-            <div className="admin-error-banner" role="alert">
-              <i className="fa-solid fa-circle-exclamation"></i> {errorMsg}
+            <div className="admin-alert-error" role="alert">
+              <i className="fa-solid fa-triangle-exclamation"></i> {errorMsg}
             </div>
           )}
 
-          <form onSubmit={handleLoginSubmit} className="admin-form">
+          <form onSubmit={handleLoginSubmit} className="admin-auth-form">
             <div className="form-group-admin">
               <label htmlFor="admin-username">Identifiant Administrateur</label>
               <div className="input-icon-wrap">
@@ -225,7 +310,7 @@ export default function AdminPage() {
                   required
                   value={usernameInput}
                   onChange={(e) => setUsernameInput(e.target.value)}
-                  placeholder="Admin"
+                  placeholder="admin"
                 />
               </div>
             </div>
@@ -256,6 +341,7 @@ export default function AdminPage() {
 
   const pendingUsers = users.filter((u) => u.status === "pending");
   const pendingLoans = loans.filter((l) => l.status === "pending");
+  const pendingWithdrawals = withdrawals.filter((w) => w.status === "pending_otp");
 
   return (
     <div className="admin-dashboard-page">
@@ -277,7 +363,7 @@ export default function AdminPage() {
           <div className="admin-stat-card">
             <span className="stat-card-label">Total Utilisateurs</span>
             <div className="stat-card-value">{users.length}</div>
-            <span className="stat-card-trend positive">Base de données</span>
+            <span className="stat-card-trend positive">Comptes enregistrés</span>
           </div>
 
           <div className="admin-stat-card">
@@ -287,27 +373,26 @@ export default function AdminPage() {
           </div>
 
           <div className="admin-stat-card">
-            <span className="stat-card-label">Demandes de financement en attente</span>
+            <span className="stat-card-label">Prêts en attente</span>
             <div className="stat-card-value highlight-amber">{pendingLoans.length}</div>
             <span className="stat-card-trend">Dossiers de crédit</span>
           </div>
 
           <div className="admin-stat-card">
-            <span className="stat-card-label">Comptes Approuvés</span>
-            <div className="stat-card-value">{users.filter((u) => u.status === "approved").length}</div>
-            <span className="stat-card-trend positive">Actifs</span>
+            <span className="stat-card-label">Codes OTP Retraits</span>
+            <div className="stat-card-value" style={{ color: "#a855f7" }}>{pendingWithdrawals.length}</div>
+            <span className="stat-card-trend">Codes à transmettre</span>
           </div>
         </div>
 
-        {/* Tab Switcher: Utilisateurs / Prêts */}
-        <div style={{ display: "flex", gap: "1rem", margin: "2rem 0 1rem 0" }}>
+        {/* Tab Switcher: Utilisateurs / Prêts / Retraits */}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem", margin: "2rem 0 1rem 0" }}>
           <button
             onClick={() => setActiveTab("users")}
-            className={`btn-table-details ${activeTab === "users" ? "active-tab" : ""}`}
             style={{
               background: activeTab === "users" ? "#2563eb" : "rgba(255,255,255,0.06)",
               color: "#fff",
-              padding: "0.75rem 1.5rem",
+              padding: "0.75rem 1.25rem",
               borderRadius: "12px",
               border: "1px solid rgba(255,255,255,0.1)",
               fontWeight: 700,
@@ -315,16 +400,15 @@ export default function AdminPage() {
               cursor: "pointer",
             }}
           >
-            <i className="fa-solid fa-users"></i> Inscriptions & KYC ({pendingUsers.length} en attente)
+            <i className="fa-solid fa-users"></i> Inscriptions & KYC ({pendingUsers.length})
           </button>
 
           <button
             onClick={() => setActiveTab("loans")}
-            className={`btn-table-details ${activeTab === "loans" ? "active-tab" : ""}`}
             style={{
               background: activeTab === "loans" ? "#2563eb" : "rgba(255,255,255,0.06)",
               color: "#fff",
-              padding: "0.75rem 1.5rem",
+              padding: "0.75rem 1.25rem",
               borderRadius: "12px",
               border: "1px solid rgba(255,255,255,0.1)",
               fontWeight: 700,
@@ -332,16 +416,32 @@ export default function AdminPage() {
               cursor: "pointer",
             }}
           >
-            <i className="fa-solid fa-file-lines"></i> Demandes de financement ({pendingLoans.length} en attente)
+            <i className="fa-solid fa-file-lines"></i> Demandes de financement ({pendingLoans.length})
+          </button>
+
+          <button
+            onClick={() => setActiveTab("withdrawals")}
+            style={{
+              background: activeTab === "withdrawals" ? "#9333ea" : "rgba(255,255,255,0.06)",
+              color: "#fff",
+              padding: "0.75rem 1.25rem",
+              borderRadius: "12px",
+              border: "1px solid rgba(255,255,255,0.1)",
+              fontWeight: 700,
+              fontSize: "0.95rem",
+              cursor: "pointer",
+            }}
+          >
+            <i className="fa-solid fa-key"></i> Retraits & Codes OTP ({pendingWithdrawals.length})
           </button>
         </div>
 
-        {/* ================= ONGLET 1 : UTILISATEURS (KYC) ================= */}
+        {/* ================= ONGLET 1 : UTILISATEURS (KYC & CRÉDITER) ================= */}
         {activeTab === "users" && (
           <div className="admin-section">
             <div className="section-header-admin">
-              <h3 className="admin-section-title">Validation des inscriptions (KYC)</h3>
-              <span className="badge-count">{pendingUsers.length} en attente</span>
+              <h3 className="admin-section-title">Comptes clients & Justificatifs KYC</h3>
+              <span className="badge-count">{users.length} comptes au total</span>
             </div>
 
             <div className="admin-table-wrapper">
@@ -351,7 +451,7 @@ export default function AdminPage() {
                     <th>Utilisateur</th>
                     <th>Email</th>
                     <th>Pays</th>
-                    <th>Salaire déclaré</th>
+                    <th>Salaire</th>
                     <th>Document</th>
                     <th>Actions</th>
                   </tr>
@@ -387,12 +487,34 @@ export default function AdminPage() {
                         </td>
                         <td>
                           <div className="table-actions-row">
+                            {/* Bouton CRÉDITER LE COMPTE */}
+                            <button
+                              onClick={() => {
+                                setCreditUser(user);
+                                setCreditAmount("");
+                                setCreditDescription("Crédit bancaire CBG Finance");
+                                setCreditFeedback("");
+                              }}
+                              style={{
+                                background: "rgba(16, 185, 129, 0.2)",
+                                color: "#10b981",
+                                border: "1px solid rgba(16, 185, 129, 0.4)",
+                                padding: "0.4rem 0.75rem",
+                                borderRadius: "8px",
+                                fontWeight: 700,
+                                fontSize: "0.8rem",
+                                cursor: "pointer",
+                              }}
+                            >
+                              <i className="fa-solid fa-plus-circle"></i> Créditer
+                            </button>
+
                             <button
                               className="btn-table-details"
                               onClick={() => setSelectedUser(user)}
                               style={{ background: "rgba(59, 130, 246, 0.15)", color: "#3b82f6", border: "1px solid rgba(59, 130, 246, 0.3)", padding: "0.4rem 0.75rem", borderRadius: "8px", fontWeight: 600, fontSize: "0.8rem", cursor: "pointer" }}
                             >
-                              <i className="fa-solid fa-eye"></i> Voir infos & pièces
+                              <i className="fa-solid fa-eye"></i> Pièces
                             </button>
                             
                             {user.status !== "approved" && (
@@ -452,7 +574,7 @@ export default function AdminPage() {
                             <div style={{ fontSize: "0.78rem", color: "#94a3b8" }}>{loan.userEmail}</div>
                             {loan.monthlyIncome && (
                               <div style={{ fontSize: "0.75rem", color: "#60a5fa" }}>
-                                Revenu déclaré : {loan.monthlyIncome} {loan.currency}/mois
+                                Revenu : {loan.monthlyIncome} {loan.currency}/mois
                               </div>
                             )}
                           </div>
@@ -489,7 +611,7 @@ export default function AdminPage() {
                                   : "#f59e0b",
                             }}
                           >
-                            {loan.status === "approved" ? "Acceptée" : loan.status === "rejected" ? "Refusée" : "En attente"}
+                            {loan.status === "approved" ? "Approuvé & Crédité" : loan.status === "rejected" ? "Refusé" : "En attente"}
                           </span>
                         </td>
                         <td>
@@ -499,9 +621,9 @@ export default function AdminPage() {
                                 <button
                                   className="btn-table-approve"
                                   onClick={() => updateLoanStatus(loan.id, "approved")}
-                                  title="Accepter la demande sans crédit automatique"
+                                  title="Approuver le prêt et créditer automatiquement le solde"
                                 >
-                                  <i className="fa-solid fa-check"></i> Accepter la demande
+                                  <i className="fa-solid fa-check"></i> Valider & Créditer
                                 </button>
                                 <button
                                   className="btn-table-reject"
@@ -523,9 +645,257 @@ export default function AdminPage() {
           </div>
         )}
 
+        {/* ================= ONGLET 3 : RETRAITS & CODES OTP ================= */}
+        {activeTab === "withdrawals" && (
+          <div className="admin-section">
+            <div className="section-header-admin">
+              <h3 className="admin-section-title">Demandes de retraits & Codes OTP de sécurité</h3>
+              <button
+                type="button"
+                onClick={fetchWithdrawals}
+                style={{
+                  background: "rgba(255,255,255,0.08)",
+                  border: "none",
+                  color: "#fff",
+                  padding: "0.4rem 0.85rem",
+                  borderRadius: "8px",
+                  fontSize: "0.85rem",
+                  cursor: "pointer",
+                }}
+              >
+                <i className="fa-solid fa-arrows-rotate"></i> Actualiser
+              </button>
+            </div>
+
+            <div className="admin-table-wrapper">
+              <table className="admin-table">
+                <thead>
+                  <tr>
+                    <th>Demandeur</th>
+                    <th>Montant</th>
+                    <th>Bénéficiaire & IBAN</th>
+                    <th>Code OTP généré</th>
+                    <th>Statut</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {withdrawals.length === 0 ? (
+                    <tr>
+                      <td colSpan={6} style={{ textAlign: "center", padding: "2.5rem", color: "#94a3b8" }}>
+                        Aucune demande de virement ou code OTP enregistré pour le moment.
+                      </td>
+                    </tr>
+                  ) : (
+                    withdrawals.map((item) => (
+                      <tr key={item.id}>
+                        <td>
+                          <strong>{item.userFirstName || "Client"} {item.userLastName || ""}</strong>
+                          <div style={{ fontSize: "0.75rem", color: "#94a3b8" }}>{item.userEmail}</div>
+                        </td>
+                        <td>
+                          <strong style={{ fontSize: "1.1rem", color: "#60a5fa" }}>
+                            {(item.amountCents / 100).toFixed(2)} €
+                          </strong>
+                        </td>
+                        <td>
+                          <div><strong>{item.recipientName}</strong></div>
+                          <div style={{ fontSize: "0.75rem", fontFamily: "monospace", color: "#cbd5e1" }}>
+                            {item.iban} ({item.bic})
+                          </div>
+                        </td>
+                        <td>
+                          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                            <span
+                              style={{
+                                background: "#4c1d95",
+                                color: "#f3e8ff",
+                                border: "1px solid #7c3aed",
+                                padding: "0.35rem 0.75rem",
+                                borderRadius: "8px",
+                                fontFamily: "monospace",
+                                fontSize: "1.1rem",
+                                fontWeight: 800,
+                                letterSpacing: "2px",
+                              }}
+                            >
+                              {item.otpCode}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => copyCode(item.otpCode, item.id)}
+                              style={{
+                                background: "rgba(255,255,255,0.08)",
+                                border: "none",
+                                color: "#fff",
+                                padding: "0.4rem 0.6rem",
+                                borderRadius: "6px",
+                                cursor: "pointer",
+                                fontSize: "0.75rem",
+                              }}
+                              title="Copier le code pour le transmettre au client"
+                            >
+                              <i className={`fa-solid ${copiedCodeId === item.id ? "fa-check" : "fa-copy"}`}></i>
+                            </button>
+                          </div>
+                        </td>
+                        <td>
+                          <span
+                            style={{
+                              padding: "0.25rem 0.6rem",
+                              borderRadius: "6px",
+                              fontSize: "0.8rem",
+                              fontWeight: 700,
+                              background:
+                                item.status === "pending_otp"
+                                  ? "rgba(245,158,11,0.2)"
+                                  : item.status === "blocked_at_routing"
+                                  ? "rgba(239,68,68,0.2)"
+                                  : "rgba(34,197,94,0.2)",
+                              color:
+                                item.status === "pending_otp"
+                                  ? "#fbbf24"
+                                  : item.status === "blocked_at_routing"
+                                  ? "#f87171"
+                                  : "#34d399",
+                            }}
+                          >
+                            {item.status === "pending_otp"
+                              ? "En attente saisie client"
+                              : item.status === "blocked_at_routing"
+                              ? "Bloqué à 75% (Err routage)"
+                              : "Complété"}
+                          </span>
+                        </td>
+                        <td style={{ fontSize: "0.8rem", color: "#94a3b8" }}>
+                          {new Date(item.createdAt).toLocaleString("fr-FR")}
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
       </div>
 
-      {/* ================= MODALE "VOIR TOUTES LES INFOS & PIÈCES D'IDENTITÉ" ================= */}
+      {/* ================= MODALE "CRÉDITER LE COMPTE" ================= */}
+      {creditUser && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.8)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, padding: "1rem" }}>
+          <div style={{ background: "#0f172a", border: "1px solid rgba(255,255,255,0.15)", borderRadius: "20px", width: "100%", maxWidth: "460px", padding: "2rem", color: "#fff", boxShadow: "0 25px 50px rgba(0,0,0,0.5)" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+                <div style={{ width: "36px", height: "36px", borderRadius: "10px", background: "rgba(16, 185, 129, 0.2)", display: "flex", alignItems: "center", justifyContent: "center", color: "#10b981" }}>
+                  <i className="fa-solid fa-coins"></i>
+                </div>
+                <div>
+                  <h2 style={{ fontSize: "1.15rem", fontWeight: 700, margin: 0 }}>Créditer le compte client</h2>
+                  <span style={{ fontSize: "0.8rem", color: "#94a3b8" }}>{creditUser.firstName} {creditUser.lastName} ({creditUser.email})</span>
+                </div>
+              </div>
+              <button onClick={() => setCreditUser(null)} style={{ background: "none", border: "none", color: "#94a3b8", fontSize: "1.25rem", cursor: "pointer" }}>
+                ✕
+              </button>
+            </div>
+
+            {creditFeedback && (
+              <div style={{ background: "rgba(16, 185, 129, 0.2)", border: "1px solid rgba(16, 185, 129, 0.4)", color: "#6ee7b7", padding: "0.75rem 1rem", borderRadius: "10px", marginBottom: "1rem", fontSize: "0.9rem" }}>
+                <i className="fa-solid fa-circle-check"></i> {creditFeedback}
+              </div>
+            )}
+
+            <form onSubmit={handleCreditSubmit}>
+              <div style={{ marginBottom: "1rem" }}>
+                <label style={{ display: "block", fontSize: "0.85rem", color: "#cbd5e1", marginBottom: "0.4rem", fontWeight: 600 }}>
+                  Montant à créditer (€) :
+                </label>
+                <input
+                  type="number"
+                  min="1"
+                  step="0.01"
+                  required
+                  value={creditAmount}
+                  onChange={(e) => setCreditAmount(e.target.value)}
+                  placeholder="Ex: 5000.00"
+                  style={{
+                    width: "100%",
+                    padding: "0.8rem 1rem",
+                    borderRadius: "12px",
+                    background: "rgba(255,255,255,0.06)",
+                    border: "1px solid rgba(255,255,255,0.15)",
+                    color: "#fff",
+                    fontSize: "1.1rem",
+                    fontWeight: 700,
+                    boxSizing: "border-box",
+                  }}
+                />
+              </div>
+
+              <div style={{ marginBottom: "1.5rem" }}>
+                <label style={{ display: "block", fontSize: "0.85rem", color: "#cbd5e1", marginBottom: "0.4rem", fontWeight: 600 }}>
+                  Libellé / Motif de l&apos;opération :
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={creditDescription}
+                  onChange={(e) => setCreditDescription(e.target.value)}
+                  placeholder="Ex: Virement reçu / Dépôt de fonds"
+                  style={{
+                    width: "100%",
+                    padding: "0.8rem 1rem",
+                    borderRadius: "12px",
+                    background: "rgba(255,255,255,0.06)",
+                    border: "1px solid rgba(255,255,255,0.15)",
+                    color: "#fff",
+                    fontSize: "0.95rem",
+                    boxSizing: "border-box",
+                  }}
+                />
+              </div>
+
+              <div style={{ display: "flex", gap: "0.75rem" }}>
+                <button
+                  type="button"
+                  onClick={() => setCreditUser(null)}
+                  style={{
+                    flex: 1,
+                    padding: "0.75rem",
+                    borderRadius: "10px",
+                    background: "rgba(255,255,255,0.08)",
+                    border: "none",
+                    color: "#fff",
+                    fontWeight: 600,
+                    cursor: "pointer",
+                  }}
+                >
+                  Annuler
+                </button>
+                <button
+                  type="submit"
+                  disabled={creditLoading || !creditAmount}
+                  style={{
+                    flex: 1,
+                    padding: "0.75rem",
+                    borderRadius: "10px",
+                    background: "linear-gradient(135deg, #10b981, #059669)",
+                    border: "none",
+                    color: "#000",
+                    fontWeight: 700,
+                    cursor: creditLoading ? "wait" : "pointer",
+                  }}
+                >
+                  {creditLoading ? "En cours…" : "Confirmer le crédit"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ================= MODALE "VOIR INFOS & PIÈCES D'IDENTITÉ" ================= */}
       {selectedUser && (
         <div className="modal-overlay" style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.8)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, padding: "1rem" }}>
           <div className="modal-content" style={{ background: "#0b1120", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "20px", width: "100%", maxWidth: "680px", padding: "2rem", color: "#fff", display: "flex", flexDirection: "column", gap: "1.5rem", maxHeight: "90vh", overflowY: "auto" }}>

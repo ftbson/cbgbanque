@@ -17,6 +17,7 @@ interface CardReference {
   id: string;
   name: string;
   reference: string;
+  status?: string;
 }
 
 interface Vault {
@@ -36,7 +37,7 @@ interface LoanRequest {
 
 interface DashboardData {
   user: { firstName: string; lastName?: string; currency: string };
-  account: { currency: string; balanceCents: number };
+  account: { currency: string; balanceCents: number; iban?: string };
   availableBalanceCents: number;
   transactions: Activity[];
   cards: CardReference[];
@@ -85,7 +86,7 @@ export default function DashboardHomePage() {
       </header>
 
       <section className="cbg-balance-card">
-        <span className="balance-account-type">Solde disponible · {data.account.currency}</span>
+        <span className="balance-account-type">Compte Personnel · {data.account.currency}</span>
         <div className="balance-huge-row">
           <p className="balance-huge-value">
             {isBalanceHidden ? "••••••" : formatMoney(data.availableBalanceCents, data.account.currency)}
@@ -99,24 +100,49 @@ export default function DashboardHomePage() {
             <i className={`fa-regular ${isBalanceHidden ? "fa-eye-slash" : "fa-eye"}`}></i>
           </button>
         </div>
+
+        {/* Clickable IBAN badge leading to official RIB */}
+        <div style={{ marginTop: "0.6rem" }}>
+          <Link
+            href="/dashboard/rib"
+            title="Consulter mon RIB & Coordonnées bancaires"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              fontSize: "0.82rem",
+              color: "rgba(255,255,255,0.85)",
+              textDecoration: "none",
+              background: "rgba(255,255,255,0.06)",
+              padding: "0.4rem 0.9rem",
+              borderRadius: "100px",
+              border: "1px solid rgba(255,255,255,0.12)",
+              transition: "all 0.2s ease",
+            }}
+          >
+            <i className="fa-solid fa-house" style={{ fontSize: "0.75rem", color: "#60a5fa" }}></i>
+            <span style={{ fontFamily: "monospace", letterSpacing: "0.5px" }}>{data.account.iban}</span>
+            <i className="fa-solid fa-chevron-right" style={{ fontSize: "0.65rem", opacity: 0.6 }}></i>
+          </Link>
+        </div>
       </section>
 
       <nav className="cbg-circle-actions-row" aria-label="Actions de compte">
-        <Link href="/dashboard/envoyer" className="circle-action-item">
-          <div className="action-circle-bg"><i className="fa-solid fa-arrow-up"></i></div>
-          <span>Demander un retrait</span>
+        <Link href="/dashboard/rib" className="circle-action-item">
+          <div className="action-circle-bg"><i className="fa-solid fa-plus"></i></div>
+          <span>Ajouter de l&apos;argent</span>
         </Link>
-        <Link href="/dashboard/carte" className="circle-action-item">
-          <div className="action-circle-bg"><i className="fa-regular fa-credit-card"></i></div>
-          <span>Références de carte</span>
+        <Link href="/dashboard/envoyer" className="circle-action-item">
+          <div className="action-circle-bg"><i className="fa-solid fa-arrow-right-arrow-left"></i></div>
+          <span>Virement & Retrait</span>
+        </Link>
+        <Link href="/dashboard/rib" className="circle-action-item">
+          <div className="action-circle-bg"><i className="fa-solid fa-building-columns"></i></div>
+          <span>Mon RIB</span>
         </Link>
         <Link href="/dashboard/pret" className="circle-action-item">
-          <div className="action-circle-bg"><i className="fa-solid fa-file-lines"></i></div>
-          <span>Demande de financement</span>
-        </Link>
-        <Link href="/dashboard/epargne" className="circle-action-item">
-          <div className="action-circle-bg"><i className="fa-solid fa-piggy-bank"></i></div>
-          <span>Créer un coffre</span>
+          <div className="action-circle-bg"><i className="fa-solid fa-hand-holding-dollar"></i></div>
+          <span>Demander un prêt</span>
         </Link>
       </nav>
 
@@ -169,21 +195,24 @@ export default function DashboardHomePage() {
         {data.cards.length > 0 ? (
           <>
             <div className="section-head-title-row">
-              <h2 className="cbg-title-bold">Mes références de carte</h2>
-              <Link href="/dashboard/carte" className="cbg-sublink">Gérer</Link>
+              <h2 className="cbg-title-bold">Ma carte bancaire Visa</h2>
+              <Link href="/dashboard/carte" className="cbg-sublink">Gérer ma carte</Link>
             </div>
             {data.cards.map((card) => (
               <Link key={card.id} href="/dashboard/carte" className="discover-tile dashboard-card-reference">
-                <strong>{card.name}</strong>
-                <span>Réf. {card.reference}</span>
+                <div>
+                  <strong>{card.name}</strong>
+                  <span>{card.status === "frozen" ? "Carte temporairement gelée" : "Carte Visa Débit active"}</span>
+                </div>
+                <span style={{ fontSize: "0.85rem", color: "#60a5fa" }}>Gérer</span>
               </Link>
             ))}
           </>
         ) : (
           <div className="dashboard-empty-state">
-            <h2 className="cbg-title-bold">Aucune référence de carte</h2>
-            <p>Ajoutez vos propres références pour les retrouver dans votre espace.</p>
-            <Link href="/dashboard/carte" className="cbg-sublink">Ajouter une référence</Link>
+            <h2 className="cbg-title-bold">Aucune carte active</h2>
+            <p>Commandez et activez votre carte physique Visa pour vos paiements et retraits au quotidien.</p>
+            <Link href="/dashboard/carte" className="cbg-sublink">Commander ma carte Visa</Link>
           </div>
         )}
       </section>
