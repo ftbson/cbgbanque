@@ -158,7 +158,7 @@ export default function RibPage() {
           }}
         >
           <i className="fa-solid fa-file-invoice" style={{ marginRight: "0.5rem" }}></i>
-          Attestation Officielle
+          Attestation
         </button>
         <button
           type="button"
@@ -205,7 +205,7 @@ export default function RibPage() {
                 boxShadow: "0 4px 15px rgba(67, 97, 238, 0.35)",
               }}
             >
-              <i className="fa-solid fa-print"></i> Imprimer mon RIB (PDF)
+              <i className="fa-solid fa-print"></i> Imprimer RIB (PDF)
             </button>
             <button
               type="button"
@@ -231,130 +231,149 @@ export default function RibPage() {
           </div>
 
           {/* Authentic Banking Document Certificate */}
-          <div
-            id="official-rib-document"
-            style={{
-              background: "#ffffff",
-              color: "#1e293b",
-              borderRadius: "16px",
-              padding: "2.5rem 2rem",
-              boxShadow: "0 20px 50px rgba(0,0,0,0.4)",
-              border: "1px solid #cbd5e1",
-              position: "relative",
-            }}
-          >
-            {/* Header: Bank logo & address */}
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", borderBottom: "2px solid #0f172a", paddingBottom: "1.25rem", marginBottom: "1.75rem" }}>
-              <div>
-                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.3rem" }}>
-                  <div style={{ width: "32px", height: "32px", borderRadius: "8px", background: "#2563eb", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 800 }}>
-                    C
-                  </div>
-                  <strong style={{ fontSize: "1.3rem", letterSpacing: "1px", color: "#0f172a" }}>CBG BANQUE</strong>
-                </div>
-                <div style={{ fontSize: "0.75rem", color: "#64748b", lineHeight: 1.4 }}>
-                  {data.bank.legalName}<br />
-                  {data.bank.address}<br />
-                  {data.bank.rcs} · {data.bank.acpr}
-                </div>
-              </div>
+         <div
+  id="official-rib-document"
+  style={{
+    background: "#ffffff",
+    color: "#1e293b",
+    borderRadius: "16px",
+    padding: "2.5rem 2rem",
+    boxShadow: "0 20px 50px rgba(0,0,0,0.4)",
+    border: "1px solid #cbd5e1",
+    position: "relative",
+  }}
+>
+  {/* Header: Bank logo & address */}
+  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", borderBottom: "2px solid #0f172a", paddingBottom: "1.25rem", marginBottom: "1.75rem", flexWrap: "wrap", gap: "1rem" }}>
+    <div>
+      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.3rem" }}>
+        <div style={{ width: "32px", height: "32px", borderRadius: "8px", background: "#2563eb", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 800 }}>
+          C
+        </div>
+        <strong style={{ fontSize: "1.3rem", letterSpacing: "1px", color: "#0f172a" }}>CBG BANQUE</strong>
+      </div>
+      <div style={{ fontSize: "0.75rem", color: "#64748b", lineHeight: 1.4 }}>
+        {data.bank.legalName}<br />
+        {data.bank.address}<br />
+        {data.bank.rcs} · {data.bank.acpr}
+      </div>
+    </div>
 
-              <div style={{ textAlign: "right" }}>
-                <span style={{ fontSize: "0.7rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "1.5px", color: "#2563eb", display: "block" }}>
-                  DOCUMENT OFFICIEL
-                </span>
-                <strong style={{ fontSize: "1.1rem", color: "#0f172a", display: "block", marginTop: "0.2rem" }}>
-                  RELEVÉ D&apos;IDENTITÉ BANCAIRE
-                </strong>
-                <span style={{ fontSize: "0.75rem", color: "#64748b" }}>
-                  Émis le {new Date().toLocaleDateString("fr-FR")}
-                </span>
-              </div>
-            </div>
+    <div style={{ textAlign: "right" }}>
+      <span style={{ fontSize: "0.7rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "1.5px", color: "#2563eb", display: "block" }}>
+        DOCUMENT OFFICIEL
+      </span>
+      <strong style={{ fontSize: "1.1rem", color: "#0f172a", display: "block", marginTop: "0.2rem" }}>
+        RELEVÉ D&apos;IDENTITÉ BANCAIRE
+      </strong>
+      <span style={{ fontSize: "0.75rem", color: "#64748b" }}>
+        Émis le {new Date().toLocaleDateString("fr-FR")}
+      </span>
+    </div>
+  </div>
 
-            {/* Titulaire Card */}
-            <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "10px", padding: "1.25rem", marginBottom: "1.75rem" }}>
-              <span style={{ fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "1px", color: "#64748b", fontWeight: 700, display: "block", marginBottom: "0.4rem" }}>
-                TITULAIRE DU COMPTE
-              </span>
-              <div style={{ fontSize: "1.1rem", fontWeight: 700, color: "#0f172a" }}>
-                {data.holder.civility} {data.holder.name}
-              </div>
-              <div style={{ fontSize: "0.85rem", color: "#475569", marginTop: "0.2rem" }}>
-                {data.holder.address}<br />
-                {data.holder.postalCode} {data.holder.city}, {data.holder.country}
-              </div>
-            </div>
+  {/* Titulaire Card */}
+  <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "10px", padding: "1.25rem", marginBottom: "1.75rem" }}>
+    <span style={{ fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "1px", color: "#64748b", fontWeight: 700, display: "block", marginBottom: "0.4rem" }}>
+      TITULAIRE DU COMPTE
+    </span>
+    <div style={{ fontSize: "1.1rem", fontWeight: 700, color: "#0f172a" }}>
+      {data.holder.civility} {data.holder.name}
+    </div>
+    <div style={{ fontSize: "0.85rem", color: "#475569", marginTop: "0.2rem" }}>
+      {data.holder.address}<br />
+      {data.holder.postalCode} {data.holder.city}, {data.holder.country}
+    </div>
+  </div>
 
-            {/* French Standard RIB Table */}
-            <div style={{ marginBottom: "1.75rem" }}>
-              <span style={{ fontSize: "0.75rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1px", color: "#334155", display: "block", marginBottom: "0.5rem" }}>
-                COORDONNÉES BANCAIRES NATIONALES
-              </span>
-              <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "center", border: "1px solid #cbd5e1" }}>
-                <thead>
-                  <tr style={{ background: "#f1f5f9", fontSize: "0.75rem", color: "#475569", textTransform: "uppercase" }}>
-                    <th style={{ padding: "0.6rem", border: "1px solid #cbd5e1" }}>Code Banque</th>
-                    <th style={{ padding: "0.6rem", border: "1px solid #cbd5e1" }}>Code Guichet</th>
-                    <th style={{ padding: "0.6rem", border: "1px solid #cbd5e1" }}>N° de Compte</th>
-                    <th style={{ padding: "0.6rem", border: "1px solid #cbd5e1" }}>Clé RIB</th>
-                    <th style={{ padding: "0.6rem", border: "1px solid #cbd5e1" }}>Domiciliation</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr style={{ fontSize: "0.95rem", fontWeight: 700, color: "#0f172a", fontFamily: "monospace" }}>
-                    <td style={{ padding: "0.75rem", border: "1px solid #cbd5e1" }}>{data.rib.codeBanque}</td>
-                    <td style={{ padding: "0.75rem", border: "1px solid #cbd5e1" }}>{data.rib.codeGuichet}</td>
-                    <td style={{ padding: "0.75rem", border: "1px solid #cbd5e1" }}>{data.rib.numeroCompte}</td>
-                    <td style={{ padding: "0.75rem", border: "1px solid #cbd5e1" }}>{data.rib.cleRib}</td>
-                    <td style={{ padding: "0.75rem", border: "1px solid #cbd5e1", fontSize: "0.75rem", fontFamily: "sans-serif" }}>
-                      {data.bank.domiciliation}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+  {/* French Standard RIB List (Responsive & Styled) */}
+  <div style={{ marginBottom: "1.75rem" }}>
+    <span style={{ fontSize: "0.75rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1px", color: "#334155", display: "block", marginBottom: "0.75rem" }}>
+      COORDONNÉES BANCAIRES NATIONALES
+    </span>
+    
+    <div style={{ 
+      display: "grid", 
+      gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", 
+      gap: "0.75rem" 
+    }}>
+      {/* Code Banque */}
+      <div style={{ background: "#f8fafc", border: "1px solid #cbd5e1", borderRadius: "10px", padding: "0.9rem 1rem" }}>
+        <span style={{ fontSize: "0.65rem", color: "#64748b", textTransform: "uppercase", fontWeight: 700, display: "block", marginBottom: "0.2rem" }}>
+          Code Banque
+        </span>
+        <span style={{ fontSize: "0.95rem", fontWeight: 800, color: "#0f172a", fontFamily: "monospace", letterSpacing: "1px" }}>
+          {data.rib.codeBanque}
+        </span>
+      </div>
 
-            {/* International Coordinates (IBAN & BIC) */}
-            <div style={{ marginBottom: "1.75rem" }}>
-              <span style={{ fontSize: "0.75rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1px", color: "#334155", display: "block", marginBottom: "0.5rem" }}>
-                IDENTIFIANT INTERNATIONAL (IBAN & BIC)
-              </span>
+      {/* Code Guichet */}
+      <div style={{ background: "#f8fafc", border: "1px solid #cbd5e1", borderRadius: "10px", padding: "0.9rem 1rem" }}>
+        <span style={{ fontSize: "0.65rem", color: "#64748b", textTransform: "uppercase", fontWeight: 700, display: "block", marginBottom: "0.2rem" }}>
+          Code Guichet
+        </span>
+        <span style={{ fontSize: "0.95rem", fontWeight: 800, color: "#0f172a", fontFamily: "monospace", letterSpacing: "1px" }}>
+          {data.rib.codeGuichet}
+        </span>
+      </div>
 
-              <div style={{ background: "#f8fafc", border: "1px solid #cbd5e1", borderRadius: "10px", padding: "1rem 1.25rem", marginBottom: "0.75rem" }}>
-                <span style={{ fontSize: "0.7rem", color: "#64748b", textTransform: "uppercase", fontWeight: 700, display: "block" }}>
-                  NUMÉRO IBAN (INTERNATIONAL BANK ACCOUNT NUMBER)
-                </span>
-                <span style={{ fontSize: "1.15rem", fontWeight: 800, color: "#0f172a", fontFamily: "monospace", letterSpacing: "1.5px", display: "block", marginTop: "0.2rem" }}>
-                  {data.rib.iban}
-                </span>
-              </div>
+      {/* N° de Compte */}
+      <div style={{ background: "#f8fafc", border: "1px solid #cbd5e1", borderRadius: "10px", padding: "0.9rem 1rem" }}>
+        <span style={{ fontSize: "0.65rem", color: "#64748b", textTransform: "uppercase", fontWeight: 700, display: "block", marginBottom: "0.2rem" }}>
+          N° de Compte
+        </span>
+        <span style={{ fontSize: "0.95rem", fontWeight: 800, color: "#0f172a", fontFamily: "monospace", letterSpacing: "1px" }}>
+          {data.rib.numeroCompte}
+        </span>
+      </div>
 
-              <div style={{ background: "#f8fafc", border: "1px solid #cbd5e1", borderRadius: "10px", padding: "1rem 1.25rem" }}>
-                <span style={{ fontSize: "0.7rem", color: "#64748b", textTransform: "uppercase", fontWeight: 700, display: "block" }}>
-                  CODE BIC / SWIFT (BANK IDENTIFIER CODE)
-                </span>
-                <span style={{ fontSize: "1.15rem", fontWeight: 800, color: "#0f172a", fontFamily: "monospace", letterSpacing: "1.5px", display: "block", marginTop: "0.2rem" }}>
-                  {data.rib.bic}
-                </span>
-              </div>
-            </div>
+      {/* Clé RIB */}
+      <div style={{ background: "#f8fafc", border: "1px solid #cbd5e1", borderRadius: "10px", padding: "0.9rem 1rem" }}>
+        <span style={{ fontSize: "0.65rem", color: "#64748b", textTransform: "uppercase", fontWeight: 700, display: "block", marginBottom: "0.2rem" }}>
+          Clé RIB
+        </span>
+        <span style={{ fontSize: "0.95rem", fontWeight: 800, color: "#0f172a", fontFamily: "monospace", letterSpacing: "1px" }}>
+          {data.rib.cleRib}
+        </span>
+      </div>
+    </div>
 
-            {/* Notice & Bank Seal */}
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", borderTop: "1px solid #e2e8f0", paddingTop: "1.25rem" }}>
-              <div style={{ fontSize: "0.7rem", color: "#64748b", maxWidth: "340px", lineHeight: 1.4 }}>
-                Le présent Relevé d&apos;Identité Bancaire certifie que les coordonnées mentionnées ci-dessus correspondent bien au compte ouvert auprès de notre établissement. À communiquer pour tout virement ou prélèvement.
-              </div>
-              <div style={{ textAlign: "center" }}>
-                <div style={{ width: "90px", height: "45px", border: "2px dashed #94a3b8", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.65rem", color: "#64748b", fontWeight: 700 }}>
-                  Cachet Établissement
-                </div>
-                <span style={{ fontSize: "0.65rem", color: "#94a3b8", display: "block", marginTop: "0.3rem" }}>
-                  CBG FINANCE OPÉRATIONS
-                </span>
-              </div>
-            </div>
-          </div>
+    {/* Domiciliation (Affichée proprement en dessous en bloc complet) */}
+    <div style={{ background: "#f8fafc", border: "1px solid #cbd5e1", borderRadius: "10px", padding: "0.9rem 1rem", marginTop: "0.75rem" }}>
+      <span style={{ fontSize: "0.65rem", color: "#64748b", textTransform: "uppercase", fontWeight: 700, display: "block", marginBottom: "0.2rem" }}>
+        Domiciliation bancaire
+      </span>
+      <span style={{ fontSize: "0.85rem", fontWeight: 600, color: "#0f172a" }}>
+        {data.bank.domiciliation}
+      </span>
+    </div>
+  </div>
+
+  {/* International Coordinates (IBAN & BIC) */}
+  <div style={{ marginBottom: "1.75rem" }}>
+    <span style={{ fontSize: "0.75rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1px", color: "#334155", display: "block", marginBottom: "0.5rem" }}>
+      IDENTIFIANT INTERNATIONAL (IBAN & BIC)
+    </span>
+
+    <div style={{ background: "#f8fafc", border: "1px solid #cbd5e1", borderRadius: "10px", padding: "1rem 1.25rem", marginBottom: "0.75rem" }}>
+      <span style={{ fontSize: "0.7rem", color: "#64748b", textTransform: "uppercase", fontWeight: 700, display: "block" }}>
+        NUMÉRO IBAN (INTERNATIONAL BANK ACCOUNT NUMBER)
+      </span>
+      <span style={{ fontSize: "1.15rem", fontWeight: 800, color: "#0f172a", fontFamily: "monospace", letterSpacing: "1.5px", display: "block", marginTop: "0.2rem", wordBreak: "break-all" }}>
+        {data.rib.iban}
+      </span>
+    </div>
+
+    <div style={{ background: "#f8fafc", border: "1px solid #cbd5e1", borderRadius: "10px", padding: "1rem 1.25rem" }}>
+      <span style={{ fontSize: "0.7rem", color: "#64748b", textTransform: "uppercase", fontWeight: 700, display: "block" }}>
+        CODE BIC / SWIFT (BANK IDENTIFIER CODE)
+      </span>
+      <span style={{ fontSize: "1.15rem", fontWeight: 800, color: "#0f172a", fontFamily: "monospace", letterSpacing: "1.5px", display: "block", marginTop: "0.2rem" }}>
+        {data.rib.bic}
+      </span>
+    </div>
+  </div>
+</div>
         </div>
       )}
 
