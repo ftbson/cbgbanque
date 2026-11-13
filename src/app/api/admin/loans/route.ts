@@ -1,9 +1,10 @@
 import { randomUUID } from "node:crypto";
-import { and, desc, eq } from "drizzle-orm";
+import { and, desc, eq, sql } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { isAdminAuthenticated } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { loansTable, notificationsTable, transactionsTable, usersTable } from "@/lib/schema";
+import { loansTable, notificationsTable, transactionsTable, usersTable, accountsTable } from "@/lib/schema";
+import { sendAccountCreditedEmail, sendAccountStatusEmail } from "@/lib/mail";
 
 export async function GET() {
   try {
@@ -62,6 +63,8 @@ export async function PATCH(request: Request) {
         amount: loansTable.amount,
         status: loansTable.status,
         currency: usersTable.currency,
+        email: usersTable.email,
+        firstName: usersTable.firstName,
       })
       .from(loansTable)
       .leftJoin(usersTable, eq(loansTable.userId, usersTable.id))
@@ -82,6 +85,9 @@ export async function PATCH(request: Request) {
       currency: loan.currency,
     }).format(loan.amount);
 
+    let amountCents = 0;
+    let credited = false;
+
     const updated = await db.transaction(async (tx) => {
       const [updatedLoan] = await tx.update(loansTable)
         .set({ status })
@@ -97,12 +103,36 @@ export async function PATCH(request: Request) {
           eq(transactionsTable.type, "loan_request"),
         ));
 
+      // Si approuvé, créditer le compte
+      if (status === "approved") {
+        amountCents = Math.round(loan.amount * 100);
+        await tx
+          .update(accountsTable)
+          .set({ balanceCents: sql`${accountsTable.balanceCents} + ${amountCents}` })
+          .where(eq(accountsTable.userId, loan.userId));
+
+        const currency = loan.currency ?? "EUR";
+        await tx.insert(transactionsTable).values({
+          id: randomUUID(),
+          userId: loan.userId,
+          type: "transfer_in",
+          description: `Prêt approuvé : ${formattedAmount}`,
+          amountCents,
+          currency,
+          status: "completed",
+          createdAt,
+        });
+        credited = true;
+      }
+
       await tx.insert(notificationsTable).values({
         id: randomUUID(),
         userId: loan.userId,
         type: "transaction",
-        title: "Demande de financement traitée",
-        message: `Votre demande de ${formattedAmount} a été ${status === "approved" ? "acceptée" : "refusée"}. Cette décision ne déclenche aucun versement automatique.`,
+        title: status === "approved" ? "Prêt approuvé et fonds crédités" : "Demande de financement refusée",
+        message: status === "approved"
+          ? `Votre demande de prêt de ${formattedAmount} a été acceptée et les fonds ont été crédités sur votre compte.`
+          : `Votre demande de ${formattedAmount} a été refusée.`,
         createdAt,
       });
       return true;
@@ -112,9 +142,36 @@ export async function PATCH(request: Request) {
       return NextResponse.json({ success: false, message: "Cette demande a déjà été traitée." }, { status: 409 });
     }
 
+    // Envoyer email de notification
+    if (status === "approved") {
+      try {
+        if (loan.email && loan.firstName) {
+          await sendAccountCreditedEmail(
+            loan.email,
+            loan.firstName,
+            (amountCents / 100).toFixed(2),
+            loan.currency,
+            `Prêt approuvé : ${formattedAmount}`
+          );
+        }
+      } catch (error) {
+        console.error("Email de crédit prêt non envoyé :", error);
+      }
+    } else if (status === "rejected") {
+      try {
+        if (loan.email && loan.firstName) {
+          await sendAccountStatusEmail(loan.email, loan.firstName, "rejected", "Demande de prêt refusée par l'administration");
+        }
+      } catch (error) {
+        console.error("Email de refus prêt non envoyé :", error);
+      }
+    }
+
     return NextResponse.json({
       success: true,
-      message: `Demande mise à jour : ${status === "approved" ? "acceptée" : "refusée"}. Aucun fonds n'a été crédité.`,
+      message: status === "approved"
+        ? `Prêt approuvé et ${formattedAmount} crédités sur le compte du client.`
+        : `Demande refusée. Aucun fonds n'a été crédité.`,
     });
   } catch (error) {
     console.error("Erreur modification prêt admin :", error);

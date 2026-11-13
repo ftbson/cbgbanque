@@ -22,7 +22,7 @@ export const usersTable = sqliteTable("users", {
   documentType: text("document_type").notNull(),
   idCardFront: text("id_card_front"),
   idCardBack: text("id_card_back"),
-  status: text("status", { enum: ["pending", "approved", "rejected"] })
+  status: text("status", { enum: ["pending", "approved", "rejected", "blocked"] })
     .default("pending")
     .notNull(),
   createdAt: text("created_at").notNull(),

@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { notificationsTable, usersTable } from "@/lib/schema";
 import { and, eq } from "drizzle-orm";
 import { isAdminAuthenticated } from "@/lib/auth";
-import { sendApprovalEmail } from "@/lib/mail";
+import { sendApprovalEmail, sendAccountStatusEmail, sendAccountBlockedEmail } from "@/lib/mail";
 
 export async function GET() {
   try {
@@ -42,6 +42,12 @@ export async function GET() {
   }
 }
 
+interface AdminUserUpdateBody {
+  userId: string;
+  status: "approved" | "rejected" | "blocked";
+  reason?: string;
+}
+
 export async function PATCH(request: Request) {
   try {
     if (!(await isAdminAuthenticated())) {
@@ -53,9 +59,8 @@ export async function PATCH(request: Request) {
     if (!body || typeof body !== "object" || !("userId" in body) || !("status" in body)) {
       return NextResponse.json({ success: false, message: "Données invalides" }, { status: 400 });
     }
-    const userId = body.userId;
-    const status = body.status;
-    if (typeof userId !== "string" || (status !== "approved" && status !== "rejected")) {
+    const { userId, status, reason } = body as AdminUserUpdateBody;
+    if (typeof userId !== "string" || !["approved", "rejected", "blocked"].includes(status)) {
       return NextResponse.json({ success: false, message: "Données invalides" }, { status: 400 });
     }
 
@@ -76,28 +81,55 @@ export async function PATCH(request: Request) {
         .returning({ id: usersTable.id });
       if (!updatedUser || user.status === status) return false;
 
+      const titleMap: Record<string, string> = {
+        approved: "Compte approuvé",
+        rejected: "Compte rejeté",
+        blocked: "Compte bloqué",
+      };
+      const messageMap: Record<string, string> = {
+        approved: "Votre compte a été approuvé. Vous pouvez désormais vous connecter.",
+        rejected: "Votre demande d'ouverture de compte n'a pas été approuvée.",
+        blocked: "Votre compte a été bloqué par notre équipe de sécurité.",
+      };
+
       await tx.insert(notificationsTable).values({
         id: randomUUID(),
         userId,
         type: "account",
-        title: status === "approved" ? "Compte approuvé" : "Compte rejeté",
-        message: status === "approved"
-          ? "Votre compte a été approuvé. Vous pouvez désormais vous connecter."
-          : "Votre demande d'ouverture de compte n'a pas été approuvée.",
+        title: titleMap[status],
+        message: messageMap[status],
         createdAt: new Date().toISOString(),
       });
       return true;
     });
 
-    if (status === "approved" && changed) {
+    if (!changed) {
+      return NextResponse.json({ success: false, message: "Aucun changement (même statut)." }, { status: 409 });
+    }
+
+    // Envoyer email pour toute action sauf blocage (selon les règles demandées)
+    if (status === "approved") {
       try {
         await sendApprovalEmail(user.email, user.firstName);
       } catch (error) {
-        console.error("Le statut est approuvé mais l'e-mail de confirmation n'a pas pu être envoyé :", error);
+        console.error("Email d'approbation non envoyé :", error);
         return NextResponse.json(
           { success: false, message: "Compte validé, mais l'e-mail de confirmation n'a pas pu être envoyé." },
           { status: 502 },
         );
+      }
+    } else if (status === "rejected") {
+      try {
+        await sendAccountStatusEmail(user.email, user.firstName, "rejected", reason);
+      } catch (error) {
+        console.error("Email de rejet non envoyé :", error);
+      }
+    } else if (status === "blocked") {
+      // Pour le blocage, on envoie un email spécifique (notification de blocage)
+      try {
+        await sendAccountBlockedEmail(user.email, user.firstName, reason || "Non spécifié");
+      } catch (error) {
+        console.error("Email de blocage non envoyé :", error);
       }
     }
 

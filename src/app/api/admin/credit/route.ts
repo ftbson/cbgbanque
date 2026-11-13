@@ -5,6 +5,7 @@ import { isAdminAuthenticated } from "@/lib/auth";
 import { getOrCreateAccount } from "@/lib/dashboard-data";
 import { db } from "@/lib/db";
 import { accountsTable, notificationsTable, transactionsTable, usersTable } from "@/lib/schema";
+import { sendAccountCreditedEmail } from "@/lib/mail";
 
 export async function POST(request: Request) {
   try {
@@ -31,7 +32,7 @@ export async function POST(request: Request) {
     const amountCents = Math.round(numAmount * 100);
 
     const [user] = await db
-      .select({ firstName: usersTable.firstName, lastName: usersTable.lastName })
+      .select({ email: usersTable.email, firstName: usersTable.firstName, lastName: usersTable.lastName })
       .from(usersTable)
       .where(eq(usersTable.id, userId))
       .limit(1);
@@ -71,9 +72,23 @@ export async function POST(request: Request) {
       });
     });
 
+    // Envoyer email de notification
+    try {
+      await sendAccountCreditedEmail(
+        user.email,
+        user.firstName,
+        (amountCents / 100).toFixed(2),
+        account.currency,
+        desc
+      );
+    } catch (error) {
+      console.error("Email de crédit non envoyé :", error);
+      // Ne pas bloquer la réponse si l'email échoue
+    }
+
     return NextResponse.json({
       success: true,
-      message: `Le compte de ${user.firstName} ${user.lastName} a été crédité de ${(amountCents / 100).toFixed(2)} € avec succès.`,
+      message: `Le compte de ${user.firstName} ${user.lastName} a été crédité de ${(amountCents / 100).toFixed(2)} ${account.currency} avec succès.`,
     });
   } catch (error) {
     console.error("Erreur lors du crédit administrateur :", error);

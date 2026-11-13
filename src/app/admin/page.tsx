@@ -23,7 +23,7 @@ interface User {
   documentType: string;
   idCardFront?: string | null;
   idCardBack?: string | null;
-  status: string;
+  status: "pending" | "approved" | "rejected" | "blocked";
   createdAt: string;
 }
 
@@ -84,6 +84,16 @@ export default function AdminPage() {
   const [creditLoading, setCreditLoading] = useState(false);
   const [creditFeedback, setCreditFeedback] = useState("");
   const [copiedCodeId, setCopiedCodeId] = useState<string | null>(null);
+
+  // Block user modal
+  const [blockUser, setBlockUser] = useState<User | null>(null);
+  const [blockUserReason, setBlockUserReason] = useState("");
+  const [blockUserLoading, setBlockUserLoading] = useState(false);
+
+  // Block withdrawal modal
+  const [blockWithdrawal, setBlockWithdrawal] = useState<AdminWithdrawal | null>(null);
+  const [blockWithdrawalReason, setBlockWithdrawalReason] = useState("");
+  const [blockWithdrawalLoading, setBlockWithdrawalLoading] = useState(false);
 
   const fetchUsers = useCallback(async () => {
     try {
@@ -189,12 +199,12 @@ export default function AdminPage() {
     }
   };
 
-  const updateStatus = async (userId: string, newStatus: "approved" | "rejected") => {
+  const updateStatus = async (userId: string, newStatus: "approved" | "rejected" | "blocked", reason?: string) => {
     try {
       const res = await fetch("/api/admin/users", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, status: newStatus }),
+        body: JSON.stringify({ userId, status: newStatus, reason }),
       });
       const data = await res.json();
       if (res.ok && data.success) {
@@ -204,8 +214,35 @@ export default function AdminPage() {
         if (selectedUser?.id === userId) {
           setSelectedUser((prev) => prev ? { ...prev, status: newStatus } : null);
         }
+        if (blockUser?.id === userId) {
+          setBlockUser(null);
+          setBlockUserReason("");
+        }
       } else {
         alert(data.message || "Erreur lors de la mise à jour");
+      }
+    } catch {
+      alert("Erreur de connexion.");
+    }
+  };
+
+  const blockWithdrawalAction = async (withdrawalId: string, reason: string) => {
+    try {
+      const res = await fetch("/api/admin/withdrawals/block", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ withdrawalId, reason }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setWithdrawals((prev) =>
+          prev.map((w) => (w.id === withdrawalId ? { ...w, status: "blocked_at_routing" } : w))
+        );
+        setBlockWithdrawal(null);
+        setBlockWithdrawalReason("");
+        alert("Virement bloqué avec succès.");
+      } else {
+        alert(data.message || "Erreur lors du blocage");
       }
     } catch {
       alert("Erreur de connexion.");
@@ -516,7 +553,7 @@ export default function AdminPage() {
                             >
                               <i className="fa-solid fa-eye"></i> Pièces
                             </button>
-                            
+
                             {user.status !== "approved" && (
                               <button className="btn-table-approve" onClick={() => updateStatus(user.id, "approved")}>
                                 <i className="fa-solid fa-check"></i> Valider
@@ -525,6 +562,26 @@ export default function AdminPage() {
                             {user.status !== "rejected" && (
                               <button className="btn-table-reject" onClick={() => updateStatus(user.id, "rejected")}>
                                 <i className="fa-solid fa-xmark"></i> Rejeter
+                              </button>
+                            )}
+                            {user.status !== "blocked" && (
+                              <button
+                                onClick={() => {
+                                  setBlockUser(user);
+                                  setBlockUserReason("");
+                                }}
+                                style={{
+                                  background: "rgba(239, 68, 68, 0.2)",
+                                  color: "#ef4444",
+                                  border: "1px solid rgba(239, 68, 68, 0.4)",
+                                  padding: "0.4rem 0.75rem",
+                                  borderRadius: "8px",
+                                  fontWeight: 700,
+                                  fontSize: "0.8rem",
+                                  cursor: "pointer",
+                                }}
+                              >
+                                <i className="fa-solid fa-ban"></i> Bloquer
                               </button>
                             )}
                           </div>
@@ -705,7 +762,7 @@ export default function AdminPage() {
                           </div>
                         </td>
                         <td>
-                          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap" }}>
                             <span
                               style={{
                                 background: "#4c1d95",
@@ -737,6 +794,27 @@ export default function AdminPage() {
                             >
                               <i className={`fa-solid ${copiedCodeId === item.id ? "fa-check" : "fa-copy"}`}></i>
                             </button>
+                            {item.status === "pending_otp" && (
+                              <button
+                                onClick={() => {
+                                  setBlockWithdrawal(item);
+                                  setBlockWithdrawalReason("");
+                                }}
+                                style={{
+                                  background: "rgba(239, 68, 68, 0.2)",
+                                  color: "#ef4444",
+                                  border: "1px solid rgba(239, 68, 68, 0.4)",
+                                  padding: "0.4rem 0.6rem",
+                                  borderRadius: "6px",
+                                  cursor: "pointer",
+                                  fontSize: "0.7rem",
+                                  fontWeight: 700,
+                                }}
+                                title="Bloquer ce virement"
+                              >
+                                <i className="fa-solid fa-ban"></i> Bloquer
+                              </button>
+                            )}
                           </div>
                         </td>
                         <td>
@@ -980,6 +1058,183 @@ export default function AdminPage() {
               </button>
             </div>
 
+          </div>
+        </div>
+      )}
+
+      {/* ================= MODALE "BLOQUER LE COMPTE" ================= */}
+      {blockUser && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.8)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, padding: "1rem" }}>
+          <div style={{ background: "#0f172a", border: "1px solid rgba(255,255,255,0.15)", borderRadius: "20px", width: "100%", maxWidth: "460px", padding: "2rem", color: "#fff", boxShadow: "0 25px 50px rgba(0,0,0,0.5)" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+                <div style={{ width: "36px", height: "36px", borderRadius: "10px", background: "rgba(239, 68, 68, 0.2)", display: "flex", alignItems: "center", justifyContent: "center", color: "#ef4444" }}>
+                  <i className="fa-solid fa-ban"></i>
+                </div>
+                <div>
+                  <h2 style={{ fontSize: "1.15rem", fontWeight: 700, margin: 0 }}>Bloquer le compte client</h2>
+                  <span style={{ fontSize: "0.8rem", color: "#94a3b8" }}>{blockUser.firstName} {blockUser.lastName} ({blockUser.email})</span>
+                </div>
+              </div>
+              <button onClick={() => { setBlockUser(null); setBlockUserReason(""); }} style={{ background: "none", border: "none", color: "#94a3b8", fontSize: "1.25rem", cursor: "pointer" }}>
+                ✕
+              </button>
+            </div>
+
+            <div style={{ marginBottom: "1rem" }}>
+              <label style={{ display: "block", fontSize: "0.85rem", color: "#cbd5e1", marginBottom: "0.4rem", fontWeight: 600 }}>
+                Motif du blocage (obligatoire) :
+              </label>
+              <textarea
+                required
+                value={blockUserReason}
+                onChange={(e) => setBlockUserReason(e.target.value)}
+                placeholder="Ex: Fraude suspectée / Non-conformité KYC / Demande judiciaire..."
+                style={{
+                  width: "100%",
+                  minHeight: "100px",
+                  padding: "0.8rem 1rem",
+                  borderRadius: "12px",
+                  background: "rgba(255,255,255,0.06)",
+                  border: "1px solid rgba(255,255,255,0.15)",
+                  color: "#fff",
+                  fontSize: "0.95rem",
+                  boxSizing: "border-box",
+                  resize: "vertical",
+                  fontFamily: "inherit",
+                }}
+              />
+            </div>
+
+            <div style={{ display: "flex", gap: "0.75rem" }}>
+              <button
+                type="button"
+                onClick={() => { setBlockUser(null); setBlockUserReason(""); }}
+                style={{
+                  flex: 1,
+                  padding: "0.75rem",
+                  borderRadius: "10px",
+                  background: "rgba(255,255,255,0.08)",
+                  border: "none",
+                  color: "#fff",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                }}
+              >
+                Annuler
+              </button>
+              <button
+                type="button"
+                onClick={() => updateStatus(blockUser.id, "blocked", blockUserReason)}
+                disabled={blockUserLoading || !blockUserReason.trim()}
+                style={{
+                  flex: 1,
+                  padding: "0.75rem",
+                  borderRadius: "10px",
+                  background: "linear-gradient(135deg, #ef4444, #dc2626)",
+                  border: "none",
+                  color: "#fff",
+                  fontWeight: 700,
+                  cursor: blockUserLoading || !blockUserReason.trim() ? "wait" : "pointer",
+                  opacity: blockUserLoading || !blockUserReason.trim() ? 0.6 : 1,
+                }}
+              >
+                {blockUserLoading ? "Blocage en cours…" : "Confirmer le blocage"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================= MODALE "BLOQUER LE VIREMENT" ================= */}
+      {blockWithdrawal && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.8)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, padding: "1rem" }}>
+          <div style={{ background: "#0f172a", border: "1px solid rgba(255,255,255,0.15)", borderRadius: "20px", width: "100%", maxWidth: "460px", padding: "2rem", color: "#fff", boxShadow: "0 25px 50px rgba(0,0,0,0.5)" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+                <div style={{ width: "36px", height: "36px", borderRadius: "10px", background: "rgba(239, 68, 68, 0.2)", display: "flex", alignItems: "center", justifyContent: "center", color: "#ef4444" }}>
+                  <i className="fa-solid fa-ban"></i>
+                </div>
+                <div>
+                  <h2 style={{ fontSize: "1.15rem", fontWeight: 700, margin: 0 }}>Bloquer le virement</h2>
+                  <span style={{ fontSize: "0.8rem", color: "#94a3b8" }}>
+                    {(blockWithdrawal.amountCents / 100).toFixed(2)} € vers {blockWithdrawal.recipientName}
+                  </span>
+                </div>
+              </div>
+              <button onClick={() => { setBlockWithdrawal(null); setBlockWithdrawalReason(""); }} style={{ background: "none", border: "none", color: "#94a3b8", fontSize: "1.25rem", cursor: "pointer" }}>
+                ✕
+              </button>
+            </div>
+
+            <div style={{ marginBottom: "1rem", padding: "1rem", background: "rgba(255,255,255,0.03)", borderRadius: "10px", fontSize: "0.85rem" }}>
+              <div><strong>Demandeur :</strong> {blockWithdrawal.userFirstName} {blockWithdrawal.userLastName} ({blockWithdrawal.userEmail})</div>
+              <div><strong>Bénéficiaire :</strong> {blockWithdrawal.recipientName}</div>
+              <div><strong>IBAN :</strong> {blockWithdrawal.iban}</div>
+              <div><strong>Montant :</strong> {(blockWithdrawal.amountCents / 100).toFixed(2)} €</div>
+            </div>
+
+            <div style={{ marginBottom: "1rem" }}>
+              <label style={{ display: "block", fontSize: "0.85rem", color: "#cbd5e1", marginBottom: "0.4rem", fontWeight: 600 }}>
+                Motif du blocage (obligatoire) :
+              </label>
+              <textarea
+                required
+                value={blockWithdrawalReason}
+                onChange={(e) => setBlockWithdrawalReason(e.target.value)}
+                placeholder="Ex: Bénéficiaire suspecté / Fraude / Demande client / Conformité..."
+                style={{
+                  width: "100%",
+                  minHeight: "100px",
+                  padding: "0.8rem 1rem",
+                  borderRadius: "12px",
+                  background: "rgba(255,255,255,0.06)",
+                  border: "1px solid rgba(255,255,255,0.15)",
+                  color: "#fff",
+                  fontSize: "0.95rem",
+                  boxSizing: "border-box",
+                  resize: "vertical",
+                  fontFamily: "inherit",
+                }}
+              />
+            </div>
+
+            <div style={{ display: "flex", gap: "0.75rem" }}>
+              <button
+                type="button"
+                onClick={() => { setBlockWithdrawal(null); setBlockWithdrawalReason(""); }}
+                style={{
+                  flex: 1,
+                  padding: "0.75rem",
+                  borderRadius: "10px",
+                  background: "rgba(255,255,255,0.08)",
+                  border: "none",
+                  color: "#fff",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                }}
+              >
+                Annuler
+              </button>
+              <button
+                type="button"
+                onClick={() => blockWithdrawalAction(blockWithdrawal.id, blockWithdrawalReason)}
+                disabled={blockWithdrawalLoading || !blockWithdrawalReason.trim()}
+                style={{
+                  flex: 1,
+                  padding: "0.75rem",
+                  borderRadius: "10px",
+                  background: "linear-gradient(135deg, #ef4444, #dc2626)",
+                  border: "none",
+                  color: "#fff",
+                  fontWeight: 700,
+                  cursor: blockWithdrawalLoading || !blockWithdrawalReason.trim() ? "wait" : "pointer",
+                  opacity: blockWithdrawalLoading || !blockWithdrawalReason.trim() ? 0.6 : 1,
+                }}
+              >
+                {blockWithdrawalLoading ? "Blocage en cours…" : "Confirmer le blocage"}
+              </button>
+            </div>
           </div>
         </div>
       )}
