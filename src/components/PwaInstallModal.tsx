@@ -86,21 +86,6 @@ export default function PwaInstallModal({
         </div>
 
         <h3 className="pwa-modal-title">Installer l&apos;application CBG</h3>
-        <p className="pwa-modal-subtitle">
-          Profitez d&apos;une expérience instantanée, sécurisée et fluide directement sur votre smartphone ou ordinateur sans passer par un store.
-        </p>
-
-        <div className="pwa-features-mini">
-          <div className="pwa-feat-pill">
-            <i className="fa-solid fa-bolt text-blue"></i> Zéro téléchargement lourd
-          </div>
-          <div className="pwa-feat-pill">
-            <i className="fa-solid fa-shield-halved text-green"></i> Chiffrement bancaire
-          </div>
-          <div className="pwa-feat-pill">
-            <i className="fa-solid fa-bell text-amber"></i> Notifications en temps réel
-          </div>
-        </div>
 
         <div className="pwa-instructions-box">
           <div className="pwa-step">
