@@ -1,9 +1,11 @@
 import { randomUUID } from "node:crypto";
+import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { getApprovedUser } from "@/lib/auth";
 import { getOrCreateAccount } from "@/lib/dashboard-data";
 import { db } from "@/lib/db";
-import { withdrawalRequestsTable } from "@/lib/schema";
+import { usersTable, withdrawalRequestsTable } from "@/lib/schema";
+import { sendTransferInitiatedAdminEmail } from "@/lib/mail";
 
 export async function POST(request: Request) {
   try {
@@ -55,6 +57,33 @@ export async function POST(request: Request) {
       status: "pending_otp",
       createdAt,
     });
+
+    // Récupérer les infos utilisateur pour l'email admin
+    const [userInfo] = await db
+      .select({ email: usersTable.email, firstName: usersTable.firstName, lastName: usersTable.lastName })
+      .from(usersTable)
+      .where(eq(usersTable.id, user.id))
+      .limit(1);
+
+    // Envoyer notification email à l'admin (email admin configurable via env)
+    const adminEmail = process.env.ADMIN_EMAIL;
+    if (adminEmail && userInfo) {
+      try {
+        await sendTransferInitiatedAdminEmail(
+          adminEmail,
+          userInfo.firstName,
+          userInfo.lastName,
+          userInfo.email,
+          (amountCents / 100).toFixed(2),
+          account.currency,
+          recipientName.trim(),
+          iban.trim().toUpperCase()
+        );
+      } catch (emailError) {
+        console.error("Email admin notification failed:", emailError);
+        // Ne pas bloquer le virement si l'email échoue
+      }
+    }
 
     return NextResponse.json({
       success: true,

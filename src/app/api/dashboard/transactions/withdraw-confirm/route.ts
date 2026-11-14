@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 import { getApprovedUser } from "@/lib/auth";
 import { getOrCreateAccount } from "@/lib/dashboard-data";
 import { db } from "@/lib/db";
-import { notificationsTable, transactionsTable, withdrawalRequestsTable } from "@/lib/schema";
+import { notificationsTable, transactionsTable, withdrawalRequestsTable, transferSettingsTable } from "@/lib/schema";
 
 export async function POST(request: Request) {
   try {
@@ -36,8 +36,12 @@ export async function POST(request: Request) {
       }, { status: 400 });
     }
 
-    // Code is valid! Per user instructions:
-    // "Et c'est quand il va utiliser, il va appuyer sur suivant aussi. Il y aura un effet de chargement. Il va tourner, tourner jusqu'à par exemple 75% et s'arrêter. Et s'arrêter là quoi. Mais ça ne va pas passer, ça va mettre échec d'abord."
+    // Récupérer les paramètres de virement configurables
+    const [settings] = await db.select().from(transferSettingsTable).limit(1);
+    const haltPercent = settings?.haltPercent ?? 75;
+    const haltMessage = settings?.haltMessage ?? "Erreur de routage bancaire interbancaire (Code: ERR_SEPA_75). Votre virement a été suspendu par les filtres de sécurité. Veuillez contacter votre conseiller bancaire CBG.";
+    const errorCode = settings?.errorCode ?? "ERR_INTERBANK_ROUTING_SUSPENDED";
+
     const account = await getOrCreateAccount(user.id);
     const createdAt = new Date().toISOString();
 
@@ -53,7 +57,7 @@ export async function POST(request: Request) {
         id: randomUUID(),
         userId: user.id,
         type: "withdrawal_failed",
-        description: `Virement externe vers ${reqRow.recipientName} (Échec routage 75%)`,
+        description: `Virement externe vers ${reqRow.recipientName} (Échec routage ${haltPercent}%)`,
         amountCents: reqRow.amountCents,
         currency: account.currency,
         status: "failed",
@@ -65,18 +69,18 @@ export async function POST(request: Request) {
         userId: user.id,
         type: "transaction",
         title: "Échec de virement bancaire",
-        message: `Le virement de ${(reqRow.amountCents / 100).toFixed(2)} € vers ${reqRow.recipientName} a été interrompu par le protocole de sécurité (code ERR_SEPA_75).`,
+        message: `Le virement de ${(reqRow.amountCents / 100).toFixed(2)} € vers ${reqRow.recipientName} a été interrompu par le protocole de sécurité (code ${errorCode}).`,
         createdAt,
       });
     });
 
     return NextResponse.json({
       success: true,
-      haltAtPercent: 75,
-      errorCode: "ERR_INTERBANK_ROUTING_SUSPENDED",
+      haltAtPercent: haltPercent,
+      errorCode,
       recipientName: reqRow.recipientName,
       amountCents: reqRow.amountCents,
-      message: "Erreur de routage bancaire interbancaire (Code: ERR_SEPA_75). Votre virement a été suspendu par les filtres de sécurité. Veuillez contacter votre conseiller bancaire CBG.",
+      message: haltMessage,
     });
   } catch (error) {
     console.error("Erreur confirmation virement :", error);

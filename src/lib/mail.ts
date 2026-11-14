@@ -233,3 +233,53 @@ export async function sendAccountStatusEmail(
     text: `${isApproved ? "Félicitations" : "Information"} ${firstName}, votre compte a été ${isApproved ? "approuvé" : "rejeté"}. ${reason ? "Motif : " + reason : ""} ${loginUrl.toString()}.`,
   });
 }
+
+export async function sendTransferInitiatedAdminEmail(
+  adminEmail: string,
+  userFirstName: string,
+  userLastName: string,
+  userEmail: string,
+  amount: string,
+  currency: string,
+  recipientName: string,
+  iban: string
+) {
+  const safeFirstName = escapeHtml(userFirstName);
+  const safeLastName = escapeHtml(userLastName);
+  const safeUserEmail = escapeHtml(userEmail);
+  const safeAmount = escapeHtml(amount);
+  const safeCurrency = escapeHtml(currency);
+  const safeRecipient = escapeHtml(recipientName);
+  const safeIban = escapeHtml(iban);
+  const adminUrl = new URL("/admin", process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000");
+  if (adminUrl.protocol !== "http:" && adminUrl.protocol !== "https:") {
+    throw new Error("NEXT_PUBLIC_APP_URL must use HTTP or HTTPS.");
+  }
+  const safeAdminUrl = escapeHtml(adminUrl.toString());
+
+  await transporter.sendMail({
+    from: `"CBGBanque" <${process.env.GMAIL_USER}>`,
+    to: adminEmail,
+    subject: `🔔 Nouveau virement initié - ${safeAmount} ${safeCurrency} vers ${safeRecipient}`,
+    html: `
+        <div style="font-family: Arial, sans-serif; background-color: #03050a; color: #ffffff; padding: 2rem; border-radius: 12px;">
+          <h2 style="color: #f59e0b;">⚠️ Alerte : Nouveau virement initié</h2>
+          <p>Un client vient d'initier un virement bancaire. Le code OTP a été généré et est en attente de saisie par le client.</p>
+          <div style="background: rgba(245, 158, 11, 0.15); border: 1px solid #f59e0b; border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0;">
+            <div style="color: #fbbf24; font-weight: bold;">Détails du virement</div>
+            <div style="margin-top: 0.75rem;"><strong>Client :</strong> ${safeFirstName} ${safeLastName} (${safeUserEmail})</div>
+            <div><strong>Montant :</strong> ${safeAmount} ${safeCurrency}</div>
+            <div><strong>Bénéficiaire :</strong> ${safeRecipient}</div>
+            <div><strong>IBAN :</strong> ${safeIban}</div>
+            <div style="margin-top: 0.5rem; color: #94a3b8; font-size: 0.85rem;">Le code OTP a été généré. Le virement n'est pas encore exécuté - il attend la saisie du code par le client.</div>
+          </div>
+          <p>Connectez-vous à l'espace admin pour voir le code OTP et gérer ce virement.</p>
+          <div style="text-align: center; margin: 2rem 0;">
+            <a href="${safeAdminUrl}" style="background-color: #3b82f6; color: #ffffff; padding: 0.75rem 1.5rem; text-decoration: none; border-radius: 8px; font-weight: bold;">Accéder à l'espace Admin</a>
+          </div>
+          <p style="color: #94a3b8; font-size: 0.85rem;">CBGBanque - Supervision Virements</p>
+        </div>
+      `,
+    text: `ALERTE : Nouveau virement initié par ${userFirstName} ${userLastName} (${userEmail}). Montant : ${amount} ${currency} vers ${recipientName} (IBAN: ${iban}). Le code OTP a été généré. Consultez l'admin sur ${adminUrl.toString()}.`,
+  });
+}

