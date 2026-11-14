@@ -1,10 +1,10 @@
 import { randomUUID } from "node:crypto";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { getApprovedUser } from "@/lib/auth";
 import { getOrCreateAccount } from "@/lib/dashboard-data";
 import { db } from "@/lib/db";
-import { usersTable, withdrawalRequestsTable } from "@/lib/schema";
+import { accountsTable, usersTable, withdrawalRequestsTable } from "@/lib/schema";
 import { sendTransferInitiatedAdminEmail } from "@/lib/mail";
 
 export async function POST(request: Request) {
@@ -40,8 +40,7 @@ export async function POST(request: Request) {
       }, { status: 400 });
     }
 
-    // Generate 6-digit OTP code (e.g. 583912)
-    const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+    // NO OTP generated yet - admin will generate and send it
     const id = randomUUID();
     const createdAt = new Date().toISOString();
 
@@ -53,10 +52,19 @@ export async function POST(request: Request) {
       bic: (bic?.trim() || "C23QBEBB").toUpperCase(),
       amountCents,
       description: description?.trim() || "Virement bancaire SEPA",
-      otpCode,
-      status: "pending_otp",
+      otpCode: null, // Admin will set this later
+      haltPercent: null, // Admin will set this later
+      haltMessage: null, // Admin will set this later
+      errorCode: null, // Admin will set this later
+      status: "pending_admin_otp", // Waiting for admin to send OTP
       createdAt,
     });
+
+    // Réserver le montant
+    await db
+      .update(accountsTable)
+      .set({ reservedCents: sql`${accountsTable.reservedCents} + ${amountCents}` })
+      .where(eq(accountsTable.userId, user.id));
 
     // Récupérer les infos utilisateur pour l'email admin
     const [userInfo] = await db
@@ -88,7 +96,7 @@ export async function POST(request: Request) {
     return NextResponse.json({
       success: true,
       requestId: id,
-      message: "Un code de validation à 6 chiffres a été généré et transmis au superviseur de conformité.",
+      message: "Votre demande de virement a été enregistrée. L'administrateur va vous transmettre un code de validation sous peu.",
     });
   } catch (error) {
     console.error("Erreur lors de la préparation du virement :", error);

