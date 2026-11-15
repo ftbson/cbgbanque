@@ -2,10 +2,12 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import TransferTrackingModal from "@/components/TransferTrackingModal";
 
 interface Activity {
   id: string;
   type: string;
+  relatedId?: string;
   description: string;
   amountCents: number;
   currency: string;
@@ -60,6 +62,18 @@ export default function DashboardHomePage() {
   const [data, setData] = useState<DashboardData | null>(null);
   const [error, setError] = useState("");
   const [isBalanceHidden, setIsBalanceHidden] = useState(false);
+  const [trackingTransferId, setTrackingTransferId] = useState<string | null>(null);
+
+  const loadDashboard = () => {
+    fetch("/api/dashboard")
+      .then(async (response) => {
+        const result: DashboardData & { message?: string } = await response.json();
+        if (response.ok) {
+          setData(result);
+        }
+      })
+      .catch(() => {});
+  };
 
   useEffect(() => {
     let active = true;
@@ -164,19 +178,57 @@ export default function DashboardHomePage() {
             <div className="history-list-wrapper">
               {data.transactions.map((transaction) => {
                 const isOutgoing = transaction.type === "withdrawal_request" || transaction.type === "vault_deposit";
+                const isPendingWithdrawal = transaction.type === "withdrawal_request" && transaction.status === "pending";
+
                 return (
-                  <article key={transaction.id} className="history-item-row">
+                  <article
+                    key={transaction.id}
+                    className="history-item-row"
+                    onClick={isPendingWithdrawal ? () => setTrackingTransferId(transaction.relatedId || transaction.id) : undefined}
+                    style={isPendingWithdrawal ? { cursor: "pointer" } : undefined}
+                  >
                     <div className="history-item-texts">
                       <span className="history-item-title">{transaction.description}</span>
                       <span className="history-item-sub">
                         {new Date(transaction.createdAt).toLocaleString("fr-FR")} · {statusLabel(transaction.status)}
                       </span>
                     </div>
-                    <span className="history-item-amount">
-                      {transaction.amountCents === 0
-                        ? "—"
-                        : `${isOutgoing ? "−" : "+"}${formatMoney(transaction.amountCents, transaction.currency)}`}
-                    </span>
+
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "0.35rem" }}>
+                      <span className="history-item-amount">
+                        {transaction.amountCents === 0
+                          ? "—"
+                          : `${isOutgoing ? "−" : "+"}${formatMoney(transaction.amountCents, transaction.currency)}`}
+                      </span>
+
+                      {isPendingWithdrawal && (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setTrackingTransferId(transaction.relatedId || transaction.id);
+                          }}
+                          style={{
+                            background: "linear-gradient(135deg, rgba(234, 179, 8, 0.25), rgba(245, 158, 11, 0.35))",
+                            color: "#fbbf24",
+                            border: "1px solid rgba(234, 179, 8, 0.6)",
+                            borderRadius: "16px",
+                            padding: "0.2rem 0.6rem",
+                            fontSize: "0.75rem",
+                            fontWeight: 800,
+                            cursor: "pointer",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "0.35rem",
+                            boxShadow: "0 0 10px rgba(234, 179, 8, 0.25)",
+                          }}
+                          title="Cliquer pour suivre l'état du virement"
+                        >
+                          <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#fbbf24" }}></span>
+                          En attente
+                        </button>
+                      )}
+                    </div>
                   </article>
                 );
               })}
@@ -277,6 +329,14 @@ export default function DashboardHomePage() {
           </div>
         )}
       </section>
+
+      {trackingTransferId && (
+        <TransferTrackingModal
+          transferId={trackingTransferId}
+          onClose={() => setTrackingTransferId(null)}
+          onSuccessOrHalted={() => loadDashboard()}
+        />
+      )}
     </div>
   );
 }

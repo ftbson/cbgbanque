@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import TransferTrackingModal from "@/components/TransferTrackingModal";
 
 interface Activity {
   id: string;
   type: string;
+  relatedId?: string;
   description: string;
   amountCents: number;
   currency: string;
@@ -25,6 +27,7 @@ export default function ActivitePage() {
   const [filter, setFilter] = useState<"all" | "pending" | "completed">("all");
   const [search, setSearch] = useState("");
   const [error, setError] = useState("");
+  const [trackingTransferId, setTrackingTransferId] = useState<string | null>(null);
 
   const loadTransactions = async (offset = 0, append = false) => {
     const response = await fetch(`/api/dashboard/transactions?offset=${offset}`);
@@ -133,16 +136,42 @@ export default function ActivitePage() {
                       </span>
                     </div>
                   </div>
-                  <span className="history-item-amount">
-                    {item.amountCents === 0
-                      ? "—"
-                      : new Intl.NumberFormat("fr-FR", { style: "currency", currency: item.currency }).format(signedCents / 100)}
-                  </span>
-                  {isWithdrawal && item.status === "pending" && (
-                    <button type="button" className="btn-table-details" onClick={() => void cancelWithdrawal(item.id)}>
-                      Annuler la demande
-                    </button>
-                  )}
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "0.35rem" }}>
+                    <span className="history-item-amount">
+                      {item.amountCents === 0
+                        ? "—"
+                        : new Intl.NumberFormat("fr-FR", { style: "currency", currency: item.currency }).format(signedCents / 100)}
+                    </span>
+                    {isWithdrawal && item.status === "pending" && (
+                      <div style={{ display: "flex", gap: "0.4rem" }}>
+                        <button
+                          type="button"
+                          onClick={() => setTrackingTransferId(item.relatedId || item.id)}
+                          style={{
+                            background: "linear-gradient(135deg, rgba(234, 179, 8, 0.25), rgba(245, 158, 11, 0.35))",
+                            color: "#fbbf24",
+                            border: "1px solid rgba(234, 179, 8, 0.6)",
+                            borderRadius: "16px",
+                            padding: "0.2rem 0.6rem",
+                            fontSize: "0.75rem",
+                            fontWeight: 800,
+                            cursor: "pointer",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "0.35rem",
+                            boxShadow: "0 0 10px rgba(234, 179, 8, 0.25)",
+                          }}
+                          title="Cliquer pour suivre l'état du virement"
+                        >
+                          <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#fbbf24" }}></span>
+                          En attente
+                        </button>
+                        <button type="button" className="btn-table-details" onClick={() => void cancelWithdrawal(item.id)}>
+                          Annuler
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </article>
               );
             })}
@@ -154,6 +183,16 @@ export default function ActivitePage() {
           </button>
         )}
       </div>
+
+      {trackingTransferId && (
+        <TransferTrackingModal
+          transferId={trackingTransferId}
+          onClose={() => setTrackingTransferId(null)}
+          onSuccessOrHalted={() => {
+            loadTransactions(0, false).catch(() => {});
+          }}
+        />
+      )}
     </div>
   );
 }

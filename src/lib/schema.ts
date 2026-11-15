@@ -69,10 +69,13 @@ export const withdrawalRequestsTable = sqliteTable("withdrawal_requests", {
   bic: text("bic").notNull(),
   amountCents: integer("amount_cents").notNull(),
   description: text("description"),
-  legacyOtpCode: text("otp_code").notNull().default(""),
+  otpCode: text("otp_code").default(""),
   status: text("status", { enum: ["pending_review", "pending_admin_otp", "pending_otp", "failed_verification", "blocked_by_admin", "blocked_at_routing", "completed"] })
     .default("pending_review")
     .notNull(),
+  haltPercent: integer("halt_percent").default(75),
+  haltMessage: text("halt_message"),
+  errorCode: text("error_code").default("ERR_SEPA_75"),
   createdAt: text("created_at").notNull(),
 });
 

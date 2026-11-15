@@ -104,7 +104,10 @@ export async function POST(request: Request) {
         bic: cleanBic,
         amountCents,
         description: cleanDescription,
-        legacyOtpCode: "",
+        otpCode: "",
+        haltPercent: 75,
+        haltMessage: "Une erreur est survenue, veuillez contacter votre gestionnaire ou bien tentez à nouveau plus tard.",
+        errorCode: "ERR_SEPA_75",
         status: "pending_review",
         createdAt,
       });

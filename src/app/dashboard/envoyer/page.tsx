@@ -2,11 +2,14 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import TransferTrackingModal from "@/components/TransferTrackingModal";
 
 interface AccountData {
   availableBalanceCents: number;
   currency: string;
   message?: string;
+  transfersBlocked?: boolean;
+  isAccountBlocked?: boolean;
   recentTransfers: TransferRequest[];
 }
 
@@ -43,6 +46,7 @@ export default function EnvoyerPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [errorDetails, setErrorDetails] = useState("");
+  const [trackingTransferId, setTrackingTransferId] = useState<string | null>(null);
   const hasPendingTransfers = account?.recentTransfers.some((transfer) =>
     transfer.status === "pending_review" || transfer.status === "pending_admin_otp" || transfer.status === "pending_otp"
   ) ?? false;
@@ -119,10 +123,13 @@ export default function EnvoyerPage() {
       if (!res.ok) throw new Error(data.message ?? "Erreur lors de la préparation du virement.");
 
       setRequestId(data.requestId);
-      setErrorDetails(data.message);
-      setStep(2);
+      setTrackingTransferId(data.requestId);
+      setRecipientName("");
+      setIban("");
+      setBic("");
+      setAmount("");
+      setDescription("");
       await loadAccount();
-      setExpandedTransferId(data.requestId);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erreur.");
     } finally {
@@ -183,6 +190,19 @@ export default function EnvoyerPage() {
         </div>
       </div>
 
+      {/* Transfer Blocked Warning */}
+      {(account?.transfersBlocked || account?.isAccountBlocked) && (
+        <div style={{ background: "rgba(234, 179, 8, 0.15)", border: "1px solid rgba(234, 179, 8, 0.4)", color: "#fef08a", padding: "1rem 1.25rem", borderRadius: "14px", marginBottom: "1.5rem", fontSize: "0.9rem", display: "flex", alignItems: "center", gap: "0.75rem" }}>
+          <i className="fa-solid fa-triangle-exclamation" style={{ fontSize: "1.25rem", color: "#eab308" }}></i>
+          <div>
+            <strong>Virements suspendus :</strong>
+            <p style={{ margin: "0.2rem 0 0", color: "#fef9c3", fontSize: "0.85rem" }}>
+              Les opérations de virement sont actuellement restreintes sur votre compte par l&apos;administration. Veuillez contacter votre conseiller CBG Finance.
+            </p>
+          </div>
+        </div>
+      )}
+
       {account && account.recentTransfers.length > 0 && (
         <section
           aria-labelledby="recent-transfers-title"
@@ -205,11 +225,7 @@ export default function EnvoyerPage() {
 
               return (
                 <div key={transfer.id} style={{ borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: "0.5rem" }}>
-                  <button
-                    type="button"
-                    aria-expanded={isExpanded}
-                    aria-label={`${isExpanded ? "Masquer" : "Afficher"} le suivi du virement vers ${transfer.recipientName}`}
-                    onClick={() => setExpandedTransferId(isExpanded ? null : transfer.id)}
+                  <div
                     style={{
                       width: "100%",
                       display: "flex",
@@ -217,11 +233,6 @@ export default function EnvoyerPage() {
                       alignItems: "center",
                       gap: "0.75rem",
                       padding: "0.4rem 0",
-                      color: "#fff",
-                      background: "transparent",
-                      border: 0,
-                      cursor: "pointer",
-                      textAlign: "left",
                     }}
                   >
                     <span style={{ minWidth: 0 }}>
@@ -232,30 +243,37 @@ export default function EnvoyerPage() {
                         {new Date(transfer.createdAt).toLocaleString("fr-FR")}
                       </span>
                     </span>
-                    <span style={{ textAlign: "right", flexShrink: 0 }}>
-                      <strong style={{ display: "block" }}>{formatMoney(transfer.amountCents, account.currency)}</strong>
-                      <span style={{ display: "block", color: isPending ? "#fbbf24" : isBlocked ? "#f87171" : "#34d399", fontSize: "0.8rem", marginBottom: "0.35rem" }}>
-                        {isPending ? "En attente" : isBlocked ? "Bloqué" : "Traité"}
-                      </span>
-                      <span
-                        style={{
-                          display: "inline-flex",
-                          alignItems: "center",
-                          gap: "0.35rem",
-                          padding: "0.3rem 0.55rem",
-                          borderRadius: "8px",
-                          border: `1px solid ${isPending ? "rgba(251,191,36,0.45)" : "rgba(148,163,184,0.3)"}`,
-                          background: isPending ? "rgba(251,191,36,0.12)" : "rgba(148,163,184,0.08)",
-                          color: isPending ? "#fbbf24" : "#cbd5e1",
-                          fontSize: "0.75rem",
-                          fontWeight: 700,
-                        }}
-                      >
-                        {isExpanded ? "Masquer le suivi" : isPending ? "Voir le suivi" : "Voir les détails"}
-                        <i className={`fa-solid ${isExpanded ? "fa-chevron-up" : "fa-chevron-down"}`} aria-hidden="true"></i>
-                      </span>
-                    </span>
-                  </button>
+                    <div style={{ textAlign: "right", flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "0.3rem" }}>
+                      <strong>{formatMoney(transfer.amountCents, account.currency)}</strong>
+                      {isPending ? (
+                        <button
+                          type="button"
+                          onClick={() => setTrackingTransferId(transfer.id)}
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "0.35rem",
+                            padding: "0.25rem 0.65rem",
+                            borderRadius: "14px",
+                            border: "1px solid rgba(251,191,36,0.6)",
+                            background: "rgba(251,191,36,0.18)",
+                            color: "#fbbf24",
+                            fontSize: "0.75rem",
+                            fontWeight: 800,
+                            cursor: "pointer",
+                            boxShadow: "0 0 10px rgba(251,191,36,0.25)",
+                          }}
+                        >
+                          <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#fbbf24" }}></span>
+                          En attente (Suivre)
+                        </button>
+                      ) : (
+                        <span style={{ color: isBlocked ? "#f87171" : "#34d399", fontSize: "0.8rem", fontWeight: 700 }}>
+                          {isBlocked ? "Bloqué" : "Traité"}
+                        </span>
+                      )}
+                    </div>
+                  </div>
                   {isExpanded && (
                     <div style={{ padding: "0.5rem 0 0.25rem", color: "rgba(255,255,255,0.75)", fontSize: "0.85rem", lineHeight: 1.6 }}>
                       <div><strong>Bénéficiaire :</strong> {transfer.recipientName}</div>
@@ -501,6 +519,17 @@ export default function EnvoyerPage() {
             </button>
           </div>
         </div>
+      )}
+
+      {trackingTransferId && (
+        <TransferTrackingModal
+          transferId={trackingTransferId}
+          onClose={() => {
+            setTrackingTransferId(null);
+            loadAccount();
+          }}
+          onSuccessOrHalted={() => loadAccount()}
+        />
       )}
     </div>
   );
