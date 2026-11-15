@@ -186,6 +186,32 @@ export async function sendAccountBlockedEmail(
   });
 }
 
+export async function sendTransferAccessRestoredEmail(toEmail: string, firstName: string) {
+  const safeFirstName = escapeHtml(firstName);
+  const dashboardUrl = new URL("/dashboard", process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000");
+  if (dashboardUrl.protocol !== "http:" && dashboardUrl.protocol !== "https:") {
+    throw new Error("NEXT_PUBLIC_APP_URL must use HTTP or HTTPS.");
+  }
+  const safeDashboardUrl = escapeHtml(dashboardUrl.toString());
+
+  await transporter.sendMail({
+    from: `"CBGBanque" <${process.env.GMAIL_USER}>`,
+    to: toEmail,
+    subject: "Les virements sont de nouveau autorisés sur votre compte",
+    html: `
+        <div style="font-family: Arial, sans-serif; background-color: #03050a; color: #ffffff; padding: 2rem; border-radius: 12px;">
+          <h2 style="color: #22c55e;">Bonjour ${safeFirstName},</h2>
+          <p>La restriction temporaire sur les virements de votre compte a été levée. Vous pouvez consulter votre espace client pour vérifier le statut de vos opérations.</p>
+          <div style="text-align: center; margin: 2rem 0;">
+            <a href="${safeDashboardUrl}" style="background-color: #3b82f6; color: #ffffff; padding: 0.75rem 1.5rem; text-decoration: none; border-radius: 8px; font-weight: bold;">Accéder à mon Dashboard</a>
+          </div>
+          <p style="color: #94a3b8; font-size: 0.85rem;">CBGBanque - Service client</p>
+        </div>
+      `,
+    text: `Bonjour ${firstName}, la restriction temporaire sur les virements de votre compte a été levée. Consultez votre espace client : ${dashboardUrl.toString()}.`,
+  });
+}
+
 export async function sendAccountStatusEmail(
   toEmail: string,
   firstName: string,
@@ -264,14 +290,14 @@ export async function sendTransferInitiatedAdminEmail(
     html: `
         <div style="font-family: Arial, sans-serif; background-color: #03050a; color: #ffffff; padding: 2rem; border-radius: 12px;">
           <h2 style="color: #f59e0b;">⚠️ Alerte : Nouveau virement initié</h2>
-          <p>Un client vient d'initier un virement bancaire. Le code OTP a été généré et est en attente de saisie par le client.</p>
+          <p>Un client vient de soumettre une demande de virement. Elle est en attente de validation administrative et aucun virement n'a encore été exécuté.</p>
           <div style="background: rgba(245, 158, 11, 0.15); border: 1px solid #f59e0b; border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0;">
             <div style="color: #fbbf24; font-weight: bold;">Détails du virement</div>
             <div style="margin-top: 0.75rem;"><strong>Client :</strong> ${safeFirstName} ${safeLastName} (${safeUserEmail})</div>
             <div><strong>Montant :</strong> ${safeAmount} ${safeCurrency}</div>
             <div><strong>Bénéficiaire :</strong> ${safeRecipient}</div>
             <div><strong>IBAN :</strong> ${safeIban}</div>
-            <div style="margin-top: 0.5rem; color: #94a3b8; font-size: 0.85rem;">Le code OTP a été généré. Le virement n'est pas encore exécuté - il attend la saisie du code par le client.</div>
+            <div style="margin-top: 0.5rem; color: #94a3b8; font-size: 0.85rem;">Statut : en attente de validation. Aucun virement n'a encore été exécuté.</div>
           </div>
           <p>Connectez-vous à l'espace admin pour voir le code OTP et gérer ce virement.</p>
           <div style="text-align: center; margin: 2rem 0;">
@@ -280,6 +306,6 @@ export async function sendTransferInitiatedAdminEmail(
           <p style="color: #94a3b8; font-size: 0.85rem;">CBGBanque - Supervision Virements</p>
         </div>
       `,
-    text: `ALERTE : Nouveau virement initié par ${userFirstName} ${userLastName} (${userEmail}). Montant : ${amount} ${currency} vers ${recipientName} (IBAN: ${iban}). Le code OTP a été généré. Consultez l'admin sur ${adminUrl.toString()}.`,
+    text: `ALERTE : Demande de virement soumise par ${userFirstName} ${userLastName} (${userEmail}). Montant : ${amount} ${currency} vers ${recipientName} (IBAN: ${iban}). Statut : en attente de validation; aucun virement n'a encore été exécuté. Consultez l'admin sur ${adminUrl.toString()}.`,
   });
 }

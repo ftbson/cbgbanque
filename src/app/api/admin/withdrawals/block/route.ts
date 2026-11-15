@@ -1,10 +1,9 @@
 import { randomUUID } from "node:crypto";
-import { and, eq } from "drizzle-orm";
+import { and, eq, inArray, sql } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { isAdminAuthenticated } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { notificationsTable, transactionsTable, usersTable, withdrawalRequestsTable } from "@/lib/schema";
-import { sendTransferBlockedEmail } from "@/lib/mail";
+import { accountsTable, notificationsTable, transactionsTable, usersTable, withdrawalRequestsTable } from "@/lib/schema";
 
 export async function POST(request: Request) {
   try {
@@ -12,13 +11,16 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, message: "Non autorisé." }, { status: 401 });
     }
 
-    const body = await request.json();
+    const body: unknown = await request.json();
+    if (!body || typeof body !== "object" || !("withdrawalId" in body)) {
+      return NextResponse.json({ success: false, message: "Données de blocage invalides." }, { status: 400 });
+    }
     const { withdrawalId, reason } = body as {
       withdrawalId?: string;
       reason?: string;
     };
 
-    if (!withdrawalId) {
+    if (typeof withdrawalId !== "string" || !withdrawalId.trim() || (reason !== undefined && typeof reason !== "string")) {
       return NextResponse.json({ success: false, message: "ID du virement requis." }, { status: 400 });
     }
 
@@ -29,8 +31,7 @@ export async function POST(request: Request) {
         recipientName: withdrawalRequestsTable.recipientName,
         amountCents: withdrawalRequestsTable.amountCents,
         status: withdrawalRequestsTable.status,
-        email: usersTable.email,
-        firstName: usersTable.firstName,
+        currency: usersTable.currency,
       })
       .from(withdrawalRequestsTable)
       .leftJoin(usersTable, eq(withdrawalRequestsTable.userId, usersTable.id))
@@ -41,33 +42,54 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, message: "Virement introuvable." }, { status: 404 });
     }
 
-    if (withdrawal.status !== "pending_otp") {
+    if (!["pending_review", "pending_admin_otp", "pending_otp"].includes(withdrawal.status)) {
       return NextResponse.json({ success: false, message: "Ce virement ne peut plus être bloqué." }, { status: 409 });
     }
 
     const createdAt = new Date().toISOString();
-    const blockReason = reason?.trim() || "Bloqué par l'administration pour raisons de sécurité";
+    const blockReason = reason?.trim().slice(0, 500) || "Bloqué par l'administration pour raisons de sécurité";
 
-    await db.transaction(async (tx) => {
-      // Mettre à jour le statut du retrait
-      await tx
+    const blocked = await db.transaction(async (tx) => {
+      const [updatedWithdrawal] = await tx
         .update(withdrawalRequestsTable)
-        .set({ status: "blocked_at_routing" })
-        .where(eq(withdrawalRequestsTable.id, withdrawalId));
+        .set({ status: "blocked_by_admin" })
+        .where(and(
+          eq(withdrawalRequestsTable.id, withdrawalId),
+          inArray(withdrawalRequestsTable.status, ["pending_review", "pending_admin_otp", "pending_otp"]),
+        ))
+        .returning({ id: withdrawalRequestsTable.id });
+      if (!updatedWithdrawal) return false;
 
-      // Enregistrer la transaction comme échouée
-      await tx.insert(transactionsTable).values({
-        id: randomUUID(),
-        userId: withdrawal.userId,
-        type: "withdrawal_failed",
-        description: `Virement externe vers ${withdrawal.recipientName} (Bloqué par l'admin: ${blockReason})`,
-        amountCents: withdrawal.amountCents,
-        currency: "EUR",
-        status: "failed",
-        createdAt,
-      });
+      await tx
+        .update(accountsTable)
+        .set({ reservedCents: sql`MAX(0, ${accountsTable.reservedCents} - ${withdrawal.amountCents})` })
+        .where(eq(accountsTable.userId, withdrawal.userId));
 
-      // Notification in-app
+      const [pendingTransaction] = await tx
+        .update(transactionsTable)
+        .set({ status: "failed" })
+        .where(and(
+          eq(transactionsTable.relatedId, withdrawalId),
+          eq(transactionsTable.userId, withdrawal.userId),
+          eq(transactionsTable.type, "withdrawal_request"),
+          eq(transactionsTable.status, "pending"),
+        ))
+        .returning({ id: transactionsTable.id });
+
+      if (!pendingTransaction) {
+        await tx.insert(transactionsTable).values({
+          id: randomUUID(),
+          userId: withdrawal.userId,
+          type: "withdrawal_failed",
+          relatedId: withdrawalId,
+          description: `Virement vers ${withdrawal.recipientName} (Bloqué par l'admin : ${blockReason})`,
+          amountCents: withdrawal.amountCents,
+          currency: withdrawal.currency ?? "EUR",
+          status: "failed",
+          createdAt,
+        });
+      }
+
       await tx.insert(notificationsTable).values({
         id: randomUUID(),
         userId: withdrawal.userId,
@@ -76,22 +98,11 @@ export async function POST(request: Request) {
         message: `Votre virement de ${(withdrawal.amountCents / 100).toFixed(2)} € vers ${withdrawal.recipientName} a été bloqué. Motif: ${blockReason}`,
         createdAt,
       });
+      return true;
     });
 
-    // Envoyer email de notification
-    if (withdrawal.email && withdrawal.firstName) {
-      try {
-        await sendTransferBlockedEmail(
-          withdrawal.email,
-          withdrawal.firstName,
-          (withdrawal.amountCents / 100).toFixed(2),
-          "EUR",
-          withdrawal.recipientName,
-          blockReason
-        );
-      } catch (error) {
-        console.error("Email de blocage virement non envoyé :", error);
-      }
+    if (!blocked) {
+      return NextResponse.json({ success: false, message: "Ce virement a déjà été traité." }, { status: 409 });
     }
 
     return NextResponse.json({

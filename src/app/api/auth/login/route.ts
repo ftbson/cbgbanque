@@ -34,7 +34,13 @@ export async function POST(request: Request) {
     }
     if (user.status === "pending") {
       return NextResponse.json(
-        { success: false, message: "Votre compte est en cours de validation par l'administrateur" },
+        { success: false, message: "Votre compte est en cours de validation par l'administrateur." },
+        { status: 403 },
+      );
+    }
+    if (user.status === "blocked") {
+      return NextResponse.json(
+        { success: false, message: "Votre compte a été bloqué par mesure de sécurité administrative. Veuillez contacter votre conseiller CBG." },
         { status: 403 },
       );
     }

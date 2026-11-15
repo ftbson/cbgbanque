@@ -24,6 +24,7 @@ interface User {
   idCardFront?: string | null;
   idCardBack?: string | null;
   status: "pending" | "approved" | "rejected" | "blocked";
+  transfersBlocked?: number;
   createdAt: string;
 }
 
@@ -52,11 +53,7 @@ interface AdminWithdrawal {
   bic: string;
   amountCents: number;
   description?: string;
-  otpCode: string | null;
-  haltPercent: number | null;
-  haltMessage: string | null;
-  errorCode: string | null;
-  status: "pending_admin_otp" | "pending_otp" | "failed_verification" | "blocked_at_routing" | "completed";
+  status: "pending_review" | "pending_admin_otp" | "pending_otp" | "failed_verification" | "blocked_by_admin" | "blocked_at_routing" | "completed";
   createdAt: string;
   userFirstName?: string;
   userLastName?: string;
@@ -86,16 +83,6 @@ export default function AdminPage() {
   const [creditDescription, setCreditDescription] = useState("Crédit bancaire CBG Finance");
   const [creditLoading, setCreditLoading] = useState(false);
   const [creditFeedback, setCreditFeedback] = useState("");
-  const [copiedCodeId, setCopiedCodeId] = useState<string | null>(null);
-
-  // Send OTP modal
-  const [sendOtpWithdrawal, setSendOtpWithdrawal] = useState<AdminWithdrawal | null>(null);
-  const [sendOtpCode, setSendOtpCode] = useState("");
-  const [sendOtpHaltPercent, setSendOtpHaltPercent] = useState(75);
-  const [sendOtpHaltMessage, setSendOtpHaltMessage] = useState("");
-  const [sendOtpErrorCode, setSendOtpErrorCode] = useState("");
-  const [sendOtpLoading, setSendOtpLoading] = useState(false);
-  const [sendOtpFeedback, setSendOtpFeedback] = useState("");
 
   // Block user modal
   const [blockUser, setBlockUser] = useState<User | null>(null);
@@ -212,6 +199,7 @@ export default function AdminPage() {
   };
 
   const updateStatus = async (userId: string, newStatus: "approved" | "rejected" | "blocked", reason?: string) => {
+    if (newStatus === "blocked") setBlockUserLoading(true);
     try {
       const res = await fetch("/api/admin/users", {
         method: "PATCH",
@@ -235,10 +223,33 @@ export default function AdminPage() {
       }
     } catch {
       alert("Erreur de connexion.");
+    } finally {
+      if (newStatus === "blocked") setBlockUserLoading(false);
+    }
+  };
+
+  const toggleTransfersBlocked = async (userId: string, currentBlocked: boolean) => {
+    try {
+      const res = await fetch("/api/admin/users", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, transfersBlocked: currentBlocked ? 0 : 1 }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setUsers((prev) =>
+          prev.map((u) => (u.id === userId ? { ...u, transfersBlocked: currentBlocked ? 0 : 1 } : u))
+        );
+      } else {
+        alert(data.message || "Erreur lors de la mise à jour des virements");
+      }
+    } catch {
+      alert("Erreur de connexion.");
     }
   };
 
   const blockWithdrawalAction = async (withdrawalId: string, reason: string) => {
+    setBlockWithdrawalLoading(true);
     try {
       const res = await fetch("/api/admin/withdrawals/block", {
         method: "POST",
@@ -248,7 +259,7 @@ export default function AdminPage() {
       const data = await res.json();
       if (res.ok && data.success) {
         setWithdrawals((prev) =>
-          prev.map((w) => (w.id === withdrawalId ? { ...w, status: "blocked_at_routing" } : w))
+          prev.map((w) => (w.id === withdrawalId ? { ...w, status: "blocked_by_admin" } : w))
         );
         setBlockWithdrawal(null);
         setBlockWithdrawalReason("");
@@ -258,6 +269,8 @@ export default function AdminPage() {
       }
     } catch {
       alert("Erreur de connexion.");
+    } finally {
+      setBlockWithdrawalLoading(false);
     }
   };
 
@@ -314,66 +327,6 @@ export default function AdminPage() {
     } finally {
       setCreditLoading(false);
     }
-  };
-
-  const handleSendOtpSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!sendOtpWithdrawal || !sendOtpCode || sendOtpHaltPercent === undefined || !sendOtpHaltMessage) return;
-
-    setSendOtpLoading(true);
-    setSendOtpFeedback("");
-
-    try {
-      const res = await fetch("/api/admin/withdrawals/send-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          withdrawalId: sendOtpWithdrawal.id,
-          otpCode: sendOtpCode,
-          haltPercent: sendOtpHaltPercent,
-          haltMessage: sendOtpHaltMessage,
-          errorCode: sendOtpErrorCode,
-        }),
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message ?? "Échec de l'envoi du code OTP.");
-
-      setSendOtpFeedback(data.message);
-      // Mettre à jour la liste locale
-      setWithdrawals((prev) =>
-        prev.map((w) =>
-          w.id === sendOtpWithdrawal.id
-            ? {
-                ...w,
-                otpCode: data.otpCode,
-                haltPercent: data.haltPercent,
-                haltMessage: data.haltMessage,
-                errorCode: data.errorCode,
-                status: "pending_otp",
-              }
-            : w
-        )
-      );
-      setTimeout(() => {
-        setSendOtpWithdrawal(null);
-        setSendOtpCode("");
-        setSendOtpHaltPercent(75);
-        setSendOtpHaltMessage("");
-        setSendOtpErrorCode("");
-        setSendOtpFeedback("");
-      }, 2000);
-    } catch (err) {
-      alert(err instanceof Error ? err.message : "Erreur.");
-    } finally {
-      setSendOtpLoading(false);
-    }
-  };
-
-  const copyCode = (code: string, id: string) => {
-    navigator.clipboard.writeText(code);
-    setCopiedCodeId(id);
-    setTimeout(() => setCopiedCodeId(null), 2500);
   };
 
   if (loadingAuth) {
@@ -444,7 +397,9 @@ export default function AdminPage() {
 
   const pendingUsers = users.filter((u) => u.status === "pending");
   const pendingLoans = loans.filter((l) => l.status === "pending");
-  const pendingWithdrawals = withdrawals.filter((w) => w.status === "pending_admin_otp" || w.status === "pending_otp");
+  const pendingWithdrawals = withdrawals.filter((w) =>
+    w.status === "pending_review" || w.status === "pending_admin_otp" || w.status === "pending_otp"
+  );
 
   return (
     <div className="admin-dashboard-page">
@@ -535,7 +490,7 @@ export default function AdminPage() {
               cursor: "pointer",
             }}
           >
-            <i className="fa-solid fa-key"></i> Retraits & Codes OTP ({pendingWithdrawals.length})
+            <i className="fa-solid fa-arrow-right-arrow-left"></i> Virements ({pendingWithdrawals.length})
           </button>
         </div>
 
@@ -650,6 +605,23 @@ export default function AdminPage() {
                                 <i className="fa-solid fa-ban"></i> Bloquer
                               </button>
                             )}
+                            <button
+                              type="button"
+                              onClick={() => toggleTransfersBlocked(user.id, user.transfersBlocked === 1)}
+                              style={{
+                                background: user.transfersBlocked === 1 ? "rgba(34, 197, 94, 0.15)" : "rgba(245, 158, 11, 0.15)",
+                                color: user.transfersBlocked === 1 ? "#22c55e" : "#f59e0b",
+                                border: `1px solid ${user.transfersBlocked === 1 ? "rgba(34, 197, 94, 0.4)" : "rgba(245, 158, 11, 0.4)"}`,
+                                padding: "0.4rem 0.75rem",
+                                borderRadius: "8px",
+                                fontWeight: 700,
+                                fontSize: "0.8rem",
+                                cursor: "pointer",
+                              }}
+                            >
+                              <i className={`fa-solid ${user.transfersBlocked === 1 ? "fa-unlock" : "fa-ban"}`}></i>{" "}
+                              {user.transfersBlocked === 1 ? "Rétablir virements" : "Bloquer virements"}
+                            </button>
                           </div>
                         </td>
                       </tr>
@@ -768,11 +740,11 @@ export default function AdminPage() {
           </div>
         )}
 
-        {/* ================= ONGLET 3 : RETRAITS & CODES OTP ================= */}
+        {/* ================= ONGLET 3 : VIREMENTS ================= */}
         {activeTab === "withdrawals" && (
           <div className="admin-section">
             <div className="section-header-admin">
-              <h3 className="admin-section-title">Demandes de retraits & Codes OTP de sécurité</h3>
+              <h3 className="admin-section-title">Demandes de virement</h3>
               <button
                 type="button"
                 onClick={fetchWithdrawals}
@@ -797,16 +769,16 @@ export default function AdminPage() {
                     <th>Demandeur</th>
                     <th>Montant</th>
                     <th>Bénéficiaire & IBAN</th>
-                    <th>Code OTP généré</th>
                     <th>Statut</th>
                     <th>Date</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {withdrawals.length === 0 ? (
                     <tr>
                       <td colSpan={6} style={{ textAlign: "center", padding: "2.5rem", color: "#94a3b8" }}>
-                        Aucune demande de virement ou code OTP enregistré pour le moment.
+                        Aucune demande de virement enregistrée pour le moment.
                       </td>
                     </tr>
                   ) : (
@@ -828,132 +800,50 @@ export default function AdminPage() {
                           </div>
                         </td>
                         <td>
-                          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap" }}>
-                            {item.status === "pending_admin_otp" ? (
-                              <>
-                                <span style={{ color: "#f59e0b", fontSize: "0.85rem", fontWeight: 600 }}>
-                                  En attente admin
-                                </span>
-                                <button
-                                  onClick={() => {
-                                    setSendOtpWithdrawal(item);
-                                    setSendOtpCode(Math.floor(100000 + Math.random() * 900000).toString());
-                                    setSendOtpHaltPercent(75);
-                                    setSendOtpHaltMessage("Une erreur est survenue, veuillez contacter le gestionnaire ou bien tentez à nouveau plus tard.");
-                                    setSendOtpErrorCode(`ERR_CUSTOM_75`);
-                                    setSendOtpFeedback("");
-                                  }}
-                                  style={{
-                                    background: "rgba(59, 130, 246, 0.2)",
-                                    color: "#3b82f6",
-                                    border: "1px solid rgba(59, 130, 246, 0.4)",
-                                    padding: "0.4rem 0.75rem",
-                                    borderRadius: "6px",
-                                    cursor: "pointer",
-                                    fontSize: "0.7rem",
-                                    fontWeight: 700,
-                                  }}
-                                  title="Générer et envoyer le code OTP au client"
-                                >
-                                  <i className="fa-solid fa-key"></i> Envoyer OTP
-                                </button>
-                              </>
-                            ) : (
-                              <>
-                                <span
-                                  style={{
-                                    background: "#4c1d95",
-                                    color: "#f3e8ff",
-                                    border: "1px solid #7c3aed",
-                                    padding: "0.35rem 0.75rem",
-                                    borderRadius: "8px",
-                                    fontFamily: "monospace",
-                                    fontSize: "1.1rem",
-                                    fontWeight: 800,
-                                    letterSpacing: "2px",
-                                  }}
-                                >
-                                  {item.otpCode || "—"}
-                                </span>
-                                {item.otpCode && (
-                                  <button
-                                    type="button"
-                                    onClick={() => copyCode(item.otpCode!, item.id)}
-                                    style={{
-                                      background: "rgba(255,255,255,0.08)",
-                                      border: "none",
-                                      color: "#fff",
-                                      padding: "0.4rem 0.6rem",
-                                      borderRadius: "6px",
-                                      cursor: "pointer",
-                                      fontSize: "0.75rem",
-                                    }}
-                                    title="Copier le code pour le transmettre au client"
-                                  >
-                                    <i className={`fa-solid ${copiedCodeId === item.id ? "fa-check" : "fa-copy"}`}></i>
-                                  </button>
-                                )}
-                                {item.status === "pending_otp" && (
-                                  <button
-                                    onClick={() => {
-                                      setBlockWithdrawal(item);
-                                      setBlockWithdrawalReason("");
-                                    }}
-                                    style={{
-                                      background: "rgba(239, 68, 68, 0.2)",
-                                      color: "#ef4444",
-                                      border: "1px solid rgba(239, 68, 68, 0.4)",
-                                      padding: "0.4rem 0.6rem",
-                                      borderRadius: "6px",
-                                      cursor: "pointer",
-                                      fontSize: "0.7rem",
-                                      fontWeight: 700,
-                                    }}
-                                    title="Bloquer ce virement"
-                                  >
-                                    <i className="fa-solid fa-ban"></i> Bloquer
-                                  </button>
-                                )}
-                              </>
-                            )}
-                          </div>
-                        </td>
-                        <td>
+                          {(() => {
+                            const isPending = item.status === "pending_review" || item.status === "pending_admin_otp" || item.status === "pending_otp";
+                            const isBlocked = item.status === "blocked_by_admin" || item.status === "blocked_at_routing" || item.status === "failed_verification";
+                            return (
                           <span
                             style={{
                               padding: "0.25rem 0.6rem",
                               borderRadius: "6px",
                               fontSize: "0.8rem",
                               fontWeight: 700,
-                              background:
-                                item.status === "pending_admin_otp"
-                                  ? "rgba(59,130,246,0.2)"
-                                  : item.status === "pending_otp"
-                                  ? "rgba(245,158,11,0.2)"
-                                  : item.status === "blocked_at_routing"
-                                  ? "rgba(239,68,68,0.2)"
-                                  : "rgba(34,197,94,0.2)",
-                              color:
-                                item.status === "pending_admin_otp"
-                                  ? "#60a5fa"
-                                  : item.status === "pending_otp"
-                                  ? "#fbbf24"
-                                  : item.status === "blocked_at_routing"
-                                  ? "#f87171"
-                                  : "#34d399",
+                              background: isPending ? "rgba(245,158,11,0.15)" : isBlocked ? "rgba(239,68,68,0.15)" : "rgba(34,197,94,0.15)",
+                              color: isPending ? "#fbbf24" : isBlocked ? "#f87171" : "#34d399",
                             }}
                           >
-                            {item.status === "pending_admin_otp"
-                              ? "En attente code admin"
-                              : item.status === "pending_otp"
-                              ? "En attente saisie client"
-                              : item.status === "blocked_at_routing"
-                              ? `Bloqué à ${item.haltPercent ?? 75}% (${item.errorCode ?? "Err routage"})`
-                              : "Complété"}
+                            {isPending ? "En attente de validation" : isBlocked ? "Bloqué" : "Complété"}
                           </span>
+                            );
+                          })()}
                         </td>
                         <td style={{ fontSize: "0.8rem", color: "#94a3b8" }}>
                           {new Date(item.createdAt).toLocaleString("fr-FR")}
+                        </td>
+                        <td>
+                          {(item.status === "pending_review" || item.status === "pending_admin_otp" || item.status === "pending_otp") && (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setBlockWithdrawal(item);
+                                setBlockWithdrawalReason("");
+                              }}
+                              style={{
+                                background: "rgba(239, 68, 68, 0.2)",
+                                color: "#ef4444",
+                                border: "1px solid rgba(239, 68, 68, 0.4)",
+                                padding: "0.4rem 0.6rem",
+                                borderRadius: "6px",
+                                cursor: "pointer",
+                                fontSize: "0.75rem",
+                                fontWeight: 700,
+                              }}
+                            >
+                              <i className="fa-solid fa-ban"></i> Bloquer
+                            </button>
+                          )}
                         </td>
                       </tr>
                     ))
@@ -1342,200 +1232,6 @@ export default function AdminPage() {
                 {blockWithdrawalLoading ? "Blocage en cours…" : "Confirmer le blocage"}
               </button>
             </div>
-          </div>
-        </div>
-      )}
-
-      {/* ================= MODALE "ENVOYER CODE OTP" ================= */}
-      {sendOtpWithdrawal && (
-        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.8)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, padding: "1rem" }}>
-          <div style={{ background: "#0f172a", border: "1px solid rgba(255,255,255,0.15)", borderRadius: "20px", width: "100%", maxWidth: "520px", padding: "2rem", color: "#fff", boxShadow: "0 25px 50px rgba(0,0,0,0.5)" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
-                <div style={{ width: "36px", height: "36px", borderRadius: "10px", background: "rgba(59, 130, 246, 0.2)", display: "flex", alignItems: "center", justifyContent: "center", color: "#3b82f6" }}>
-                  <i className="fa-solid fa-key"></i>
-                </div>
-                <div>
-                  <h2 style={{ fontSize: "1.15rem", fontWeight: 700, margin: 0 }}>Envoyer le code OTP & Configurer l'arrêt</h2>
-                  <span style={{ fontSize: "0.8rem", color: "#94a3b8" }}>
-                    {(sendOtpWithdrawal.amountCents / 100).toFixed(2)} € vers {sendOtpWithdrawal.recipientName}
-                  </span>
-                </div>
-              </div>
-              <button onClick={() => { setSendOtpWithdrawal(null); setSendOtpCode(""); setSendOtpHaltMessage(""); setSendOtpErrorCode(""); setSendOtpFeedback(""); }} style={{ background: "none", border: "none", color: "#94a3b8", fontSize: "1.25rem", cursor: "pointer" }}>
-                ✕
-              </button>
-            </div>
-
-            <div style={{ marginBottom: "1rem", padding: "1rem", background: "rgba(255,255,255,0.03)", borderRadius: "10px", fontSize: "0.85rem" }}>
-              <div><strong>Demandeur :</strong> {sendOtpWithdrawal.userFirstName} {sendOtpWithdrawal.userLastName} ({sendOtpWithdrawal.userEmail})</div>
-              <div><strong>Bénéficiaire :</strong> {sendOtpWithdrawal.recipientName}</div>
-              <div><strong>IBAN :</strong> {sendOtpWithdrawal.iban}</div>
-              <div><strong>Montant :</strong> {(sendOtpWithdrawal.amountCents / 100).toFixed(2)} €</div>
-            </div>
-
-            {sendOtpFeedback && (
-              <div style={{ background: "rgba(16, 185, 129, 0.2)", border: "1px solid rgba(16, 185, 129, 0.4)", color: "#6ee7b7", padding: "0.75rem 1rem", borderRadius: "10px", marginBottom: "1rem", fontSize: "0.9rem" }}>
-                <i className="fa-solid fa-circle-check"></i> {sendOtpFeedback}
-              </div>
-            )}
-
-            <form onSubmit={handleSendOtpSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-              {/* Code OTP */}
-              <div>
-                <label style={{ display: "block", fontSize: "0.85rem", color: "#cbd5e1", marginBottom: "0.4rem", fontWeight: 600 }}>
-                  Code OTP à 6 chiffres (à transmettre au client) :
-                </label>
-                <input
-                  type="text"
-                  maxLength={6}
-                  value={sendOtpCode}
-                  onChange={(e) => setSendOtpCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
-                  placeholder="Ex: 583912"
-                  style={{
-                    width: "100%",
-                    padding: "0.85rem 1rem",
-                    borderRadius: "12px",
-                    background: "rgba(255,255,255,0.06)",
-                    border: "2px solid #4361ee",
-                    color: "#fff",
-                    fontSize: "1.5rem",
-                    fontWeight: 800,
-                    letterSpacing: "6px",
-                    textAlign: "center",
-                    fontFamily: "monospace",
-                    boxSizing: "border-box",
-                  }}
-                />
-                <p style={{ margin: "0.3rem 0 0 0", fontSize: "0.75rem", color: "#64748b" }}>
-                  Ce code sera transmis au client pour valider son virement.
-                </p>
-              </div>
-
-              {/* Pourcentage d'arrêt */}
-              <div>
-                <label style={{ display: "block", fontSize: "0.85rem", color: "#cbd5e1", marginBottom: "0.4rem", fontWeight: 600 }}>
-                  Pourcentage d'arrêt du chargement (%)
-                </label>
-                <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-                  <input
-                    type="number"
-                    min="1"
-                    max="100"
-                    required
-                    value={sendOtpHaltPercent}
-                    onChange={(e) => setSendOtpHaltPercent(Math.min(100, Math.max(1, parseInt(e.target.value) || 1)))}
-                    style={{
-                      width: "120px",
-                      padding: "0.85rem 1rem",
-                      borderRadius: "10px",
-                      background: "rgba(255,255,255,0.06)",
-                      border: "1px solid rgba(255,255,255,0.15)",
-                      color: "#fff",
-                      fontSize: "1.1rem",
-                      fontWeight: 700,
-                      textAlign: "center",
-                    }}
-                  />
-                  <span style={{ color: "#94a3b8", fontSize: "0.9rem" }}>
-                    Le chargement s'arrêtera à ce pourcentage (ex: 75 = 75%)
-                  </span>
-                </div>
-              </div>
-
-              {/* Code erreur technique */}
-              <div>
-                <label style={{ display: "block", fontSize: "0.85rem", color: "#cbd5e1", marginBottom: "0.4rem", fontWeight: 600 }}>
-                  Code d'erreur technique
-                </label>
-                <input
-                  type="text"
-                  value={sendOtpErrorCode}
-                  onChange={(e) => setSendOtpErrorCode(e.target.value)}
-                  placeholder="Ex: ERR_CUSTOM_75"
-                  style={{
-                    width: "100%",
-                    maxWidth: "300px",
-                    padding: "0.85rem 1rem",
-                    borderRadius: "10px",
-                    background: "rgba(255,255,255,0.06)",
-                    border: "1px solid rgba(255,255,255,0.15)",
-                    color: "#fff",
-                    fontSize: "0.95rem",
-                    fontFamily: "monospace",
-                    boxSizing: "border-box",
-                  }}
-                />
-                <p style={{ margin: "0.3rem 0 0 0", fontSize: "0.75rem", color: "#64748b" }}>
-                  Code technique affiché dans les logs (ex: ERR_CUSTOM_75, ERR_SEPA_BLOCKED)
-                </p>
-              </div>
-
-              {/* Message personnalisé */}
-              <div>
-                <label style={{ display: "block", fontSize: "0.85rem", color: "#cbd5e1", marginBottom: "0.4rem", fontWeight: 600 }}>
-                  Message affiché au client à l'arrêt <span style={{ color: "#f59e0b" }}>*</span>
-                </label>
-                <textarea
-                  required
-                  value={sendOtpHaltMessage}
-                  onChange={(e) => setSendOtpHaltMessage(e.target.value)}
-                  placeholder="Ex: Une erreur est survenue, veuillez contacter le gestionnaire ou bien tentez à nouveau plus tard."
-                  rows={3}
-                  style={{
-                    width: "100%",
-                    padding: "0.85rem 1rem",
-                    borderRadius: "10px",
-                    background: "rgba(255,255,255,0.06)",
-                    border: "1px solid rgba(255,255,255,0.15)",
-                    color: "#fff",
-                    fontSize: "0.95rem",
-                    fontFamily: "inherit",
-                    boxSizing: "border-box",
-                    resize: "vertical",
-                  }}
-                />
-                <p style={{ margin: "0.3rem 0 0 0", fontSize: "0.75rem", color: "#64748b" }}>
-                  Ce message s'affichera au client quand le chargement atteindra le pourcentage d'arrêt configuré ci-dessus.
-                </p>
-              </div>
-
-              <div style={{ display: "flex", gap: "0.75rem", marginTop: "0.5rem" }}>
-                <button
-                  type="button"
-                  onClick={() => { setSendOtpWithdrawal(null); setSendOtpCode(""); setSendOtpHaltMessage(""); setSendOtpErrorCode(""); setSendOtpFeedback(""); }}
-                  style={{
-                    flex: 1,
-                    padding: "0.85rem",
-                    borderRadius: "10px",
-                    background: "rgba(255,255,255,0.08)",
-                    border: "none",
-                    color: "#fff",
-                    fontWeight: 600,
-                    cursor: "pointer",
-                  }}
-                >
-                  Annuler
-                </button>
-                <button
-                  type="submit"
-                  disabled={sendOtpLoading || !sendOtpCode || sendOtpCode.length !== 6 || !sendOtpHaltMessage.trim()}
-                  style={{
-                    flex: 1,
-                    padding: "0.85rem",
-                    borderRadius: "10px",
-                    background: "linear-gradient(135deg, #3b82f6, #2563eb)",
-                    border: "none",
-                    color: "#fff",
-                    fontWeight: 700,
-                    cursor: sendOtpLoading ? "wait" : "pointer",
-                    opacity: sendOtpLoading || !sendOtpCode || sendOtpCode.length !== 6 || !sendOtpHaltMessage.trim() ? 0.6 : 1,
-                  }}
-                >
-                  {sendOtpLoading ? "Envoi en cours…" : "Envoyer le code OTP au client"}
-                </button>
-              </div>
-            </form>
           </div>
         </div>
       )}

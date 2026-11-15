@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 import { getApprovedUser } from "@/lib/auth";
 import { getOrCreateAccount } from "@/lib/dashboard-data";
 import { db } from "@/lib/db";
-import { accountsTable, notificationsTable, transactionsTable } from "@/lib/schema";
+import { accountsTable, notificationsTable, transactionsTable, usersTable } from "@/lib/schema";
 
 function parseAmountCents(value: unknown) {
   if (typeof value !== "string" || !/^\d{1,7}(?:[.,]\d{1,2})?$/.test(value.trim())) return null;
@@ -24,8 +24,12 @@ export async function GET(request: Request) {
       return NextResponse.json({ success: false, message: "Pagination invalide." }, { status: 400 });
     }
 
-    const [account, transactions] = await Promise.all([
+    const [account, [userData], transactions] = await Promise.all([
       getOrCreateAccount(user.id),
+      db.select({ transfersBlocked: usersTable.transfersBlocked, status: usersTable.status })
+        .from(usersTable)
+        .where(eq(usersTable.id, user.id))
+        .limit(1),
       db.select().from(transactionsTable)
         .where(eq(transactionsTable.userId, user.id))
         .orderBy(desc(transactionsTable.createdAt))
@@ -36,6 +40,8 @@ export async function GET(request: Request) {
       success: true,
       availableBalanceCents: account.balanceCents - account.reservedCents,
       currency: account.currency,
+      transfersBlocked: userData?.transfersBlocked === 1,
+      isAccountBlocked: userData?.status === "blocked",
       transactions,
       hasMore: transactions.length === 100,
     });

@@ -19,12 +19,13 @@ export async function GET() {
         bic: withdrawalRequestsTable.bic,
         amountCents: withdrawalRequestsTable.amountCents,
         description: withdrawalRequestsTable.description,
-        otpCode: withdrawalRequestsTable.otpCode,
         status: withdrawalRequestsTable.status,
         createdAt: withdrawalRequestsTable.createdAt,
         userFirstName: usersTable.firstName,
         userLastName: usersTable.lastName,
         userEmail: usersTable.email,
+        userTransfersBlocked: usersTable.transfersBlocked,
+        userStatus: usersTable.status,
       })
       .from(withdrawalRequestsTable)
       .leftJoin(usersTable, eq(withdrawalRequestsTable.userId, usersTable.id))

@@ -25,6 +25,7 @@ export const usersTable = sqliteTable("users", {
   status: text("status", { enum: ["pending", "approved", "rejected", "blocked"] })
     .default("pending")
     .notNull(),
+  transfersBlocked: integer("transfers_blocked").default(0).notNull(),
   createdAt: text("created_at").notNull(),
 });
 
@@ -68,12 +69,8 @@ export const withdrawalRequestsTable = sqliteTable("withdrawal_requests", {
   bic: text("bic").notNull(),
   amountCents: integer("amount_cents").notNull(),
   description: text("description"),
-  otpCode: text("otp_code"),
-  haltPercent: integer("halt_percent"),
-  haltMessage: text("halt_message"),
-  errorCode: text("error_code"),
-  status: text("status", { enum: ["pending_admin_otp", "pending_otp", "failed_verification", "blocked_at_routing", "completed"] })
-    .default("pending_admin_otp")
+  status: text("status", { enum: ["pending_review", "pending_admin_otp", "pending_otp", "failed_verification", "blocked_by_admin", "blocked_at_routing", "completed"] })
+    .default("pending_review")
     .notNull(),
   createdAt: text("created_at").notNull(),
 });

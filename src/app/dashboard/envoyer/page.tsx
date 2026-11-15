@@ -25,17 +25,10 @@ export default function EnvoyerPage() {
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
 
-  // Step 1: Form, Step 2: OTP, Step 3: Loading / Failure
-  const [step, setStep] = useState<1 | 2 | 3>(1);
+  const [step, setStep] = useState<1 | 2>(1);
   const [requestId, setRequestId] = useState("");
-  const [otpCode, setOtpCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
-  // Loading animation state for Step 3
-  const [progress, setProgress] = useState(0);
-  const [progressPhase, setProgressPhase] = useState("Connexion au réseau bancaire SEPA…");
-  const [halted, setHalted] = useState(false);
   const [errorDetails, setErrorDetails] = useState("");
 
   const loadAccount = async () => {
@@ -50,10 +43,22 @@ export default function EnvoyerPage() {
   };
 
   useEffect(() => {
-    loadAccount();
+    let active = true;
+    fetch("/api/dashboard/transactions")
+      .then(async (res) => {
+        const data: AccountData = await res.json();
+        if (!res.ok) throw new Error(data.message ?? "Erreur de solde");
+        if (active) setAccount(data);
+      })
+      .catch(() => {
+        if (active) setAccount(null);
+      });
+
+    return () => {
+      active = false;
+    };
   }, []);
 
-  // Step 1 -> Step 2: Request OTP
   const handleInitiateTransfer = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -76,83 +81,14 @@ export default function EnvoyerPage() {
       if (!res.ok) throw new Error(data.message ?? "Erreur lors de la préparation du virement.");
 
       setRequestId(data.requestId);
+      setErrorDetails(data.message);
       setStep(2);
+      await loadAccount();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erreur.");
     } finally {
       setLoading(false);
     }
-  };
-
-  // Step 2 -> Step 3: Confirm OTP & trigger progress halting at configured percentage
-  const handleConfirmTransfer = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (otpCode.length !== 6) {
-      setError("Le code de confirmation doit comporter 6 chiffres.");
-      return;
-    }
-
-    setError("");
-    setLoading(true);
-
-    try {
-      const res = await fetch("/api/dashboard/transactions/withdraw-confirm", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          requestId,
-          otpCode,
-        }),
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message ?? "Code de confirmation erroné.");
-
-      setErrorDetails(data.message);
-      setStep(3);
-      startLoadingSequence(data.haltAtPercent, data.errorCode);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Code invalide.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Step 3 animation: smoothly advances to 75% then halts in error
-  const startLoadingSequence = (haltAtPercent: number = 75, errorCode: string = "ERR_SEPA_75") => {
-    setProgress(0);
-    setHalted(false);
-
-    let current = 0;
-    const interval = setInterval(() => {
-      // Dynamic progress phases based on halt percentage
-      const quarter = haltAtPercent / 4;
-      const half = haltAtPercent / 2;
-      const threeQuarters = (haltAtPercent * 3) / 4;
-
-      if (current < quarter) {
-        current += Math.max(1, Math.round(haltAtPercent / 20));
-        setProgress(Math.min(current, haltAtPercent));
-        setProgressPhase("Connexion sécurisée au réseau interbancaire SEPA…");
-      } else if (current < half) {
-        current += Math.max(1, Math.round(haltAtPercent / 25));
-        setProgress(Math.min(current, haltAtPercent));
-        setProgressPhase("Vérification des protocoles de compensation bancaire…");
-      } else if (current < threeQuarters) {
-        current += Math.max(1, Math.round(haltAtPercent / 35));
-        setProgress(Math.min(current, haltAtPercent));
-        setProgressPhase("Routage du flux financier vers l'établissement destinataire…");
-      } else if (current < haltAtPercent) {
-        current += 1;
-        setProgress(Math.min(current, haltAtPercent));
-        setProgressPhase("Finalisation du transfert SEPA…");
-      } else {
-        clearInterval(interval);
-        setProgress(haltAtPercent);
-        setHalted(true);
-        setProgressPhase(`Échec du routage bancaire interbancaire (Code: ${errorCode})`);
-      }
-    }, 120);
   };
 
   return (
@@ -177,7 +113,7 @@ export default function EnvoyerPage() {
           <i className="fa-solid fa-chevron-left"></i>
         </Link>
         <h1 style={{ fontSize: "1.25rem", fontWeight: 700, margin: 0 }}>
-          {step === 1 ? "Virement & Retrait" : step === 2 ? "Code de sécurité" : "Statut du virement"}
+          {step === 1 ? "Virement & Retrait" : "Statut du virement"}
         </h1>
         <div style={{ width: "38px" }}></div>
       </div>
@@ -356,236 +292,76 @@ export default function EnvoyerPage() {
                 boxShadow: "0 8px 25px rgba(67, 97, 238, 0.4)",
               }}
             >
-              {loading ? "Vérification en cours…" : "Continuer vers la sécurisation"}
+              {loading ? "Enregistrement en cours…" : "Envoyer la demande"}
             </button>
           </div>
         </form>
       )}
 
-      {/* STEP 2: OTP CONFIRMATION */}
+      {/* STEP 2: PENDING REVIEW */}
       {step === 2 && (
-        <div>
-          {/* Summary card */}
-          <div
-            style={{
-              background: "rgba(255,255,255,0.04)",
-              borderRadius: "16px",
-              padding: "1.25rem",
-              border: "1px solid rgba(255,255,255,0.08)",
-              marginBottom: "1.5rem",
-            }}
-          >
-            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.6rem" }}>
-              <span style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.85rem" }}>Bénéficiaire</span>
-              <strong style={{ fontSize: "0.95rem" }}>{recipientName}</strong>
-            </div>
-            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.6rem" }}>
-              <span style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.85rem" }}>IBAN destinataire</span>
-              <span style={{ fontFamily: "monospace", fontSize: "0.9rem" }}>
-                {iban.slice(0, 4)} •••• •••• {iban.slice(-4)}
-              </span>
-            </div>
-            <div style={{ display: "flex", justifyContent: "space-between", borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: "0.6rem" }}>
-              <span style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.85rem" }}>Montant à transférer</span>
-              <strong style={{ fontSize: "1.1rem", color: "#60a5fa" }}>{amount} €</strong>
-            </div>
+        <div
+          role="status"
+          style={{
+            textAlign: "center",
+            padding: "2rem 1.25rem",
+            background: "rgba(59, 130, 246, 0.1)",
+            border: "1px solid rgba(59, 130, 246, 0.3)",
+            borderRadius: "16px",
+          }}
+        >
+          <i className="fa-solid fa-hourglass-half" style={{ fontSize: "2rem", color: "#60a5fa", marginBottom: "1rem" }}></i>
+          <h2 style={{ fontSize: "1.2rem", fontWeight: 700, margin: "0 0 0.75rem" }}>
+            Demande en attente de validation
+          </h2>
+          <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.75)", lineHeight: 1.6, margin: "0 0 1.25rem" }}>
+            {errorDetails || "Votre demande a été enregistrée. Aucun virement n'a encore été exécuté."}
+          </p>
+          <div style={{ textAlign: "left", margin: "0 auto 1.5rem", maxWidth: "360px", fontSize: "0.9rem" }}>
+            <div style={{ marginBottom: "0.5rem" }}><strong>Bénéficiaire :</strong> {recipientName}</div>
+            <div style={{ marginBottom: "0.5rem" }}><strong>Montant :</strong> {amount} €</div>
+            <div><strong>Référence :</strong> {requestId}</div>
           </div>
-
-          {/* Security Alert box */}
-          <div
-            style={{
-              background: "rgba(59, 130, 246, 0.1)",
-              border: "1px solid rgba(59, 130, 246, 0.3)",
-              borderRadius: "14px",
-              padding: "1rem 1.25rem",
-              marginBottom: "1.75rem",
-            }}
-          >
-            <div style={{ display: "flex", gap: "0.75rem", alignItems: "flex-start" }}>
-              <i className="fa-solid fa-shield-halved" style={{ fontSize: "1.2rem", color: "#60a5fa", marginTop: "0.2rem" }}></i>
-              <div>
-                <strong style={{ fontSize: "0.95rem", display: "block", marginBottom: "0.3rem", color: "#93c5fd" }}>
-                  Code de sécurité obligatoire
-                </strong>
-                <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.8)", margin: 0, lineHeight: 1.5 }}>
-                  Pour des raisons de conformité et de contrôle anti-fraude, un code de validation à 6 chiffres a été généré et transmis à votre conseiller de gestion administrative. Veuillez vous rapprocher de lui pour récupérer le code de validation.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <form onSubmit={handleConfirmTransfer}>
-            <div style={{ marginBottom: "1.75rem", textAlign: "center" }}>
-              <label style={{ display: "block", fontSize: "0.85rem", color: "rgba(255,255,255,0.7)", marginBottom: "0.75rem" }}>
-                Saisissez le code de confirmation à 6 chiffres :
-              </label>
-              <input
-                type="text"
-                maxLength={6}
-                required
-                value={otpCode}
-                onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, ""))}
-                placeholder="••••••"
-                style={{
-                  width: "220px",
-                  margin: "0 auto",
-                  padding: "0.85rem 1rem",
-                  borderRadius: "14px",
-                  background: "rgba(255,255,255,0.08)",
-                  border: "2px solid #4361ee",
-                  color: "#fff",
-                  fontSize: "1.8rem",
-                  fontWeight: 800,
-                  letterSpacing: "8px",
-                  textAlign: "center",
-                  fontFamily: "monospace",
-                  display: "block",
-                }}
-              />
-            </div>
-
-            <div style={{ display: "flex", gap: "0.75rem" }}>
-              <button
-                type="button"
-                onClick={() => setStep(1)}
-                style={{
-                  flex: 1,
-                  padding: "0.9rem",
-                  borderRadius: "100px",
-                  background: "rgba(255,255,255,0.08)",
-                  border: "none",
-                  color: "#fff",
-                  fontWeight: 600,
-                  cursor: "pointer",
-                }}
-              >
-                Retour
-              </button>
-              <button
-                type="submit"
-                disabled={loading || otpCode.length !== 6}
-                style={{
-                  flex: 2,
-                  padding: "0.9rem",
-                  borderRadius: "100px",
-                  background: "linear-gradient(135deg, #10b981, #059669)",
-                  border: "none",
-                  color: "#fff",
-                  fontWeight: 700,
-                  fontSize: "1rem",
-                  cursor: loading || otpCode.length !== 6 ? "not-allowed" : "pointer",
-                  boxShadow: "0 6px 20px rgba(16, 185, 129, 0.4)",
-                }}
-              >
-                {loading ? "Vérification…" : "Confirmer le virement"}
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
-
-      {/* STEP 3: LOADING SEQUENCE & HALT AT 75% WITH ERROR */}
-      {step === 3 && (
-        <div style={{ textAlign: "center", padding: "2rem 0" }}>
-          {/* Progress Circular Display */}
-          <div style={{ position: "relative", width: "160px", height: "160px", margin: "0 auto 2rem" }}>
-            <svg style={{ width: "100%", height: "100%", transform: "rotate(-90deg)" }} viewBox="0 0 100 100">
-              {/* Background circle */}
-              <circle
-                cx="50"
-                cy="50"
-                r="42"
-                stroke="rgba(255,255,255,0.08)"
-                strokeWidth="8"
-                fill="none"
-              />
-              {/* Animated Progress circle */}
-              <circle
-                cx="50"
-                cy="50"
-                r="42"
-                stroke={halted ? "#ef4444" : "#4361ee"}
-                strokeWidth="8"
-                strokeDasharray="264"
-                strokeDashoffset={264 - (264 * progress) / 100}
-                strokeLinecap="round"
-                fill="none"
-                style={{ transition: "stroke-dashoffset 0.12s linear, stroke 0.3s ease" }}
-              />
-            </svg>
-
-            <div
+          <div style={{ display: "flex", justifyContent: "center", gap: "0.75rem", flexWrap: "wrap" }}>
+            <Link
+              href="/dashboard"
               style={{
-                position: "absolute",
-                inset: 0,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
+                display: "inline-block",
+                padding: "0.85rem 1.25rem",
+                borderRadius: "100px",
+                background: "linear-gradient(135deg, #4361ee, #3a0ca3)",
+                color: "#fff",
+                fontWeight: 700,
+                textDecoration: "none",
               }}
             >
-              <span style={{ fontSize: "2.2rem", fontWeight: 800, color: halted ? "#ef4444" : "#fff" }}>
-                {progress}%
-              </span>
-              {halted && (
-                <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "#f87171", textTransform: "uppercase" }}>
-                  INTERROMPU
-                </span>
-              )}
-            </div>
+              Retour au tableau de bord
+            </Link>
+            <button
+              type="button"
+              onClick={() => {
+                setStep(1);
+                setRequestId("");
+                setErrorDetails("");
+                setRecipientName("");
+                setIban("");
+                setBic("");
+                setAmount("");
+                setDescription("");
+              }}
+              style={{
+                padding: "0.85rem 1.25rem",
+                borderRadius: "100px",
+                background: "rgba(255,255,255,0.08)",
+                border: "none",
+                color: "#fff",
+                fontWeight: 600,
+                cursor: "pointer",
+              }}
+            >
+              Nouvelle demande
+            </button>
           </div>
-
-          {/* Phase text */}
-          <h2 style={{ fontSize: "1.25rem", fontWeight: 700, marginBottom: "0.75rem", color: halted ? "#f87171" : "#fff" }}>
-            {halted ? "Échec du virement interbancaire" : "Traitement du virement…"}
-          </h2>
-
-          <p style={{ fontSize: "0.9rem", color: halted ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.6)", maxWidth: "420px", margin: "0 auto 2rem", lineHeight: 1.6 }}>
-            {halted
-              ? errorDetails || "Erreur de routage bancaire interbancaire (Code: ERR_SEPA_75). Le protocole de compensation SEPA n'a pas pu être finalisé auprès de l'établissement récepteur. Veuillez contacter votre conseiller bancaire ou vérifier les paramètres de sécurité de votre compte."
-              : progressPhase}
-          </p>
-
-          {/* If halted: action buttons */}
-          {halted && (
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", maxWidth: "340px", margin: "0 auto" }}>
-              <Link
-                href="/dashboard"
-                style={{
-                  display: "block",
-                  padding: "0.9rem 1.5rem",
-                  borderRadius: "100px",
-                  background: "linear-gradient(135deg, #4361ee, #3a0ca3)",
-                  color: "#fff",
-                  fontWeight: 700,
-                  textDecoration: "none",
-                  boxShadow: "0 6px 20px rgba(67, 97, 238, 0.4)",
-                }}
-              >
-                Retour au tableau de bord
-              </Link>
-              <button
-                type="button"
-                onClick={() => {
-                  setStep(1);
-                  setOtpCode("");
-                  setProgress(0);
-                  setHalted(false);
-                }}
-                style={{
-                  padding: "0.8rem",
-                  borderRadius: "100px",
-                  background: "rgba(255,255,255,0.06)",
-                  border: "none",
-                  color: "rgba(255,255,255,0.8)",
-                  fontWeight: 600,
-                  cursor: "pointer",
-                }}
-              >
-                Recommencer une demande
-              </button>
-            </div>
-          )}
         </div>
       )}
     </div>
