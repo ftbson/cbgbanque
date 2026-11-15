@@ -7,6 +7,18 @@ interface AccountData {
   availableBalanceCents: number;
   currency: string;
   message?: string;
+  recentTransfers: TransferRequest[];
+}
+
+interface TransferRequest {
+  id: string;
+  recipientName: string;
+  iban: string;
+  bic: string;
+  amountCents: number;
+  description: string | null;
+  status: string;
+  createdAt: string;
 }
 
 function formatMoney(cents: number, currency: string = "EUR") {
@@ -19,6 +31,7 @@ function formatMoney(cents: number, currency: string = "EUR") {
 
 export default function EnvoyerPage() {
   const [account, setAccount] = useState<AccountData | null>(null);
+  const [expandedTransferId, setExpandedTransferId] = useState<string | null>(null);
   const [recipientName, setRecipientName] = useState("");
   const [iban, setIban] = useState("");
   const [bic, setBic] = useState("");
@@ -30,6 +43,9 @@ export default function EnvoyerPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [errorDetails, setErrorDetails] = useState("");
+  const hasPendingTransfers = account?.recentTransfers.some((transfer) =>
+    transfer.status === "pending_review" || transfer.status === "pending_admin_otp" || transfer.status === "pending_otp"
+  ) ?? false;
 
   const loadAccount = async () => {
     try {
@@ -59,6 +75,28 @@ export default function EnvoyerPage() {
     };
   }, []);
 
+  useEffect(() => {
+    if (!hasPendingTransfers) return;
+
+    let active = true;
+    const refreshTransfers = async () => {
+      try {
+        const res = await fetch("/api/dashboard/transactions");
+        const data: AccountData = await res.json();
+        if (!res.ok) throw new Error(data.message ?? "Erreur de mise à jour des virements.");
+        if (active) setAccount(data);
+      } catch (refreshError) {
+        console.error("Erreur d’actualisation des demandes de virement :", refreshError);
+      }
+    };
+
+    const intervalId = window.setInterval(refreshTransfers, 10000);
+    return () => {
+      active = false;
+      window.clearInterval(intervalId);
+    };
+  }, [hasPendingTransfers]);
+
   const handleInitiateTransfer = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -84,6 +122,7 @@ export default function EnvoyerPage() {
       setErrorDetails(data.message);
       setStep(2);
       await loadAccount();
+      setExpandedTransferId(data.requestId);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erreur.");
     } finally {
@@ -143,6 +182,105 @@ export default function EnvoyerPage() {
           <i className="fa-solid fa-arrow-up-right-from-square"></i>
         </div>
       </div>
+
+      {account && account.recentTransfers.length > 0 && (
+        <section
+          aria-labelledby="recent-transfers-title"
+          style={{
+            marginBottom: "1.5rem",
+            padding: "1rem",
+            background: "rgba(255,255,255,0.04)",
+            border: "1px solid rgba(255,255,255,0.08)",
+            borderRadius: "16px",
+          }}
+        >
+          <h2 id="recent-transfers-title" style={{ fontSize: "1rem", margin: "0 0 0.75rem" }}>
+            Demandes de virement récentes
+          </h2>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            {account.recentTransfers.map((transfer) => {
+              const isPending = transfer.status === "pending_review" || transfer.status === "pending_admin_otp" || transfer.status === "pending_otp";
+              const isBlocked = transfer.status === "blocked_by_admin" || transfer.status === "blocked_at_routing" || transfer.status === "failed_verification";
+              const isExpanded = expandedTransferId === transfer.id;
+
+              return (
+                <div key={transfer.id} style={{ borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: "0.5rem" }}>
+                  <button
+                    type="button"
+                    aria-expanded={isExpanded}
+                    aria-label={`${isExpanded ? "Masquer" : "Afficher"} le suivi du virement vers ${transfer.recipientName}`}
+                    onClick={() => setExpandedTransferId(isExpanded ? null : transfer.id)}
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      gap: "0.75rem",
+                      padding: "0.4rem 0",
+                      color: "#fff",
+                      background: "transparent",
+                      border: 0,
+                      cursor: "pointer",
+                      textAlign: "left",
+                    }}
+                  >
+                    <span style={{ minWidth: 0 }}>
+                      <strong style={{ display: "block", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                        {transfer.recipientName}
+                      </strong>
+                      <span style={{ color: "#94a3b8", fontSize: "0.8rem" }}>
+                        {new Date(transfer.createdAt).toLocaleString("fr-FR")}
+                      </span>
+                    </span>
+                    <span style={{ textAlign: "right", flexShrink: 0 }}>
+                      <strong style={{ display: "block" }}>{formatMoney(transfer.amountCents, account.currency)}</strong>
+                      <span style={{ display: "block", color: isPending ? "#fbbf24" : isBlocked ? "#f87171" : "#34d399", fontSize: "0.8rem", marginBottom: "0.35rem" }}>
+                        {isPending ? "En attente" : isBlocked ? "Bloqué" : "Traité"}
+                      </span>
+                      <span
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "0.35rem",
+                          padding: "0.3rem 0.55rem",
+                          borderRadius: "8px",
+                          border: `1px solid ${isPending ? "rgba(251,191,36,0.45)" : "rgba(148,163,184,0.3)"}`,
+                          background: isPending ? "rgba(251,191,36,0.12)" : "rgba(148,163,184,0.08)",
+                          color: isPending ? "#fbbf24" : "#cbd5e1",
+                          fontSize: "0.75rem",
+                          fontWeight: 700,
+                        }}
+                      >
+                        {isExpanded ? "Masquer le suivi" : isPending ? "Voir le suivi" : "Voir les détails"}
+                        <i className={`fa-solid ${isExpanded ? "fa-chevron-up" : "fa-chevron-down"}`} aria-hidden="true"></i>
+                      </span>
+                    </span>
+                  </button>
+                  {isExpanded && (
+                    <div style={{ padding: "0.5rem 0 0.25rem", color: "rgba(255,255,255,0.75)", fontSize: "0.85rem", lineHeight: 1.6 }}>
+                      <div><strong>Bénéficiaire :</strong> {transfer.recipientName}</div>
+                      <div><strong>IBAN :</strong> {transfer.iban}</div>
+                      {transfer.bic && <div><strong>BIC :</strong> {transfer.bic}</div>}
+                      {transfer.description && <div><strong>Motif :</strong> {transfer.description}</div>}
+                      <div><strong>Référence :</strong> {transfer.id}</div>
+                      {isPending && (
+                        <div
+                          role="status"
+                          aria-live="polite"
+                          style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginTop: "0.75rem", color: "#fbbf24" }}
+                        >
+                          <i className="fa-solid fa-circle-notch fa-spin" aria-hidden="true"></i>
+                          <span>En attente d’examen par l’administration. Aucun virement n’a encore été exécuté.</span>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {/* Error Banner */}
       {error && (

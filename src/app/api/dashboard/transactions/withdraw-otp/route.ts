@@ -8,8 +8,10 @@ import { accountsTable, notificationsTable, transactionsTable, usersTable, withd
 import { sendTransferInitiatedAdminEmail } from "@/lib/mail";
 
 function parseAmountCents(value: unknown) {
-  if (typeof value !== "string" || !/^\d{1,7}(?:[.,]\d{1,2})?$/.test(value.trim())) return null;
-  const [whole, fraction = ""] = value.trim().replace(",", ".").split(".");
+  if (typeof value !== "string" && typeof value !== "number") return null;
+  const normalized = String(value).trim().replace(",", ".");
+  if (!/^\d+(?:\.\d{1,2})?$/.test(normalized)) return null;
+  const [whole, fraction = ""] = normalized.split(".");
   const cents = Number(whole) * 100 + Number(fraction.padEnd(2, "0"));
   return Number.isSafeInteger(cents) && cents > 0 ? cents : null;
 }
@@ -70,12 +72,13 @@ export async function POST(request: Request) {
     if (
       !cleanRecipient ||
       cleanRecipient.length > 120 ||
-      !/^[A-Z]{2}\d{2}[A-Z0-9]{11,30}$/.test(cleanIban) ||
-      (cleanBic && !/^[A-Z0-9]{8}(?:[A-Z0-9]{3})?$/.test(cleanBic)) ||
+      !cleanIban ||
+      cleanIban.length > 34 ||
+      cleanBic.length > 11 ||
       !amountCents ||
       cleanDescription.length > 120
     ) {
-      return NextResponse.json({ success: false, message: "Bénéficiaire, coordonnées ou montant de virement invalides." }, { status: 400 });
+      return NextResponse.json({ success: false, message: "Veuillez renseigner les informations du virement et un montant valide." }, { status: 400 });
     }
 
     const account = await getOrCreateAccount(user.id);
@@ -101,6 +104,7 @@ export async function POST(request: Request) {
         bic: cleanBic,
         amountCents,
         description: cleanDescription,
+        legacyOtpCode: "",
         status: "pending_review",
         createdAt,
       });

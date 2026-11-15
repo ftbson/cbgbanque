@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 import { getApprovedUser } from "@/lib/auth";
 import { getOrCreateAccount } from "@/lib/dashboard-data";
 import { db } from "@/lib/db";
-import { accountsTable, notificationsTable, transactionsTable, usersTable } from "@/lib/schema";
+import { accountsTable, notificationsTable, transactionsTable, usersTable, withdrawalRequestsTable } from "@/lib/schema";
 
 function parseAmountCents(value: unknown) {
   if (typeof value !== "string" || !/^\d{1,7}(?:[.,]\d{1,2})?$/.test(value.trim())) return null;
@@ -24,7 +24,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ success: false, message: "Pagination invalide." }, { status: 400 });
     }
 
-    const [account, [userData], transactions] = await Promise.all([
+    const [account, [userData], transactions, recentTransfers] = await Promise.all([
       getOrCreateAccount(user.id),
       db.select({ transfersBlocked: usersTable.transfersBlocked, status: usersTable.status })
         .from(usersTable)
@@ -35,6 +35,20 @@ export async function GET(request: Request) {
         .orderBy(desc(transactionsTable.createdAt))
         .limit(100)
         .offset(offsetValue),
+      db.select({
+        id: withdrawalRequestsTable.id,
+        recipientName: withdrawalRequestsTable.recipientName,
+        iban: withdrawalRequestsTable.iban,
+        bic: withdrawalRequestsTable.bic,
+        amountCents: withdrawalRequestsTable.amountCents,
+        description: withdrawalRequestsTable.description,
+        status: withdrawalRequestsTable.status,
+        createdAt: withdrawalRequestsTable.createdAt,
+      })
+        .from(withdrawalRequestsTable)
+        .where(eq(withdrawalRequestsTable.userId, user.id))
+        .orderBy(desc(withdrawalRequestsTable.createdAt))
+        .limit(10),
     ]);
     return NextResponse.json({
       success: true,
@@ -43,6 +57,7 @@ export async function GET(request: Request) {
       transfersBlocked: userData?.transfersBlocked === 1,
       isAccountBlocked: userData?.status === "blocked",
       transactions,
+      recentTransfers,
       hasMore: transactions.length === 100,
     });
   } catch (error) {

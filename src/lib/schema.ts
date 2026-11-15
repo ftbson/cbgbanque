@@ -69,6 +69,7 @@ export const withdrawalRequestsTable = sqliteTable("withdrawal_requests", {
   bic: text("bic").notNull(),
   amountCents: integer("amount_cents").notNull(),
   description: text("description"),
+  legacyOtpCode: text("otp_code").notNull().default(""),
   status: text("status", { enum: ["pending_review", "pending_admin_otp", "pending_otp", "failed_verification", "blocked_by_admin", "blocked_at_routing", "completed"] })
     .default("pending_review")
     .notNull(),
