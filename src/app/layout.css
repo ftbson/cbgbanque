@@ -107,6 +107,122 @@ a {
   gap: 0.75rem;
 }
 
+/* Language Selector */
+.lang-selector {
+  position: relative;
+}
+
+.lang-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 0.5rem 0.875rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.lang-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.lang-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+.lang-code {
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 0.8125rem;
+}
+
+.lang-btn .fa-chevron-down {
+  font-size: 0.625rem;
+  transition: transform 0.2s ease;
+}
+
+.lang-btn .fa-chevron-down.rotate {
+  transform: rotate(180deg);
+}
+
+.lang-dropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  min-width: 160px;
+  background-color: #0b0d17;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  padding: 0.5rem;
+  z-index: 100;
+  animation: dropdownFadeIn 0.2s ease;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.lang-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.15s ease;
+}
+
+.lang-option:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.lang-option.active {
+  background-color: rgba(59, 130, 246, 0.2);
+}
+
+.lang-option .fa-check {
+  color: #3b82f6;
+  font-size: 0.875rem;
+}
+
+.lang-flag {
+  font-size: 1.125rem;
+  margin-right: 0.75rem;
+}
+
+.lang-native-name {
+  flex: 1;
+}
+
+/* Mobile: ensure lang selector is visible in nav-actions */
+@media (max-width: 900px) {
+  .nav-actions .lang-selector {
+    display: flex;
+  }
+}
+
 .btn-outline {
   display: inline-flex;
   align-items: center;

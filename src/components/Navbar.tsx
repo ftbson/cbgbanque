@@ -112,23 +112,36 @@ export default function Navbar() {
               aria-haspopup="true"
             >
               <i className="fa-solid fa-globe"></i>
+              <span className="lang-flag" aria-hidden="true">
+                {locale === "fr" && "🇫🇷"}
+                {locale === "es" && "🇪🇸"}
+                {locale === "de" && "🇩🇪"}
+              </span>
               <span className="lang-code">{locale.toUpperCase()}</span>
               <i className={`fa-solid fa-chevron-down ${showLangMenu ? "rotate" : ""}`}></i>
             </button>
             {showLangMenu && (
               <div className="lang-dropdown" role="menu">
-                {availableLocales.map((lang) => (
-                  <button
-                    key={lang.code}
-                    className={`lang-option ${locale === lang.code ? "active" : ""}`}
-                    onClick={() => handleLangChange(lang.code)}
-                    role="menuitem"
-                    aria-selected={locale === lang.code}
-                  >
-                    <span className="lang-native-name">{lang.nativeName}</span>
-                    {locale === lang.code && <i className="fa-solid fa-check"></i>}
-                  </button>
-                ))}
+                {availableLocales.map((lang) => {
+                  const flagMap: Record<string, string> = {
+                    fr: "🇫🇷",
+                    es: "🇪🇸",
+                    de: "🇩🇪",
+                  };
+                  return (
+                    <button
+                      key={lang.code}
+                      className={`lang-option ${locale === lang.code ? "active" : ""}`}
+                      onClick={() => handleLangChange(lang.code)}
+                      role="menuitem"
+                      aria-selected={locale === lang.code}
+                    >
+                      <span className="lang-flag" aria-hidden="true">{flagMap[lang.code]}</span>
+                      <span className="lang-native-name">{lang.nativeName}</span>
+                      {locale === lang.code && <i className="fa-solid fa-check"></i>}
+                    </button>
+                  );
+                })}
               </div>
             )}
           </div>
