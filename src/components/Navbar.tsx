@@ -146,10 +146,10 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Connexion */}
-          <Link href="/login" className="btn-outline btn-login">
+          
+          {/* <Link href="/login" className="btn-outline btn-login">
             {t("nav.login")}
-          </Link>
+          </Link> */}
 
           {/* Desktop primary CTA (Unique sur PC) */}
           <Link href="/register" className="btn-primary desktop-cta">
