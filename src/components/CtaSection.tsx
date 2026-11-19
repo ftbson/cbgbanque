@@ -2,8 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { useTranslation } from "@/lib/i18n";
 
 export default function CtaSection() {
+  const { t, locale } = useTranslation();
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [counts, setCounts] = useState({
@@ -18,11 +20,10 @@ export default function CtaSection() {
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          // Une fois visible, on peut arrêter d'observer
           if (sectionRef.current) observer.unobserve(sectionRef.current);
         }
       },
-      { threshold: 0.2 } // Se déclenche à 20% de visibilité
+      { threshold: 0.2 }
     );
 
     if (sectionRef.current) {
@@ -37,12 +38,12 @@ export default function CtaSection() {
     if (!isVisible) return;
 
     let startTimestamp: number | null = null;
-    const duration = 2000; // 2 secondes pour l'animation
+    const duration = 2000;
 
     const animateCounts = (timestamp: number) => {
       if (!startTimestamp) startTimestamp = timestamp;
       const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-      const easeOut = 1 - Math.pow(1 - progress, 3); // Easing fluide
+      const easeOut = 1 - Math.pow(1 - progress, 3);
 
       setCounts({
         clients: Math.floor(easeOut * 50000),
@@ -59,34 +60,39 @@ export default function CtaSection() {
     window.requestAnimationFrame(animateCounts);
   }, [isVisible]);
 
+  const formatNumber = (num: number) => {
+    const locales: Record<string, string> = { fr: "fr-FR", es: "es-ES", de: "de-DE" };
+    return num.toLocaleString(locales[locale] || "fr-FR");
+  };
+
   return (
     <section ref={sectionRef} className="cta-section">
       <div className={`cta-container ${isVisible ? "is-visible" : ""}`}>
-        
+
         {/* Card 1: Key Statistics Block */}
         <div className="stats-card reveal-item reveal-card-1">
-          <div className="stats-tag">CBGBANQUE EN CHIFFRES</div>
+          <div className="stats-tag">{t("cta.statsTag")}</div>
 
           <div className="stats-grid">
             <div className="stat-item">
               <span className="stat-number">
-                {counts.clients.toLocaleString("fr-FR")} +
+                {formatNumber(counts.clients)} +
               </span>
-              <span className="stat-label">Clients en Europe</span>
+              <span className="stat-label">{t("cta.stats.clients")}</span>
             </div>
             <div className="stat-item">
               <span className="stat-number">
-                {counts.capital.toLocaleString("fr-FR")} €
+                {formatNumber(counts.capital)} €
               </span>
-              <span className="stat-label">Capital libéré</span>
+              <span className="stat-label">{t("cta.stats.capital")}</span>
             </div>
             <div className="stat-item">
               <span className="stat-number">{counts.languages}</span>
-              <span className="stat-label">Langues supportées</span>
+              <span className="stat-label">{t("cta.stats.languages")}</span>
             </div>
             <div className="stat-item">
               <span className="stat-number">{counts.year}</span>
-              <span className="stat-label">Siège à Bruxelles</span>
+              <span className="stat-label">{t("cta.stats.year")}</span>
             </div>
           </div>
         </div>
@@ -99,21 +105,20 @@ export default function CtaSection() {
 
           <div className="cta-content">
             <h2 className="cta-title">
-              Prêt à transformer votre{" "}
-              <span className="gradient-text">expérience bancaire ?</span>
+              {t("cta.title")}{" "}
+              <span className="gradient-text">{t("cta.titleHighlight")}</span>
             </h2>
 
             <p className="cta-description">
-              Ouvrez votre compte en moins de 5 minutes. Sans frais cachés, sans
-              engagement.
+              {t("cta.description")}
             </p>
 
             <div className="cta-actions">
               <Link href="/register" className="btn-cta-white">
-                Ouvrir un compte <i className="fa-solid fa-arrow-right"></i>
+                {t("cta.ctaPrimary")} <i className="fa-solid fa-arrow-right"></i>
               </Link>
               <Link href="/download" className="btn-cta-glow">
-                Découvrir l'application
+                {t("cta.ctaSecondary")}
               </Link>
             </div>
           </div>

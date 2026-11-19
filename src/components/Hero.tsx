@@ -2,19 +2,20 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useTranslation } from "@/lib/i18n";
 
 export default function Hero() {
+  const { t, locale } = useTranslation();
   const [balance, setBalance] = useState(0);
   const targetBalance = 12458.9;
 
   useEffect(() => {
     let startTimestamp: number | null = null;
-    const duration = 2000; // Animation de 2 secondes
+    const duration = 2000;
 
     const step = (timestamp: number) => {
       if (!startTimestamp) startTimestamp = timestamp;
       const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-      // Easing outQuad pour ralentir à la fin
       const easeOutProgress = 1 - (1 - progress) * (1 - progress);
       setBalance(easeOutProgress * targetBalance);
 
@@ -26,8 +27,13 @@ export default function Hero() {
     window.requestAnimationFrame(step);
   }, []);
 
-  // Formatage des chiffres et des centimes
-  const integerPart = Math.floor(balance).toLocaleString("fr-FR");
+  // Format numbers based on locale
+  const formatNumber = (num: number) => {
+    const locales: Record<string, string> = { fr: "fr-FR", es: "es-ES", de: "de-DE" };
+    return Math.floor(num).toLocaleString(locales[locale] || "fr-FR");
+  };
+
+  const integerPart = formatNumber(balance);
   const centsPart = (balance % 1).toFixed(2).substring(2);
 
   return (
@@ -41,30 +47,28 @@ export default function Hero() {
         <div className="hero-content">
           <div className="hero-badge">
             <span className="pulse-dot"></span>
-            <span>La Neo-Banque de Nouvelle Génération</span>
+            <span>{t("hero.badge")}</span>
           </div>
 
           <h1 className="hero-title">
-            Repensez votre liberté{" "}
-            <span className="hero-gradient-text">financière.</span>
+            {t("hero.title")}{" "}
+            <span className="hero-gradient-text">{t("hero.titleHighlight")}</span>
           </h1>
 
           <p className="hero-subtitle">
-            Compte sans frais, rémunération jusqu'à 4,2 %, cartes virtuelles
-            instantanées et transferts zéro délai. Prenez le contrôle de votre
-            argent avec CBGBanque.
+            {t("hero.subtitle")}
           </p>
 
           <div className="hero-actions">
             <Link href="/register" className="btn-hero-primary">
-              Ouvrir mon compte <i className="fa-solid fa-arrow-right"></i>
+              {t("hero.ctaPrimary")} <i className="fa-solid fa-arrow-right"></i>
             </Link>
             <div className="hero-secondary-group">
               <Link href="/login" className="btn-hero-secondary">
-                J'ai déjà un compte
+                {t("hero.ctaSecondary")}
               </Link>
               <Link href="/download" className="btn-hero-outline">
-                <i className="fa-solid fa-download"></i> App Mobile
+                <i className="fa-solid fa-download"></i> {t("hero.ctaDownload")}
               </Link>
             </div>
           </div>
@@ -72,15 +76,15 @@ export default function Hero() {
           <div className="hero-trust">
             <div className="trust-item">
               <i className="fa-solid fa-shield-halved"></i>
-              <span>Compte 100% gratuit</span>
+              <span>{t("hero.trust1")}</span>
             </div>
             <div className="trust-item">
               <i className="fa-solid fa-circle-check"></i>
-              <span>Agrément Banque Digitale</span>
+              <span>{t("hero.trust2")}</span>
             </div>
             <div className="trust-item">
               <i className="fa-solid fa-lock"></i>
-              <span>Sécurité militaire</span>
+              <span>{t("hero.trust3")}</span>
             </div>
           </div>
         </div>
@@ -94,7 +98,7 @@ export default function Hero() {
                 <i className="fa-solid fa-arrow-up"></i>
               </div>
               <div className="badge-info">
-                <span className="badge-title">Salaire reçu</span>
+                <span className="badge-title">{t("hero.phoneSalary")}</span>
                 <span className="badge-amount">+2 450,00 €</span>
               </div>
             </div>
@@ -104,7 +108,7 @@ export default function Hero() {
                 <i className="fa-solid fa-paper-plane"></i>
               </div>
               <div className="badge-info">
-                <span className="badge-title">Virement instantané</span>
+                <span className="badge-title">{t("hero.phoneTransfer")}</span>
                 <span className="badge-amount">-120,00 €</span>
               </div>
             </div>
@@ -121,14 +125,14 @@ export default function Hero() {
               </div>
 
               <div className="app-balance-card">
-                <span className="balance-label">Solde disponible</span>
+                <span className="balance-label">{t("hero.phoneBalanceLabel")}</span>
                 <div className="balance-amount">
                   {integerPart}
                   <span className="balance-cents">,{centsPart} €</span>
                 </div>
                 <div className="balance-trend">
                   <i className="fa-solid fa-arrow-trend-up"></i> +245,30 €
-                  aujourd'hui
+                  {t("hero.phoneBalanceTrend")}
                 </div>
               </div>
 
@@ -166,19 +170,19 @@ export default function Hero() {
               <div className="app-actions">
                 <div className="action-btn">
                   <i className="fa-solid fa-arrow-up"></i>
-                  <span>Envoyer</span>
+                  <span>{t("hero.phoneActions.send")}</span>
                 </div>
                 <div className="action-btn">
                   <i className="fa-solid fa-arrow-down"></i>
-                  <span>Recevoir</span>
+                  <span>{t("hero.phoneActions.receive")}</span>
                 </div>
                 <div className="action-btn">
                   <i className="fa-solid fa-plus"></i>
-                  <span>Ajouter</span>
+                  <span>{t("hero.phoneActions.add")}</span>
                 </div>
                 <div className="action-btn">
                   <i className="fa-solid fa-credit-card"></i>
-                  <span>Cartes</span>
+                  <span>{t("hero.phoneActions.cards")}</span>
                 </div>
               </div>
 
@@ -191,7 +195,7 @@ export default function Hero() {
                 </div>
                 <div className="card-number">•••• 5403</div>
                 <div className="card-bottom">
-                  <span className="card-holder">KENDRA D.</span>
+                  <span className="card-holder">{t("hero.phoneCardHolder")}</span>
                   <i className="fa-brands fa-cc-visa visa-icon"></i>
                 </div>
               </div>

@@ -4,6 +4,7 @@ import "./layout.css";
 import SiteFrame from "@/components/SiteFrame";
 import { CartProvider } from "@/context/CartContext";
 import PwaRegistrar from "@/components/PwaRegistrar";
+import { I18nProvider } from "@/lib/i18n";
 
 export const metadata: Metadata = {
   title: "CBGBanque - Votre banque en ligne et services financiers",
@@ -23,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fr">
+    <html suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
@@ -52,12 +53,14 @@ export default function RootLayout({
 href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" />
 
       </head>
-<body suppressHydrationWarning={true}>
-  <CartProvider>
-    <PwaRegistrar />
-    <SiteFrame>{children}</SiteFrame>
-  </CartProvider>
-</body>
+      <body>
+        <CartProvider>
+          <PwaRegistrar />
+          <I18nProvider>
+            <SiteFrame>{children}</SiteFrame>
+          </I18nProvider>
+        </CartProvider>
+      </body>
     </html>
   );
 }

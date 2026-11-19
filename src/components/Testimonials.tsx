@@ -1,71 +1,74 @@
 "use client";
 
 import React from "react";
+import { useTranslation } from "@/lib/i18n";
 
 interface Testimonial {
   id: string;
-  quote: string;
-  author: string;
+  quoteKey: string;
+  authorKey: string;
   initial: string;
   avatarBg: string;
 }
 
-const testimonialsData: Testimonial[] = [
-  {
-    id: "1",
-    quote: "J'ai ouvert mon compte en quelques minutes seulement. Zéro frais sur mes virements et une interface fluide, c'est tout simplement parfait pour gérer mon budget au quotidien.",
-    author: "Éric K.",
-    initial: "É",
-    avatarBg: "avatar-blue",
-  },
-  {
-    id: "2",
-    quote: "Le service d'épargne booster est une vraie pépite. Les intérêts versés chaque jour m'offrent un rendement optimal sans bloquer mon capital. Je recommande à 100 % !",
-    author: "Aïcha M.",
-    initial: "A",
-    avatarBg: "avatar-green",
-  },
-  {
-    id: "30",
-    quote: "Obtenir un prêt personnel n'a jamais été aussi simple. Réponse rapide en moins de 24h et des taux ultra compétitifs. Une banque moderne qui tient ses promesses.",
-    author: "Stéphane B.",
-    initial: "S",
-    avatarBg: "avatar-purple",
-  },
-  {
-    id: "4",
-    quote: "La génération de cartes virtuelles éphémères a totalement sécurisé mes achats sur Internet. Plus aucune crainte de fraude, un vrai confort d'esprit.",
-    author: "Chantal R.",
-    initial: "C",
-    avatarBg: "avatar-amber",
-  },
-  {
-    id: "5",
-    quote: "Voyageant souvent en dehors de la zone euro, le change multi-devises sans commissions cachées m'a fait économiser un montant fou. Bravo à toute l'équipe !",
-    author: "Julien P.",
-    initial: "J",
-    avatarBg: "avatar-cyan",
-  },
-  {
-    id: "6",
-    quote: "Le support client est réactif, professionnel et à l'écoute. La meilleure néo-banque que j'ai eu l'occasion d'utiliser jusqu'à présent.",
-    author: "Nathalie D.",
-    initial: "N",
-    avatarBg: "avatar-pink",
-  },
-];
-
 export default function Testimonials() {
+  const { t } = useTranslation();
+
+  const testimonialsData: Testimonial[] = [
+    {
+      id: "1",
+      quoteKey: "testimonials.items.1.quote",
+      authorKey: "testimonials.items.1.author",
+      initial: "É",
+      avatarBg: "avatar-blue",
+    },
+    {
+      id: "2",
+      quoteKey: "testimonials.items.2.quote",
+      authorKey: "testimonials.items.2.author",
+      initial: "A",
+      avatarBg: "avatar-green",
+    },
+    {
+      id: "3",
+      quoteKey: "testimonials.items.3.quote",
+      authorKey: "testimonials.items.3.author",
+      initial: "S",
+      avatarBg: "avatar-purple",
+    },
+    {
+      id: "4",
+      quoteKey: "testimonials.items.4.quote",
+      authorKey: "testimonials.items.4.author",
+      initial: "C",
+      avatarBg: "avatar-amber",
+    },
+    {
+      id: "5",
+      quoteKey: "testimonials.items.5.quote",
+      authorKey: "testimonials.items.5.author",
+      initial: "J",
+      avatarBg: "avatar-cyan",
+    },
+    {
+      id: "6",
+      quoteKey: "testimonials.items.6.quote",
+      authorKey: "testimonials.items.6.author",
+      initial: "N",
+      avatarBg: "avatar-pink",
+    },
+  ];
+
   // Duplication des témoignages pour assurer une boucle infinie fluide
   const duplicatedTestimonials = [...testimonialsData, ...testimonialsData];
 
   return (
     <section className="testimonials-section">
       <div className="testimonials-header">
-        <span className="testimonials-tag">AVIS CLIENTS</span>
-        <h2 className="testimonials-title">Ce que disent nos clients</h2>
+        <span className="testimonials-tag">{t("testimonials.tag")}</span>
+        <h2 className="testimonials-title">{t("testimonials.title")}</h2>
         <p className="testimonials-subtitle">
-          Découvrez pourquoi des milliers de utilisateurs font confiance à CBGBanque au quotidien.
+          {t("testimonials.subtitle")}
         </p>
       </div>
 
@@ -77,12 +80,12 @@ export default function Testimonials() {
               <div className="quote-icon">
                 <i className="fa-solid fa-quote-left"></i>
               </div>
-              <p className="testimonial-quote">"{item.quote}"</p>
+              <p className="testimonial-quote">"{t(item.quoteKey)}"</p>
               <div className="testimonial-author-box">
                 <div className={`author-avatar ${item.avatarBg}`}>
                   {item.initial}
                 </div>
-                <span className="author-name">{item.author}</span>
+                <span className="author-name">{t(item.authorKey)}</span>
               </div>
             </div>
           ))}

@@ -3,8 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import PwaInstallModal, { usePwa } from "./PwaInstallModal";
+import { useTranslation } from "@/lib/i18n";
 
 export default function Footer() {
+  const { t } = useTranslation();
   const [showPwaModal, setShowPwaModal] = useState(false);
   const { triggerInstall } = usePwa();
 
@@ -20,7 +22,7 @@ export default function Footer() {
     <>
       <footer className="footer-section">
         <div className="footer-container">
-          
+
           {/* Top Download Banner Card */}
           <div className="footer-banner">
             <div className="banner-left">
@@ -53,14 +55,14 @@ export default function Footer() {
                 </svg>
               </div>
               <div className="banner-texts">
-                <h4 className="banner-title">L&apos;application CBG Banque</h4>
+                <h4 className="banner-title">{t("footer.bannerTitle")}</h4>
                 <p className="banner-subtitle">
-                  Gratuite · s&apos;installe en 1 geste · raccourci direct sur votre écran
+                  {t("footer.bannerSubtitle")}
                 </p>
               </div>
             </div>
             <button onClick={handleDownloadClick} className="btn-banner-download">
-              <i className="fa-solid fa-download"></i> Télécharger l&apos;application
+              <i className="fa-solid fa-download"></i> {t("footer.bannerCTA")}
             </button>
           </div>
 
@@ -69,26 +71,22 @@ export default function Footer() {
             <div className="footer-col brand-info">
               <div className="footer-brand-header">
                 <span className="footer-mini-logo">CBG</span>
-                <span className="footer-brand-title">CBG Banque Finance SA</span>
+                <span className="footer-brand-title">{t("footer.brandTitle")}</span>
               </div>
               <p className="footer-legal-text">
-                Établissement bancaire et financier de référence européenne.<br />
-                Capital social libéré : 50 000 000 €<br />
-                Siège social : Avenue Louise 542, 1050 Ixelles, Bruxelles<br />
-                BCE : 0789.456.123 - TVA : BE 0789.456.123 - LEI : 549300C23BQ2026B7<br />
-                BIC / SWIFT : C23QBEBB
+                {t("footer.legalText")}
               </p>
             </div>
 
             <div className="footer-col contact-info">
-              <h5 className="footer-subtitle-heading">Contact & Médiation</h5>
+              <h5 className="footer-subtitle-heading">{t("footer.contactTitle")}</h5>
               <p className="footer-legal-text">
                 <strong>Email :</strong>{" "}
                 <a href="mailto:serviceclient@cbgbanque.com" className="footer-link-inline">
-                  serviceclient@cbgbanque.com
+                  {t("footer.contactEmail")}
                 </a>
                 <br />
-                <strong>Support téléphonique :</strong> +33 (0) 1 89 71 42 00 (Lun - Sam : 8h - 20h)
+                <strong>Support téléphonique :</strong> {t("footer.contactPhone")}
                 <br />
                 <strong>Médiateur agréé :</strong> Ombudsfin (
                 <a
@@ -107,21 +105,21 @@ export default function Footer() {
           {/* Bottom Bar: Links & Copyright */}
           <div className="footer-bottom-bar">
             <div className="footer-legal-links">
-              <Link href="/aide">Aide & FAQ</Link>
-              <Link href="/confidentialite">Confidentialité</Link>
-              <Link href="/mentions-legales">Mentions légales</Link>
-              <Link href="/cgu">CGU</Link>
-              <Link href="/rgpd">RGPD</Link>
-              <Link href="/cookies">Cookies</Link>
+              <Link href="/aide">{t("footer.links.help")}</Link>
+              <Link href="/confidentialite">{t("footer.links.privacy")}</Link>
+              <Link href="/mentions-legales">{t("footer.links.legal")}</Link>
+              <Link href="/cgu">{t("footer.links.terms")}</Link>
+              <Link href="/rgpd">{t("footer.links.rgpd")}</Link>
+              <Link href="/cookies">{t("footer.links.cookies")}</Link>
             </div>
             <div className="footer-copyright">
-              © {new Date().getFullYear()} CBG Banque Finance SA. Tous droits réservés.
+              {t("footer.copyright", { year: new Date().getFullYear() })}
             </div>
           </div>
 
           {/* Grand Nom Animé de la Banque en Pied de Page */}
           <div className="footer-giant-watermark" aria-hidden="true">
-            <span className="giant-watermark-text">CBG BANQUE</span>
+            <span className="giant-watermark-text">{t("footer.watermark")}</span>
           </div>
 
         </div>

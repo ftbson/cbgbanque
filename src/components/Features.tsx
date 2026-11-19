@@ -1,91 +1,93 @@
 "use client";
 
 import React from "react";
+import { useTranslation } from "@/lib/i18n";
 
 interface FeatureCard {
   id: string;
   icon: string;
   iconBg: string;
-  glowColor: string; // RGB pour les halos lumineux
-  highlightColor?: string; // Couleur spécifique pour le texte highlight
-  title: string;
-  highlight?: string;
-  description: string;
-  badge?: string;
+  glowColor: string;
+  highlightColor?: string;
+  titleKey: string;
+  highlightKey?: string;
+  descriptionKey: string;
 }
 
-const featuresData: FeatureCard[] = [
-  {
-    id: "account",
-    icon: "fa-regular fa-credit-card",
-    iconBg: "gradient-blue",
-    glowColor: "37, 99, 235", // Bleu
-    title: "Compte courant",
-    description: "IBAN belge, carte Visa, paiements instantanés. 0 € de frais.",
-  },
-  {
-    id: "savings",
-    icon: "fa-solid fa-dollar-sign",
-    iconBg: "gradient-green",
-    glowColor: "22, 163, 74", // Vert
-    highlightColor: "#22c55e",
-    title: "Épargne",
-    highlight: "3,25 %",
-    description: "Coffres illimités, intérêts journaliers. Disponibilité immédiate.",
-  },
-  {
-    id: "virtual-cards",
-    icon: "fa-solid fa-clone",
-    iconBg: "gradient-purple",
-    glowColor: "147, 51, 234", // Violet
-    title: "Cartes virtuelles",
-    description: "Créez une carte jetable en 2 secondes. Sécurité maximale en ligne.",
-  },
-  {
-    id: "loans",
-    icon: "fa-solid fa-house",
-    iconBg: "gradient-amber",
-    glowColor: "234, 88, 12", // Orange / Ambre
-    highlightColor: "#f97316",
-    title: "Prêts dès",
-    highlight: "5,90 %",
-    description: "Réponse en 24h. Auto, immo, perso. Jusqu'à 50 000 € sur 84 mois.",
-  },
-  {
-    id: "payments",
-    icon: "fa-solid fa-arrow-right",
-    iconBg: "gradient-cyan",
-    glowColor: "8, 145, 178", // Cyan
-    title: "Paiements",
-    description: "Payez en magasin et en ligne, en un geste, avec votre carte CBG.",
-  },
-  {
-    id: "exchange",
-    icon: "fa-solid fa-globe",
-    iconBg: "gradient-pink",
-    glowColor: "225, 29, 72", // Rose / Magenta
-    title: "Change",
-    description: "Payez et retirez à l'étranger avec un change transparent.",
-  },
-  {
-    id: "transfers",
-    icon: "fa-solid fa-arrows-up-down",
-    iconBg: "gradient-indigo",
-    glowColor: "37, 99, 235", // Bleu / Indigo
-    title: "Transferts",
-    description: "Envoyez de l'argent vite, en Belgique et en Europe, en quelques secondes.",
-  },
-  {
-    id: "travel",
-    icon: "fa-solid fa-paper-plane",
-    iconBg: "gradient-emerald",
-    glowColor: "5, 150, 105", // Vert émeraude
-    title: "Voyage",
-    description: "Gardez le contrôle de votre carte où que vous soyez : blocage instantané.",
-  },
-];
-
 export default function Features() {
+  const { t } = useTranslation();
+
+  const featuresData: FeatureCard[] = [
+    {
+      id: "account",
+      icon: "fa-regular fa-credit-card",
+      iconBg: "gradient-blue",
+      glowColor: "37, 99, 235",
+      titleKey: "features.items.account.title",
+      descriptionKey: "features.items.account.description",
+    },
+    {
+      id: "savings",
+      icon: "fa-solid fa-dollar-sign",
+      iconBg: "gradient-green",
+      glowColor: "22, 163, 74",
+      highlightColor: "#22c55e",
+      titleKey: "features.items.savings.title",
+      highlightKey: "features.items.savings.highlight",
+      descriptionKey: "features.items.savings.description",
+    },
+    {
+      id: "virtual-cards",
+      icon: "fa-solid fa-clone",
+      iconBg: "gradient-purple",
+      glowColor: "147, 51, 234",
+      titleKey: "features.items.virtualCards.title",
+      descriptionKey: "features.items.virtualCards.description",
+    },
+    {
+      id: "loans",
+      icon: "fa-solid fa-house",
+      iconBg: "gradient-amber",
+      glowColor: "234, 88, 12",
+      highlightColor: "#f97316",
+      titleKey: "features.items.loans.title",
+      highlightKey: "features.items.loans.highlight",
+      descriptionKey: "features.items.loans.description",
+    },
+    {
+      id: "payments",
+      icon: "fa-solid fa-arrow-right",
+      iconBg: "gradient-cyan",
+      glowColor: "8, 145, 178",
+      titleKey: "features.items.payments.title",
+      descriptionKey: "features.items.payments.description",
+    },
+    {
+      id: "exchange",
+      icon: "fa-solid fa-globe",
+      iconBg: "gradient-pink",
+      glowColor: "225, 29, 72",
+      titleKey: "features.items.exchange.title",
+      descriptionKey: "features.items.exchange.description",
+    },
+    {
+      id: "transfers",
+      icon: "fa-solid fa-arrows-up-down",
+      iconBg: "gradient-indigo",
+      glowColor: "37, 99, 235",
+      titleKey: "features.items.transfers.title",
+      descriptionKey: "features.items.transfers.description",
+    },
+    {
+      id: "travel",
+      icon: "fa-solid fa-paper-plane",
+      iconBg: "gradient-emerald",
+      glowColor: "5, 150, 105",
+      titleKey: "features.items.travel.title",
+      descriptionKey: "features.items.travel.description",
+    },
+  ];
+
   return (
     <section className="features-section">
       {/* Glows d'arrière-plan de la section */}
@@ -95,12 +97,12 @@ export default function Features() {
       <div className="features-container">
         {/* Header de section */}
         <div className="features-header">
-          <span className="features-tag">Une seule app. Toutes vos finances.</span>
+          <span className="features-tag">{t("features.tag")}</span>
           <h2 className="features-title">
-            Tout pour piloter votre argent en un <span className="gradient-text">seul endroit.</span>
+            {t("features.title")} <span className="gradient-text">{t("features.titleHighlight")}</span>
           </h2>
           <p className="features-subtitle">
-            Une expérience bancaire simplifiée, ultra-rapide et sécurisée conçue pour votre quotidien.
+            {t("features.subtitle")}
           </p>
         </div>
 
@@ -125,13 +127,13 @@ export default function Features() {
               </div>
 
               <h3 className="card-title">
-                {feature.title}{" "}
-                {feature.highlight && (
-                  <span className="card-highlight">{feature.highlight}</span>
+                {t(feature.titleKey)}{" "}
+                {feature.highlightKey && (
+                  <span className="card-highlight">{t(feature.highlightKey)}</span>
                 )}
               </h3>
 
-              <p className="card-description">{feature.description}</p>
+              <p className="card-description">{t(feature.descriptionKey)}</p>
             </div>
           ))}
         </div>

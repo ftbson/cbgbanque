@@ -1,0 +1,802 @@
+{
+  "common": {
+    "appName": "CBG Bank",
+    "loading": "Laden…",
+    "error": "Fehler",
+    "retry": "Wiederholen",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "confirm": "Bestätigen",
+    "close": "Schließen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "submit": "Absenden",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "view": "Anzeigen",
+    "download": "Herunterladen",
+    "install": "Installieren",
+    "search": "Suchen",
+    "filter": "Filtern",
+    "all": "Alle",
+    "pending": "Ausstehend",
+    "completed": "Abgeschlossen",
+    "active": "Aktiv",
+    "inactive": "Inaktiv",
+    "yes": "Ja",
+    "no": "Nein",
+    "required": "Erforderlich",
+    "optional": "Optional"
+  },
+  "nav": {
+    "home": "Startseite",
+    "features": "Funktionen",
+    "commitments": "Versprechen",
+    "help": "Hilfe",
+    "downloadApp": "App herunterladen",
+    "login": "Anmelden",
+    "register": "Konto eröffnen",
+    "language": "Sprache",
+    "french": "Französisch",
+    "spanish": "Spanisch",
+    "german": "Deutsch"
+  },
+  "hero": {
+    "badge": "Die Neo-Bank der neuen Generation",
+    "title": "Neu denken Sie Ihre",
+    "titleHighlight": "finanzielle Freiheit.",
+    "subtitle": "Konto ohne Gebühren, Verzinsung bis zu 4,2 %, sofortige virtuelle Karten und Transfers ohne Verzögerung. Übernehmen Sie die Kontrolle über Ihr Geld mit CBGBank.",
+    "ctaPrimary": "Mein Konto eröffnen",
+    "ctaSecondary": "Ich habe bereits ein Konto",
+    "ctaDownload": "Mobile App",
+    "trust1": "Konto 100 % kostenlos",
+    "trust2": "Digitale Banklizenz",
+    "trust3": "Militärische Sicherheit",
+    "phoneSalary": "Gehalt erhalten",
+    "phoneTransfer": "Sofortüberweisung",
+    "phoneBalanceLabel": "Verfügbarer Saldo",
+    "phoneBalanceTrend": "heute",
+    "phoneActions": {
+      "send": "Senden",
+      "receive": "Empfangen",
+      "add": "Hinzufügen",
+      "cards": "Karten"
+    },
+    "phoneCardHolder": "KENDRA D."
+  },
+  "features": {
+    "tag": "Eine App. All Ihre Finanzen.",
+    "title": "Alles, um Ihr Geld an einem",
+    "titleHighlight": "einzigen Ort zu steuern.",
+    "subtitle": "Ein vereinfachtes, ultraschnelles und sicheres Bankerlebnis, entwickelt für Ihren Alltag.",
+    "items": {
+      "account": {
+        "title": "Girokonto",
+        "description": "Belgische IBAN, Visa-Karte, Sofortzahlungen. 0 € Gebühren."
+      },
+      "savings": {
+        "title": "Sparen",
+        "highlight": "3,25 %",
+        "description": "Unbegrenzte Tresore, tägliche Zinsen. Sofort verfügbar."
+      },
+      "virtualCards": {
+        "title": "Virtuelle Karten",
+        "description": "Erstellen Sie eine Einweg-Karte in 2 Sekunden. Maximale Online-Sicherheit."
+      },
+      "loans": {
+        "title": "Kredite ab",
+        "highlight": "5,90 %",
+        "description": "Antwort in 24h. Auto, Immobilie, Privat. Bis zu 50.000 € über 84 Monate."
+      },
+      "payments": {
+        "title": "Zahlungen",
+        "description": "Im Laden und online bezahlen, in einer Geste, mit Ihrer CBG-Karte."
+      },
+      "exchange": {
+        "title": "Währungsumtausch",
+        "description": "Im Ausland zahlen und abheben mit transparentem Wechselkurs."
+      },
+      "transfers": {
+        "title": "Überweisungen",
+        "description": "Geld schnell senden, in Belgien und Europa, in wenigen Sekunden."
+      },
+      "travel": {
+        "title": "Reisen",
+        "description": "Behalten Sie die Kontrolle über Ihre Karte, wo immer Sie sind: sofortige Sperrung."
+      }
+    }
+  },
+  "cta": {
+    "statsTag": "CBGBANK IN ZAHLEN",
+    "stats": {
+      "clients": "Kunden in Europa",
+      "capital": "Freigesetztes Kapital",
+      "languages": "Unterstützte Sprachen",
+      "year": "Sitz in Brüssel"
+    },
+    "title": "Bereit, Ihre",
+    "titleHighlight": "Bankerfahrung zu transformieren?",
+    "description": "Eröffnen Sie Ihr Konto in weniger als 5 Minuten. Keine versteckten Gebühren, keine Verpflichtung.",
+    "ctaPrimary": "Konto eröffnen",
+    "ctaSecondary": "App entdecken"
+  },
+  "testimonials": {
+    "tag": "KUNDENMEINUNGEN",
+    "title": "Was unsere Kunden sagen",
+    "subtitle": "Erfahren Sie, warum Tausende von Nutzern CBGBank täglich vertrauen.",
+    "items": {
+      "1": {
+        "quote": "Ich habe mein Konto in wenigen Minuten eröffnet. Keine Gebühren für Überweisungen und eine flüssige Oberfläche – einfach perfekt für die tägliche Budgetverwaltung.",
+        "author": "Éric K."
+      },
+      "2": {
+        "quote": "Der Sparbooster-Service ist ein echtes Juwel. Die täglich gutgeschriebenen Zinsen bieten eine optimale Rendite, ohne mein Kapital zu binden. Ich empfehle es zu 100 %!",
+        "author": "Aïcha M."
+      },
+      "3": {
+        "quote": "Einen Privatkredit zu erhalten war noch nie so einfach. Schnelle Antwort in unter 24h und ultra-wettbewerbsfähige Zinssätze. Eine moderne Bank, die ihre Versprechen hält.",
+        "author": "Stéphane B."
+      },
+      "4": {
+        "quote": "Die Erstellung von virtuellen Einwegkarten hat meine Online-Einkäufe vollständig abgesichert. Keine Betrugsangst mehr, ein echtes Wohlbefinden.",
+        "author": "Chantal R."
+      },
+      "5": {
+        "quote": "Da ich oft außerhalb des Euroraums reise, hat mir der Mehrwährungswechsel ohne versteckte Provisionen ein Vermögen gespart. Bravo an das ganze Team!",
+        "author": "Julien P."
+      },
+      "6": {
+        "quote": "Der Kundenservice ist reaktiv, professionell und zuhörend. Die beste Neobank, die ich bisher nutzen durfte.",
+        "author": "Nathalie D."
+      }
+    }
+  },
+  "footer": {
+    "bannerTitle": "Die CBG Bank App",
+    "bannerSubtitle": "Kostenlos · Installation in 1 Schritt · direkter Shortcut auf Ihrem Bildschirm",
+    "bannerCTA": "App herunterladen",
+    "brandTitle": "CBG Bank Finance AG",
+    "legalText": "Europäisches Referenz-Kreditinstitut.\nFreigesetztes Grundkapital: 50.000.000 €\nSitz: Avenue Louise 542, 1050 Ixelles, Brüssel\nBCE: 0789.456.123 - USt-IdNr.: BE 0789.456.123 - LEI: 549300C23BQ2026B7\nBIC / SWIFT: C23QBEBB",
+    "contactTitle": "Kontakt & Schlichtung",
+    "contactEmail": "kundenservice@cbgbank.com",
+    "contactPhone": "+33 (0) 1 89 71 42 00 (Mo - Sa: 8 - 20 Uhr)",
+    "mediator": "Anerkannter Schlichter: Ombudsfin (ombudsfin.be)",
+    "links": {
+      "help": "Hilfe & FAQ",
+      "privacy": "Datenschutz",
+      "legal": "Impressum",
+      "terms": "AGB",
+      "rgpd": "DSGVO",
+      "cookies": "Cookies"
+    },
+    "copyright": "© {year} CBG Bank Finance AG. Alle Rechte vorbehalten.",
+    "watermark": "CBG BANK"
+  },
+  "help": {
+    "badge": "Support & FAQ",
+    "title": "Hilfezentrum & Unterstützung",
+    "lead": "Finden Sie klare Antworten auf Ihre Fragen oder kontaktieren Sie unser Team aus engagierten Bankberatern.",
+    "searchPlaceholder": "Frage suchen (z. B. Kredit, virtuelle Karte, Registrierung...)",
+    "categories": {
+      "all": "Alle Fragen",
+      "account": "Konto & Registrierung",
+      "cards": "Visa-Karten",
+      "loans": "Kredite & Finanzierung",
+      "security": "Sicherheit & DSGVO",
+      "app": "App & PWA"
+    },
+    "contact": {
+      "email": {
+        "title": "Per E-Mail",
+        "description": "Unser Team antwortet auf Ihre Nachrichten innerhalb von 24 Werktstunden.",
+        "link": "kundenservice@cbgbank.com"
+      },
+      "phone": {
+        "title": "Per Telefon",
+        "description": "Berater erreichbar Montag bis Samstag von 8 bis 20 Uhr.",
+        "link": "+33 (0) 1 89 71 42 00"
+      },
+      "dashboard": {
+        "title": "Kundenbereich",
+        "description": "Zugang zu Ihrem sicheren Postfach und Ihren Kreditanfragen.",
+        "link": "Mein Dashboard öffnen"
+      }
+    }
+  },
+  "contact": {
+    "title": "Häufige Fragen zu unseren Services",
+    "formTitle": "Unser Team aus Bankexperten steht Ihnen zur Seite.",
+    "faqs": {
+      "account": {
+        "q": "Wie kann ich ein Konto bei CBG Bank eröffnen?",
+        "a": "Die Kontoeröffnung erfolgt vollständig online in unter 5 Minuten. Formular ausfüllen, Ausweisdokument (Vorder- und Rückseite) hochladen, und unser Team validiert Ihr Konto innerhalb von 24 Werktstunden."
+      },
+      "loan": {
+        "q": "Wie lange dauert die Kreditgewährung?",
+        "a": "Nach Simulation und Validierung Ihres Kreditantrags im Kundenbereich prüfen unsere Analysten Ihren Antrag in 24 bis 48 Stunden. Nach Genehmigung durch die Verwaltung werden die Gelder direkt auf Ihr Konto überwiesen."
+      },
+      "virtualCard": {
+        "q": "Wie aktiviere ich eine virtuelle Bankkarte?",
+        "a": "Gehen Sie im Dashboard in den Bereich « Karten ». Sie können sofort eine virtuelle Karte mit verschlüsselter Nummer, Ablaufdatum und CVV-Code erstellen."
+      },
+      "security": {
+        "q": "Sind meine Einlagen und persönlichen Daten geschützt?",
+        "a": "Absolut. CBG Bank wendet strengste Bankensicherheitsstandards an (TLS 1.3 / AES-256 Verschlüsselung) und entspricht vollständig der europäischen DSGVO."
+      },
+      "emergency": {
+        "q": "Was tun im Notfall oder bei Kartenverlust?",
+        "a": "Sie können Ihre Karte per Klick im Dashboard sofort sperren oder einfrieren. Unsere Notfallzentrale ist 24/7 erreichbar."
+      }
+    },
+    "form": {
+      "name": "Ihr vollständiger Name",
+      "email": "Ihre E-Mail-Adresse",
+      "phone": "Telefonnummer",
+      "subject": "Betreff der Anfrage",
+      "message": "Beschreiben Sie Ihr Anliegen in wenigen Zeilen...",
+      "submit": "NACHRICHT SENDEN",
+      "submitting": "WIRD GESCHICKT...",
+      "success": "Nachricht erfolgreich gesendet",
+      "successDesc": "Ein CBG Bank Berater wird Sie innerhalb von 24 Werktstunden kontaktieren."
+    }
+  },
+  "download": {
+    "badge": "Offizielle PWA-App",
+    "title": "Ihre gesamte Bank,",
+    "titleHighlight": "in Ihrer Handfläche",
+    "subtitle": "Installieren Sie die CBG Bank App sofort ohne App-Stores. Genießen Sie schnellen, flüssigen und hochsicheren Zugriff direkt von Ihrem Startbildschirm.",
+    "installBtn": "App installieren",
+    "installedBtn": "App bereits installiert",
+    "registerBtn": "Kostenloses Konto eröffnen",
+    "guides": {
+      "android": {
+        "title": "Android & Chrome",
+        "steps": [
+          "Klicken Sie oben auf « App installieren ».",
+          "Installation in der Browser-Benachrichtigung bestätigen.",
+          "Das CBG Bank Symbol erscheint direkt auf Ihrem Startbildschirm."
+        ]
+      },
+      "ios": {
+        "title": "iPhone & iPad (Safari)",
+        "steps": [
+          "Öffnen Sie diese Seite im Safari Browser.",
+          "Tippen Sie unten auf das Teilen-Symbol.",
+          "Nach unten scrollen und « Zum Home-Bildschirm » auswählen."
+        ]
+      },
+      "desktop": {
+        "title": "Computer (PC & Mac)",
+        "steps": [
+          "Öffnen Sie die Seite in Chrome, Edge oder Brave.",
+          "Klicken Sie auf das Installationssymbol rechts in der Adressleiste.",
+          "CBG Bank öffnet sich in einem eigenen, ultraschnellen Fenster."
+        ]
+      }
+    },
+    "features": {
+      "light": { "title": "Ultra-leicht", "desc": "Unter 2 MB, keine schweren Updates, startet sofort." },
+      "biometric": { "title": "Biometrische Sicherheit", "desc": "Kompatibel mit Face ID, Touch ID und Fingerabdruck für Login und Überweisungen." },
+      "virtualCards": { "title": "Virtuelle Karten", "desc": "Karten erstellen, sperren und verwalten mit einem Wisch." },
+      "loans": { "title": "Kredite & Finanzierung", "desc": "Kreditanträge direkt vom Handy simulieren und verfolgen." }
+    }
+  },
+  "legal": {
+    "privacy": {
+      "badge": "Datenschutz & Datensicherheit",
+      "title": "Datenschutzerklärung",
+      "lead": "Letzte Aktualisierung: Februar 2026. Entdecken Sie die strengen Verpflichtungen der CBG Bank Finance AG zur Erhebung, Verarbeitung und Sicherheit Ihrer finanziellen und persönlichen Daten.",
+      "sections": {
+        "intro": {
+          "title": "1. Einleitung und Verantwortlicher",
+          "content": "Diese Datenschutzerklärung gilt für alle Dienste der CBG Bank Finance AG (europäische Aktiengesellschaft, Avenue Louise 542, 1050 Brüssel, Belgien). Als Kreditinstitut und Verantwortlicher im Sinne der DSGVO (2016/679) legen wir höchsten Wert auf die Vertraulichkeit Ihrer privaten Informationen."
+        },
+        "data": {
+          "title": "2. Welche personenbezogenen Daten erheben wir?",
+          "content": "Im Rahmen der Kontoeröffnung und -führung erheben wir folgende Informationen:",
+          "items": [
+            "Identifikationsdaten (KYC): Anrede, Name, Vorname, Geburtsdatum und -ort, Nationalität, Postanschrift, Telefonnummer und E-Mail-Adresse.",
+            "Identitätsnachweise: Vorder- und Rückseite von Personalausweis, Reisepass oder Aufenthaltstitel, gespeichert in hochsicherem verschlüsseltem Speicher.",
+            "Berufliche und finanzielle Situation: Ausgeübter Beruf, Gehalts-/Nettoeinkommensklasse, für Kreditanträge erforderliche Informationen.",
+            "Transaktions- und Kartendaten: IBAN-Kontonummer, Überweisungen, Erstellung und Nutzung virtueller oder physischer Karten, Bewegungsverlauf.",
+            "Technische Verbindungsdaten: Zeitstempel sicherer Verbindungen, maskierte IP-Adresse, Audit-Logs zur Bankbetrugsprävention."
+          ]
+        },
+        "purposes": {
+          "title": "3. Zwecke und Rechtsgrundlagen der Verarbeitung",
+          "content": "Ihre Daten werden für präzise und rechtmäßige Zwecke verarbeitet:",
+          "items": [
+            "Vertragserfüllung: Kontoeröffnung, Kartenausstellung, Überweisungsabwicklung, Kreditsimulation und -gewährung.",
+            "Gesetzliche und aufsichtsrechtliche Bankpflichten: Geldwäsche- und Terrorismusfinanzierungsbekämpfung (GwG), obligatorische KYC-Identitätsprüfung vor Kontoaktivierung durch unsere Administratoren.",
+            "Sicherheit und Betrugsprävention: Schutz Ihres Kundenbereichs vor unbefugtem Zugriff und Echtzeit-Sicherheitswarnungen.",
+            "Einwilligung: Für den Versand von Info-E-Mails oder Aktivierung optionaler Analyse-Cookies."
+          ]
+        },
+        "retention": {
+          "title": "4. Dauer der Datenspeicherung",
+          "content": "Gemäß europäischer Geld- und Finanzregulierung werden Ihre Identitätsdokumente und Transaktionshistorien 5 Jahre nach Beendigung der Bankbeziehung archiviert, woraufhin sie einer irreversiblen sicheren Löschung unterzogen werden."
+        },
+        "security": {
+          "title": "5. Sicherheit und Verschlüsselung",
+          "content": "Alle Daten im Transit werden durch TLS 1.3 mit 256-Bit-Verschlüsselung geschützt. Ihre Passwörter werden kryptografisch mit starken Algorithmen (Argon2 / Scrypt) gehasht und nie im Klartext gespeichert. Ausweiskopien sind nur für befugtes Compliance-Personal zur regulatorischen Prüfung zugänglich."
+        },
+        "rights": {
+          "title": "6. Ihre Rechte gemäß DSGVO",
+          "content": "Sie haben jederzeit das Recht auf Auskunft, Berichtigung, Übertragbarkeit, Einschränkung und Löschung Ihrer personenbezogenen Daten (vorbehaltlich unserer gesetzlichen Bankaufbewahrungspflichten). Zur Ausübung Ihrer Rechte wenden Sie sich an unseren Datenschutzbeauftragten (DSB):",
+          "dpo": "Datenschutzbeauftragter (DSB)\nE-Mail: dpo@cbgbank.com · Adresse: CBG Bank Finance AG, DSB Office, Avenue Louise 542, 1050 Brüssel"
+        }
+      }
+    },
+    "legalNotice": {
+      "badge": "Rechtliche Informationen",
+      "title": "Impressum",
+      "lead": "Entsprechend den Bestimmungen der europäischen Gesetze über das Vertrauen in die digitale Wirtschaft und Zahlungsdienste.",
+      "sections": {
+        "editor": {
+          "title": "1. Plattformbetreiber",
+          "content": "Die Website und die Bank-App CBG Bank werden von folgender Gesellschaft herausgegeben und betrieben:",
+          "fields": {
+            "name": "Firmenname: CBG Bank Finance AG",
+            "legalForm": "Rechtsform: Aktiengesellschaft belgischen Rechts",
+            "capital": "Grundkapital: 50.000.000 € voll eingezahlt",
+            "address": "Sitz: Avenue Louise 542, 1050 Ixelles, Brüssel, Belgien",
+            "bce": "Unternehmensnummer (BCE): BE 0789.456.123",
+            "lei": "LEI-Kennnummer: 549300C23BQ2026B7",
+            "swift": "SWIFT / BIC: C23QBEBB",
+            "email": "Kontakt-E-Mail: contact@cbgbank.com",
+            "phone": "Telefon: +33 (0) 1 89 71 42 00"
+          }
+        },
+        "authority": {
+          "title": "2. Aufsichtsbehörde und Zulassung",
+          "content": "CBG Bank Finance AG übt ihre Finanzaktivitäten unter der Aufsicht und dem prudentiellen Kontrolle der zuständigen europäischen Geldbehörden und der belgischen Nationalbank (BNB) aus. Zahlungsdienste und E-Geld-Ausgabe unterliegen streng der Europäischen Zahlungsdiensterichtlinie (PSD2)."
+        },
+        "hosting": {
+          "title": "3. Hosting des Dienstes",
+          "content": "Die Hosting-Infrastruktur und Hochsicherheitsdatenbanken der CBG Bank verteilen sich auf europäische Rechenzentren mit ISO/IEC 27001, SOC 2 Type II und PCI-DSS Level 1 Zertifizierung, was eine permanente Verfügbarkeit von 99,99 % garantiert."
+        },
+        "ip": {
+          "title": "4. Geistiges Eigentum",
+          "content": "Alle Elemente der Website und App (CBG-Marken, Logos, Grafikcharts, Software, Quellcodes, Icons und Texte) sind Eigentum der CBG Bank Finance AG oder Gegenstand rechtmäßiger Lizenzen. Jede Vervielfältigung, Kopie oder Verbreitung ganz oder teilweise ohne vorherige schriftliche Zustimmung ist streng verboten."
+        },
+        "mediation": {
+          "title": "5. Beschwerde und Schlichtung",
+          "content": "Bei Beschwerden wird der Kunde gebeten, vorrangig den Kundenservice unter reclamation@cbgbank.com zu kontaktieren. Kommt keine Einigung zustande, kann der Verbraucher kostenlos den unabhängigen Finanzschlichter anrufen: Ombudsfin (www.ombudsfin.be)."
+        }
+      }
+    },
+    "terms": {
+      "badge": "Vertraglicher Rahmen",
+      "title": "Allgemeine Nutzungsbedingungen (ANB)",
+      "lead": "Bestimmungen für Kontoeröffnung, Online-Kontonutzung, Bankkartenausstellung und Kreditdienstleistungen der CBG Bank.",
+      "articles": {
+        "article1": {
+          "title": "Artikel 1: Gegenstand und Anwendungsbereich",
+          "content": "Diese Allgemeinen Nutzungsbedingungen (die « ANB ») definieren die Regeln und vertraglichen Pflichten, die jede volljährige natürliche Person (der « Kunde » oder « Nutzer ») und die Gesellschaft CBG Bank Finance AG im Rahmen der Eröffnung und Führung ihrer Konten, Zahlungsinstrumente und Finanzprodukte binden."
+        },
+        "article2": {
+          "title": "Artikel 2: Zulassungsvoraussetzungen und Kontoeröffnung",
+          "content": "Um Kunde der CBG Bank zu werden, muss der Antragsteller kumulativ folgende Bedingungen erfüllen:",
+          "items": [
+            "Volljährige natürliche Person mit voller Geschäftsfähigkeit.",
+            "Rechtmäßiger Wohnsitz in einem EU-Mitgliedstaat, der Schweiz, dem Vereinigten Königreich oder Kanada.",
+            "Gültige E-Mail-Adresse, funktionsfähige Mobilnummer und Absolvierung des KYC-Identitätsprüfverfahrens durch Hochladen von Vorder- und Rückseite eines gültigen Ausweisdokuments.",
+            "Richtige Angaben zu beruflicher Situation und monatlichen Einkünften."
+          ],
+          "validation": "Die endgültige Kontoeröffnung unterliegt der ausdrücklichen Validierung durch den Administrator und die Compliance-Teams der CBG Bank. Eine Bestätigungs-E-Mail bestätigt die Kontoverifikation."
+        },
+        "article3": {
+          "title": "Artikel 3: Konten- und Kartenfunktionsweise",
+          "content": "Das Online-Konto ermöglicht Einzahlungen, SEPA-Überweisungen, Echtzeit-Saldokontrolle und Spartresorverwaltung.",
+          "cards": "Virtuelle und physische Karten: Der Kunde kann eine oder mehrere virtuelle Karten zur Sicherung seiner Internetzahlungen aktivieren oder eine physische Visa-Karte bestellen. Er kann den Kartenstatus jederzeit ändern (temporäre Sperrung/Entsperrung), Nummern anzeigen/verbergen oder die virtuelle Karte direkt im sicheren Kundenbereich kündigen."
+        },
+        "article4": {
+          "title": "Artikel 4: Kreditzeichnung und -gewährung",
+          "content": "Der berechtigte Kunde kann einen Privatkredit oder eine Finanzierung über sein Dashboard beantragen. Ein dynamischer Simulator zeigt Darlehensbetrag, Laufzeit in Monaten, Effektivzins (APR), Monatsraten und Bearbeitungsgebühren.",
+          "approval": "Die Antragstellung bedeutet keine automatische Annahme: Der Vorgang wird von unserem Kreditausschuss geprüft. Annahme oder Ablehnung wird im Dashboard und per E-Mail mitgeteilt. Ein Kredit bindet Sie und muss zurückgezahlt werden: Prüfen Sie Ihre Rückzahlungsfähigkeit vor Abschluss."
+        },
+        "article5": {
+          "title": "Artikel 5: Sicherheit und Kundenpflichten",
+          "content": "Der Kunde trägt die strikte Verantwortung für die Vertraulichkeit seiner persönlichen Zugangsdaten, seines Passworts und seiner temporären Validierungscodes (OTP). Jede Weitergabe vertraulicher Codes ist streng verboten. Bei Betrugsverdacht oder unbefugtem Zugriff muss der Kunde seine Karten sofort sperren und den Notfallsupport kontaktieren."
+        },
+        "article6": {
+          "title": "Artikel 6: Kontoschließung und Kündigung",
+          "content": "Der Kunde kann die Schließung seines Kontos jederzeit ohne Kündigungsfrist und ohne Strafe verlangen, vorbehaltlich der vorherigen Begleichung etwaiger Sollsalden oder laufender Kreditraten. CBG Bank behält sich das Recht vor, ein Konto bei Falschangaben, längerer Inaktivität oder Verletzung gesetzlicher Pflichten zu sperren oder zu schließen."
+        }
+      }
+    },
+    "rgpd": {
+      "badge": "Europäische Verordnung",
+      "title": "DSGVO-Konformität & Ihre Rechte",
+      "lead": "CBG Bank wendet die strengsten Standards der Europäischen Union zum Schutz der Privatsphäre und finanzieller Daten an (Verordnung EU 2016/679).",
+      "commitments": {
+        "minimization": { "title": "Datensparsamkeit", "desc": "Wir erheben nur die für unsere Bankdienstleistungen und gesetzlichen Pflichten unbedingt notwendigen Informationen." },
+        "encryption": { "title": "Ende-zu-Ende-Verschlüsselung", "desc": "Ihre Ausweisdokumente und Bankdaten werden im Ruhezustand und bei der Übertragung nach AES-256 / TLS 1.3 Standards verschlüsselt." },
+        "noResale": { "title": "Kein Datenverkauf", "desc": "Ihre personenbezogenen oder finanziellen Daten werden niemals an Dritte zu Werbezwecken verkauft, vermietet oder vermarktet." },
+        "euHosting": { "title": "100 % EU-Hosting", "desc": "Ihre Daten werden im Europäischen Wirtschaftsraum gehostet, unter ausschließlicher Kontrolle europäischer Gesetze." }
+      },
+      "rights": {
+        "title": "Ihre Individualrechte und deren Ausübung",
+        "intro": "Die DSGVO räumt Ihnen folgende Rechte ein:",
+        "items": [
+          "Auskunftsrecht (Art. 15 DSGVO): Bestätigung, ob Sie betreffende Daten verarbeitet werden, und Erhalt einer vollständigen Kopie.",
+          "Recht auf Berichtigung (Art. 16 DSGVO): Korrektur oder Aktualisierung unrichtiger oder unvollständiger Daten im Profil oder per schriftlichem Antrag.",
+          "Recht auf Löschung (Art. 17 DSGVO): Antrag auf Löschung Ihrer Daten, innerhalb der Grenzen gesetzlicher Bankaufbewahrungspflichten (5 Jahre).",
+          "Recht auf Einschränkung der Verarbeitung (Art. 18 DSGVO): Beantragung der vorübergehenden Aussetzung der Datenverarbeitung in bestimmten Fällen.",
+          "Recht auf Datenübertragbarkeit (Art. 20 DSGVO): Recht, Ihre Finanzdaten in einem strukturierten, gängigen und maschinenlesbaren Format zu erhalten.",
+          "Widerspruchsrecht (Art. 21 DSGVO): Jederzeitiger Widerspruch gegen die Verwendung Ihrer Daten zu Zwecken der Direktwerbung."
+        ]
+      },
+      "exercise": {
+        "title": "Formular zur Ausübung der DSGVO-Rechte",
+        "content": "Für jede Anfrage zu Ihren personenbezogenen Daten können Sie Ihre Anfrage mit Kontoreferenz an unseren Datenschutzbeauftragten richten:",
+        "dpo": "Büro des Datenschutzbeauftragten (DSB)\nDedizierte E-Mail: rgpd@cbgbank.com\nPostanschrift: CBG Bank Finance AG, DSB Service, Avenue Louise 542, 1050 Brüssel\nAntwortfrist: maximal einen Monat gemäß Art. 12.3 DSGVO."
+      },
+      "authority": {
+        "title": "Zuständige Aufsichtsbehörde",
+        "content": "Sind Sie der Meinung, dass Ihre Rechte nach Kontaktaufnahme nicht respektiert werden, können Sie Beschwerde bei der Datenschutzbehörde einreichen (in Belgien: www.datenschutzbehoerde.be / in Frankreich: www.cnil.fr)."
+      }
+    },
+    "cookies": {
+      "badge": "Transparenz & Tracker",
+      "title": "Cookie-Richtlinie",
+      "lead": "Verstehen Sie, wie CBG Bank Cookies und Tracker einsetzt, um die Sicherheit und Qualität Ihrer Bankdienstleistungen zu gewährleisten.",
+      "status": {
+        "tag": "IHR AKUTELLER ZUSTIMMUNGSSTATUS",
+        "unknown": "Nicht definiert",
+        "all": "Alle Cookies akzeptiert",
+        "analytics": "Essentiell und Analytisch akzeptiert",
+        "essential": "Nur essentielle Cookies",
+        "changeBtn": "Meine Präferenzen ändern"
+      },
+      "sections": {
+        "what": {
+          "title": "1. Was ist ein Cookie?",
+          "content": "Ein Cookie ist eine kleine Textdatei, die beim Besuch einer Website oder Nutzung einer Web-App auf Ihrem Endgerät (Computer, Tablet, Smartphone) abgelegt wird. Sie ermöglicht der Site, Ihre Aktionen, Verbindungseinstellungen zu speichern und die Sicherheit Ihrer Bank-Sitzung für einen bestimmten Zeitraum zu gewährleisten."
+        },
+        "categories": {
+          "title": "2. Cookie-Kategorien bei CBG Bank",
+          "essential": {
+            "badge": "Unverzichtbar",
+            "title": "Für Betrieb und Sicherheit zwingend erforderliche Cookies",
+            "content": "Diese Cookies sind für den Plattformbetrieb unverzichtbar. Sie ermöglichen sichere Navigation, Authentifizierung im Dashboard, Validierung von Finanztransaktionen (KYC, Überweisungen, Kreditanträge) und Schutz vor CSRF-Angriffen. Gemäß CNIL und DSGVO bedürfen diese Tracker keiner vorherigen Einwilligung."
+          },
+          "analytics": {
+            "badge": "Optional",
+            "title": "Cookies zur Publikumsmessung und Leistungsanalyse",
+            "content": "Diese Tracker erlauben uns, Besucherzahlen, meistbesuchte Seiten zu messen und technische Störungen zu erkennen, um die Ergonomie Ihres Bankbereichs kontinuierlich zu verbessern. Alle IP-Adressen werden vor statistischer Verarbeitung anonymisiert."
+          },
+          "preferences": {
+            "badge": "Optional",
+            "title": "Präferenz- und Personalisierungs-Cookies",
+            "content": "Diese Tracker speichern Ihre bevorzugte Sprache, Referenzwährung (EUR, CHF, USD) sowie Ihre Anzeigeeinstellungen für Kontostände im Dashboard."
+          }
+        },
+        "table": {
+          "title": "3. Detaillierte Tabelle der wichtigsten Cookies",
+          "rows": [
+            { "key": "cbg_session", "val": "Verschlüsselte Bank-Sitzungsverwaltung (Dauer: Sitzung)" },
+            { "key": "cbg_cookie_consent", "val": "Speicherung Ihrer Cookie-Wahl (Dauer: 12 Monate)" },
+            { "key": "cbg_csrf_token", "val": "CSRF-Schutz für Formulare (Dauer: Sitzung)" }
+          ]
+        },
+        "manage": {
+          "title": "4. Cookies im Browser verwalten oder deaktivieren",
+          "content": "Sie können Ihren Browser jederzeit so konfigurieren, dass Cookies akzeptiert oder abgelehnt werden:",
+          "browsers": [
+            "Google Chrome: Einstellungen > Datenschutz und Sicherheit > Cookies und andere Websitedaten.",
+            "Mozilla Firefox: Einstellungen > Datenschutz & Sicherheit > Cookies und Websitedaten.",
+            "Apple Safari: Einstellungen > Datenschutz > Alle Cookies blockieren.",
+            "Microsoft Edge: Einstellungen > Datenschutz, Suche und Dienste > Cookies."
+          ],
+          "warning": "Achtung: Die vollständige Blockierung essentieller Cookies kann den Zugriff auf Ihren sicheren Kundenbereich unmöglich machen."
+        }
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "backHome": "Startseite",
+      "register": "Registrieren",
+      "title": "Willkommen zurück bei CBG Bank",
+      "subtitle": "Melden Sie sich in Ihrem sicheren Bereich an",
+      "emailLabel": "Ihre E-Mail",
+      "emailPlaceholder": "name@beispiel.de",
+      "passwordLabel": "Passwort",
+      "passwordPlaceholder": "••••••••",
+      "showPassword": "Passwort anzeigen",
+      "hidePassword": "Passwort verbergen",
+      "rememberMe": "Angemeldet bleiben",
+      "forgotPassword": "Passwort vergessen?",
+      "submit": "Anmelden",
+      "submitting": "Anmeldung...",
+      "noAccount": "Noch kein Konto?",
+      "signUp": "Registrieren"
+    },
+    "register": {
+      "welcomeTitle": "Willkommen bei CBG Bank",
+      "welcomeSubtitle": "Eröffnen Sie Ihr Konto in wenigen Minuten, vom Handy oder Computer.",
+      "registerBtn": "Registrieren",
+      "loginBtn": "Anmelden",
+      "homeBtn": "Zur Startseite",
+      "steps": {
+        "email": {
+          "title": "Wie lautet Ihre E-Mail-Adresse?",
+          "subtitle": "Wir senden Ihnen einen Code zur Verifizierung.",
+          "emailPlaceholder": "name@beispiel.de",
+          "passwordPlaceholder": "Passwort (mind. 8 Zeichen)",
+          "submit": "Code senden",
+          "sending": "Wird gesendet...",
+          "helper": "Sie erhalten einen 6-stelligen Code. Prüfen Sie auch Ihren Spam-Ordner."
+        },
+        "otp": {
+          "title": "Code eingeben",
+          "subtitle": "Gesendet an",
+          "resend": "Code erneut senden",
+          "changeEmail": "E-Mail ändern",
+          "verify": "Code bestätigen",
+          "verifying": "Wird verifiziert...",
+          "helper": "Nicht erhalten? Prüfen Sie Spam/Junk. Der Code ist 30 Minuten gültig."
+        },
+        "identity": {
+          "title": "Wie heißen Sie?",
+          "subtitle": "Geben Sie Ihren Namen wie im Ausweisdokument an.",
+          "civility": ["Herr", "Frau", "Mx"],
+          "firstName": "Vorname",
+          "lastName": "Nachname",
+          "phone": "Telefonnummer (+49 / +32...)",
+          "submit": "Weiter"
+        },
+        "birth": {
+          "title": "Wann sind Sie geboren?",
+          "subtitle": "Sie müssen mindestens 18 Jahre alt sein, um ein Konto zu eröffnen.",
+          "birthDate": "Geburtsdatum (TT/MM/JJJJ)",
+          "birthPlace": "Geburtsort",
+          "nationality": "Staatsangehörigkeit",
+          "submit": "Weiter"
+        },
+        "address": {
+          "title": "Wo wohnen Sie?",
+          "subtitle": "Ihre Hauptwohnsitzadresse.",
+          "residenceCountry": "Wohnsitzland",
+          "currency": "Konto-Währung",
+          "currencies": { "EUR": "€ EUR — Euro", "CHF": "CHF — Schweizer Franken", "USD": "$ USD — US-Dollar" },
+          "address": "Straße & Hausnummer",
+          "city": "Stadt",
+          "postalCode": "Postleitzahl",
+          "submit": "Weiter"
+        },
+        "profession": {
+          "title": "Wie ist Ihre berufliche Situation?",
+          "subtitle": "Geben Sie Ihre Tätigkeit und Ihr monatliches Nettoeinkommen an.",
+          "options": [
+            "Angestellte(r)",
+            "Selbstständige(r)",
+            "Unternehmer(in)",
+            "Beamte(r)",
+            "Student(in)",
+            "Rentner(in)",
+            "Arbeitslos"
+          ],
+          "incomeLabel": "Geschätztes monatliches Nettoeinkommen (Gehalt in €)",
+          "incomePlaceholder": "Z. B. 2500",
+          "quickIncomes": ["1500", "2200", "3000", "4500", "6000"],
+          "submit": "Weiter",
+          "disabled": "Bitte füllen Sie die Pflichtfelder aus"
+        },
+        "document": {
+          "title": "Fotografieren Sie Ihr Dokument",
+          "subtitle": "Vorder- und Rückseite, gut ausgerichtet, ohne Reflexionen oder Unschärfe.",
+          "docTypes": {
+            "id_card": { "label": "Personalausweis", "sub": "Vorder- und Rückseite" },
+            "passport": { "label": "Reisepass", "sub": "Nur Lichtbildseite" },
+            "driver": { "label": "Führerschein", "sub": "Vorder- und Rückseite" },
+            "residence": { "label": "Aufenthaltstitel", "sub": "Vorder- und Rückseite" }
+          },
+          "front": "Vorderseite des Ausweises",
+          "back": "Rückseite des Ausweises",
+          "required": "Erforderlich",
+          "loaded": "✓ Geladen",
+          "uploadFront": "Vorderseite hochladen",
+          "uploadBack": "Rückseite hochladen",
+          "submit": "Registrierung abschließen",
+          "submitting": "Konto wird erstellt..."
+        }
+      },
+      "success": {
+        "title": "Registrierung eingetragen",
+        "subtitle": "Ihr Konto wartet auf Validierung durch den Administrator. Sie können sich nach Genehmigung anmelden.",
+        "loginBtn": "Zur Anmeldung"
+      }
+    }
+  },
+  "dashboard": {
+    "welcome": "Ihr persönlicher Bereich",
+    "greeting": "Hallo, {name}",
+    "balanceLabel": "Privatkonto · {currency}",
+    "hideBalance": "Saldo ausblenden",
+    "showBalance": "Saldo anzeigen",
+    "ibanLink": "Meine IBAN & Bankdaten anzeigen",
+    "actions": {
+      "addMoney": "Geld einzahlen",
+      "transfer": "Überweisung & Abhebung",
+      "rib": "Meine IBAN",
+      "loan": "Kredit beantragen"
+    },
+    "notifications": "ungelesene Benachrichtigung(en)",
+    "activityTitle": "Letzte Aktivitäten",
+    "activityLink": "Vollständiger Verlauf",
+    "emptyActivity": "Noch keine Aktivitäten",
+    "emptyActivityDesc": "Ihre Transaktionen erscheinen hier nach der Buchung.",
+    "cardsTitle": "Meine Visa-Bankkarte",
+    "cardsLink": "Karte verwalten",
+    "emptyCards": "Keine aktive Karte",
+    "emptyCardsDesc": "Bestellen und aktivieren Sie Ihre physische Visa-Karte für tägliche Zahlungen und Abhebungen.",
+    "cardsLink2": "Meine Visa-Karte bestellen",
+    "loansTitle": "Meine Finanzierungsanträge",
+    "loansLink": "Anträge anzeigen",
+    "emptyLoans": "Keine Finanzierungsanträge",
+    "emptyLoansDesc": "Ihre erfassten Anträge werden hier aufgelistet.",
+    "loansLink2": "Antrag erfassen",
+    "savingsTitle": "Meine Spartresore",
+    "savingsLink": "Verwalten",
+    "emptySavings": "Kein Spartresor",
+    "emptySavingsDesc": "Erstellen Sie einen Tresor mit Ihrem Ziel, um Ihr Sparen zu verfolgen.",
+    "savingsLink2": "Tresor erstellen",
+    "statusLabels": {
+      "pending": "Ausstehend",
+      "cancelled": "Storniert",
+      "completed": "Gebucht"
+    },
+    "trackingBtn": "Ausstehend (Verfolgen)",
+    "cancelBtn": "Stornieren",
+    "transferModal": {
+      "title": "BANKÜBERWEISUNG",
+      "to": "An: {name}",
+      "waitingAdmin": "AUSSTEHEND",
+      "waitingDesc": "Ihre Überweisung wartet auf Prüfung durch die Banksicherheitssysteme. Bitte warten Sie…",
+      "otpRequired": "Bestätigungscode erforderlich",
+      "otpDesc": "Geben Sie den 6-stelligen Sicherheitscode ein, den Ihr Berater / Bankadministrator übermittelt hat.",
+      "otpPlaceholder": "••••••",
+      "otpSubmit": "Weiter",
+      "otpSubmitting": "Wird verifiziert...",
+      "progressTitle": "Verarbeitung",
+      "progressTexts": [
+        "Sichere Verbindung zum SEPA-Interbankennetz…",
+        "Prüfung von Bankzertifikaten und Protokollen…",
+        "Routing des Zahlungsflusses zum Empfängerinstitut…",
+        "Abschluss der interbankaren Verrechnung…"
+      ],
+      "haltedTitle": "ÜBERWEISUNG FEHLGESCHLAGEN · {percent}%",
+      "haltedMessage": "Vorgang ausgesetzt: {message}",
+      "errorCode": "Ref: {code}",
+      "contactManager": "Meinen Berater kontaktieren",
+      "close": "Schließen"
+    }
+  },
+  "activity": {
+    "title": "Verlauf",
+    "count": "{count} Transaktion(en)",
+    "searchPlaceholder": "Transaktion suchen",
+    "filters": { "all": "Alle", "pending": "Ausstehend", "completed": "Abgeschlossen" },
+    "empty": "Keine Transaktionen erfasst.",
+    "loadMore": "Mehr Transaktionen laden",
+    "loadingMore": "Laden…",
+    "status": { "pending": "Ausstehend", "completed": "Gebucht" },
+    "trackBtn": "Ausstehend (Verfolgen)",
+    "cancelBtn": "Stornieren"
+  },
+  "transfer": {
+    "title": "Überweisung & Abhebung",
+    "statusTitle": "Überweisungsstatus",
+    "back": "Zurück zum Dashboard",
+    "availableBalance": "VERFÜGBARER SALDO",
+    "blockedWarning": "Überweisungen ausgesetzt: Überweisungsvorgänge sind auf Ihrem Konto durch die Verwaltung eingeschränkt. Bitte kontaktieren Sie Ihren CBG Finance Berater.",
+    "recentTitle": "Jüngste Überweisungsanträge",
+    "recipientName": "Vor- und Nachname des Empfängers",
+    "recipientPlaceholder": "Z. B. Max Mustermann",
+    "iban": "IBAN des Empfängers",
+    "ibanPlaceholder": "DE89 3704 0044 0532 0130 00",
+    "bic": "BIC / SWIFT-Code",
+    "bicPlaceholder": "COBADEFFXXX",
+    "amount": "Betrag (€)",
+    "amountPlaceholder": "0,00",
+    "description": "Verwendungszweck (optional)",
+    "descriptionPlaceholder": "Z. B. Rechnung, Abhebung, Rückerstattung...",
+    "submit": "Antrag senden",
+    "submitting": "Wird erfasst...",
+    "pendingTitle": "Antrag wartet auf Validierung",
+    "pendingDesc": "Ihr Antrag wurde erfasst. Noch keine Überweisung ausgeführt.",
+    "details": { "recipient": "Empfänger:", "amount": "Betrag:", "reference": "Referenz:" },
+    "backDashboard": "Zurück zum Dashboard",
+    "newRequest": "Neuer Antrag",
+    "statusLabels": {
+      "pending": "Ausstehend (Verfolgen)",
+      "blocked": "Blockiert",
+      "processed": "Verarbeitet"
+    }
+  },
+  "loan": {
+    "title": "Finanzierungsantrag",
+    "formTitle": "Antrag erfassen",
+    "formSubtitle": "Konditionen, Zinsen und Gebühren sind nicht konfiguriert. Dieser Antrag stellt kein Kreditangebot dar und es werden keine Gelder automatisch gutgeschrieben.",
+    "amountLabel": "Gewünschter Betrag ({currency})",
+    "durationLabel": "Gewünschte Laufzeit (Monate)",
+    "purposeLabel": "Verwendungszweck",
+    "submit": "Antrag erfassen",
+    "submitting": "Wird erfasst...",
+    "historyTitle": "Meine Anträge",
+    "amount": "Beantragter Betrag",
+    "statusLabels": {
+      "pending": "Ausstehend",
+      "approved": "Antrag genehmigt",
+      "rejected": "Antrag abgelehnt"
+    }
+  },
+  "savings": {
+    "title": "Spartresore",
+    "subtitle": "Geld für Ihre Projekte beiseitelegen",
+    "createBtn": "Neuer Tresor",
+    "totalSaved": "GESAMT GESPART",
+    "availableBalance": "Verfügbarer Kontosaldo:",
+    "emptyTitle": "Kein Tresor erstellt",
+    "emptyDesc": "Erstellen Sie einen Tresor, um automatisch Geld beiseitezulegen (Urlaub, Notgroschen, Auto, etc.).",
+    "createFirstBtn": "Meinen ersten Tresor erstellen",
+    "vault": {
+      "target": "Ziel: {amount}",
+      "progress": "{percent}% erreicht",
+      "deposit": "Einzahlen",
+      "withdraw": "Abheben"
+    },
+    "createModal": {
+      "title": "Neuen Tresor erstellen",
+      "nameLabel": "Tresorname (z. B. Sommerurlaub, Notgroschen...)",
+      "namePlaceholder": "Z. B. Japan-Reise",
+      "targetLabel": "Zielbetrag (€)",
+      "targetPlaceholder": "Z. B. 1500,00",
+      "cancel": "Abbrechen",
+      "submit": "Bestätigen",
+      "submitting": "Wird erstellt..."
+    },
+    "moveModal": {
+      "depositTitle": "Einzahlen in {name}",
+      "withdrawTitle": "Abheben von {name}",
+      "balance": "Tresorsaldo: {amount}",
+      "amountLabel": "Betrag zum {action} ({currency})",
+      "amountPlaceholder": "0,00",
+      "maxDeposit": "Maximal verfügbar: {amount}",
+      "maxWithdraw": "Maximal abhebbar: {amount}",
+      "cancel": "Abbrechen",
+      "depositSubmit": "Einzahlung bestätigen",
+      "withdrawSubmit": "Abhebung bestätigen",
+      "submitting": "Wird verarbeitet..."
+    },
+    "statusLabels": {
+      "deposit": "Einzahlung",
+      "withdraw": "Abhebung"
+    }
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "language": "Sprache",
+    "theme": "Design",
+    "notifications": "Benachrichtigungen",
+    "security": "Sicherheit"
+  },
+  "countries": {
+    "FR": "Frankreich",
+    "BE": "Belgien",
+    "LU": "Luxemburg",
+    "DE": "Deutschland",
+    "ES": "Spanien",
+    "IT": "Italien",
+    "NL": "Niederlande",
+    "PT": "Portugal",
+    "AT": "Österreich",
+    "IE": "Irland",
+    "CH": "Schweiz",
+    "CA": "Kanada",
+    "GB": "Vereinigtes Königreich",
+    "US": "USA"
+  }
+}
