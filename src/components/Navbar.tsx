@@ -23,7 +23,7 @@ export default function Navbar() {
       <nav className="navbar">
         {/* Brand / Logo */}
         <Link href="/" className="nav-brand">
-          <div className="logo-icon">
+          {/* <div className="logo-icon">
             <svg viewBox="0 0 100 100" className="brand-svg">
               <circle
                 cx="50"
@@ -56,7 +56,7 @@ export default function Navbar() {
                 CBG
               </text>
             </svg>
-          </div>
+          </div> */}
           <span className="brand-name">{t("common.appName")}</span>
         </Link>
 

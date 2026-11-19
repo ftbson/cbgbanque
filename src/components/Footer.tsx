@@ -26,7 +26,7 @@ export default function Footer() {
           {/* Top Download Banner Card */}
           <div className="footer-banner">
             <div className="banner-left">
-              <div className="banner-logo-icon">
+              {/* <div className="banner-logo-icon">
                 <svg viewBox="0 0 100 100" className="brand-svg">
                   <circle
                     cx="50"
@@ -53,7 +53,7 @@ export default function Footer() {
                     CBG
                   </text>
                 </svg>
-              </div>
+              </div> */}
               <div className="banner-texts">
                 <h4 className="banner-title">{t("footer.bannerTitle")}</h4>
                 <p className="banner-subtitle">
