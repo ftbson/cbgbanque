@@ -67,8 +67,26 @@ function interpolate(template: string, params?: Record<string, string | number>)
   });
 }
 
+// Helper to get initial locale synchronously (for useState lazy initializer)
+function getInitialLocale(): Locale {
+  if (typeof window === "undefined") {
+    return "fr"; // SSR fallback
+  }
+  const saved = localStorage.getItem("cbg_locale") as Locale | null;
+  if (saved && ["fr", "es", "de"].includes(saved)) {
+    return saved;
+  }
+  // Detect browser language
+  const browserLang = navigator.language.slice(0, 2) as Locale;
+  if (["fr", "es", "de"].includes(browserLang)) {
+    return browserLang;
+  }
+  return "fr";
+}
+
 export function I18nProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>("fr");
+  // Lazy initializer: read localStorage synchronously on first render
+  const [locale, setLocaleState] = useState<Locale>(getInitialLocale);
   const [translations, setTranslations] = useState<Translations>({});
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -90,22 +108,6 @@ export function I18nProvider({ children }: { children: ReactNode }) {
       localStorage.setItem("cbg_locale", locale);
     }
   }, [locale]);
-
-  // Initialize locale from localStorage or browser
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("cbg_locale") as Locale | null;
-      if (saved && ["fr", "es", "de"].includes(saved)) {
-        setLocaleState(saved);
-      } else {
-        // Detect browser language
-        const browserLang = navigator.language.slice(0, 2) as Locale;
-        if (["fr", "es", "de"].includes(browserLang)) {
-          setLocaleState(browserLang);
-        }
-      }
-    }
-  }, []);
 
   const setLocale = useCallback((newLocale: Locale) => {
     setLocaleState(newLocale);

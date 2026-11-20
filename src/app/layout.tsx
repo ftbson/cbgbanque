@@ -1,10 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "./layout.css";
-import SiteFrame from "@/components/SiteFrame";
-import { CartProvider } from "@/context/CartContext";
-import PwaRegistrar from "@/components/PwaRegistrar";
-import { I18nProvider } from "@/lib/i18n";
 
 export const metadata: Metadata = {
   title: "CBGBanque - Votre banque en ligne et services financiers",
@@ -54,12 +50,7 @@ href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12.
 
       </head>
       <body>
-        <CartProvider>
-          <PwaRegistrar />
-          <I18nProvider>
-            <SiteFrame>{children}</SiteFrame>
-          </I18nProvider>
-        </CartProvider>
+        {children}
       </body>
     </html>
   );
