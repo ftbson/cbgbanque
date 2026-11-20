@@ -20,7 +20,7 @@ export default function NotificationsPage() {
   const loadNotifications = async () => {
     const response = await fetch("/api/dashboard/notifications");
     const data: { notifications?: NotificationItem[]; message?: string } = await response.json();
-    if (!response.ok) throw new Error(data.message ?? "Impossible de charger les notifications.");
+    if (!response.ok) throw new Error(data.message ?? "Benachrichtigungen konnten nicht geladen werden.");
     setNotifications(data.notifications ?? []);
   };
 
@@ -29,11 +29,11 @@ export default function NotificationsPage() {
     fetch("/api/dashboard/notifications")
       .then(async (response) => {
         const data: { notifications?: NotificationItem[]; message?: string } = await response.json();
-        if (!response.ok) throw new Error(data.message ?? "Impossible de charger les notifications.");
+        if (!response.ok) throw new Error(data.message ?? "Benachrichtigungen konnten nicht geladen werden.");
         if (active) setNotifications(data.notifications ?? []);
       })
       .catch((cause: unknown) => {
-        if (active) setError(cause instanceof Error ? cause.message : "Erreur de chargement.");
+        if (active) setError(cause instanceof Error ? cause.message : "Ladefehler.");
       })
       .finally(() => { if (active) setLoading(false); });
     return () => { active = false; };
@@ -48,10 +48,10 @@ export default function NotificationsPage() {
         body: JSON.stringify(notificationId ? { notificationId } : { markAll: true }),
       });
       const data: { message?: string } = await response.json();
-      if (!response.ok) throw new Error(data.message ?? "Impossible de mettre à jour les notifications.");
+      if (!response.ok) throw new Error(data.message ?? "Benachrichtigungen konnten nicht aktualisiert werden.");
       await loadNotifications();
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Erreur de mise à jour.");
+      setError(cause instanceof Error ? cause.message : "Aktualisierungsfehler.");
     }
   };
 
@@ -60,24 +60,24 @@ export default function NotificationsPage() {
       <div className="notifications-container">
         <div className="notifications-header">
           <div className="notifications-title-group">
-            <h1 className="notifications-main-title">Notifications</h1>
-            <span className="notifications-count-sub">{unreadCount} non lue(s)</span>
+            <h1 className="notifications-main-title">Benachrichtigungen</h1>
+            <span className="notifications-count-sub">{unreadCount} ungelesen</span>
           </div>
           <button
             type="button"
             onClick={() => void markRead()}
             disabled={unreadCount === 0}
             className="btn-icon-action"
-            aria-label="Tout marquer comme lu"
+            aria-label="Alle als gelesen markieren"
           >
             <i className="fa-solid fa-check"></i>
           </button>
         </div>
 
         {error && <p role="alert">{error}</p>}
-        {loading ? <p>Chargement…</p> : notifications.length === 0 ? (
+        {loading ? <p>Wird geladen…</p> : notifications.length === 0 ? (
           <div className="history-empty-card">
-            <p className="empty-state-text">Aucune notification.</p>
+            <p className="empty-state-text">Keine Benachrichtigungen.</p>
           </div>
         ) : (
           <div className="notifications-list">
@@ -98,16 +98,16 @@ export default function NotificationsPage() {
                     <h2 className="notif-title">{item.title}</h2>
                     <p className="notif-message">{item.message}</p>
                     <time className="notif-time" dateTime={item.createdAt}>
-                      {new Date(item.createdAt).toLocaleString("fr-FR")}
+                      {new Date(item.createdAt).toLocaleString("de-DE")}
                     </time>
                     {item.readAt === null && (
                       <button type="button" className="btn-text-modifier" onClick={() => void markRead(item.id)}>
-                        Marquer comme lue
+                        Als gelesen markieren
                       </button>
                     )}
                   </div>
                 </div>
-                {item.readAt === null && <span className="unread-dot dot-orange" aria-label="Non lue"></span>}
+                {item.readAt === null && <span className="unread-dot dot-orange" aria-label="Ungelesen"></span>}
               </article>
             ))}
           </div>

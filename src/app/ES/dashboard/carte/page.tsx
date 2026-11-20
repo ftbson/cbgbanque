@@ -20,7 +20,7 @@ interface CardItem {
 
 export default function CartePage() {
   const [cards, setCards] = useState<CardItem[]>([]);
-  const [fullName, setFullName] = useState("TITULAIRE DU COMPTE");
+  const [fullName, setFullName] = useState("TITULAR DE LA CUENTA");
   const [balanceCents, setBalanceCents] = useState(0);
   const [currency, setCurrency] = useState("EUR");
   const [loading, setLoading] = useState(true);
@@ -36,13 +36,13 @@ export default function CartePage() {
     try {
       const res = await fetch("/api/dashboard/cards");
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message ?? "Erreur de chargement");
+      if (!res.ok) throw new Error(data.message ?? "Error de carga");
       setCards(data.cards ?? []);
       if (data.fullName) setFullName(data.fullName);
       if (typeof data.balanceCents === "number") setBalanceCents(data.balanceCents);
       if (data.currency) setCurrency(data.currency);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Erreur de chargement.");
+      setError(err instanceof Error ? err.message : "Error de carga.");
     } finally {
       setLoading(false);
     }
@@ -65,11 +65,11 @@ export default function CartePage() {
         body: JSON.stringify({ action: "create" }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message ?? "Impossible de commander la carte.");
-      setMessage("Votre carte Visa C23 a été émise et activée avec succès !");
+      if (!res.ok) throw new Error(data.message ?? "No se pudo solicitar la tarjeta.");
+      setMessage("¡Su tarjeta C23 Visa se ha emitido y activado correctamente!");
       await loadData();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Échec de commande de carte.");
+      setError(err instanceof Error ? err.message : "Error al solicitar la tarjeta.");
     } finally {
       setActionLoading(false);
     }
@@ -87,11 +87,11 @@ export default function CartePage() {
         body: JSON.stringify({ cardId: activeCard.id, action: "toggle_freeze" }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message ?? "Erreur lors du gel de la carte.");
-      setMessage(data.message ?? "Statut mis à jour.");
+      if (!res.ok) throw new Error(data.message ?? "Error al bloquear la tarjeta.");
+      setMessage(data.message ?? "Estado actualizado.");
       await loadData();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Action impossible.");
+      setError(err instanceof Error ? err.message : "Acción no posible.");
     } finally {
       setActionLoading(false);
     }
@@ -101,7 +101,7 @@ export default function CartePage() {
     e.preventDefault();
     if (!activeCard) return;
     if (!/^\d{4}$/.test(newPin)) {
-      setError("Le code PIN doit comporter exactement 4 chiffres.");
+      setError("El PIN debe tener exactamente 4 dígitos.");
       return;
     }
     setActionLoading(true);
@@ -114,13 +114,13 @@ export default function CartePage() {
         body: JSON.stringify({ cardId: activeCard.id, action: "change_pin", newPin }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message ?? "Impossible de modifier le code PIN.");
-      setMessage("Code PIN modifié avec succès !");
+      if (!res.ok) throw new Error(data.message ?? "No se pudo cambiar el PIN.");
+      setMessage("¡PIN cambiado correctamente!");
       setShowPinModal(false);
       setNewPin("");
       await loadData();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Erreur.");
+      setError(err instanceof Error ? err.message : "Error.");
     } finally {
       setActionLoading(false);
     }
@@ -128,7 +128,7 @@ export default function CartePage() {
 
   const handleDeleteCard = async () => {
     if (!activeCard) return;
-    if (!confirm("Êtes-vous sûr de vouloir supprimer définitivement cette carte ?")) return;
+    if (!confirm("¿Eliminar esta tarjeta permanentemente?")) return;
     setActionLoading(true);
     setError("");
     setMessage("");
@@ -139,11 +139,11 @@ export default function CartePage() {
         body: JSON.stringify({ cardId: activeCard.id }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message ?? "Impossible de supprimer la carte.");
-      setMessage("Carte supprimée avec succès.");
+      if (!res.ok) throw new Error(data.message ?? "No se pudo eliminar la tarjeta.");
+      setMessage("Tarjeta eliminada correctamente.");
       await loadData();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Erreur.");
+      setError(err instanceof Error ? err.message : "Error.");
     } finally {
       setActionLoading(false);
     }
@@ -166,7 +166,7 @@ export default function CartePage() {
   const maskedCvv = activeCard?.cvv
     ? showNumbers
       ? activeCard.cvv
-    : "•••"
+      : "•••"
     : "•••";
 
   return (
@@ -174,7 +174,7 @@ export default function CartePage() {
       {/* Header */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.75rem" }}>
         <Link
-          href="/dashboard"
+          href="/ES/dashboard"
           style={{
             width: "38px",
             height: "38px",
@@ -190,7 +190,7 @@ export default function CartePage() {
         >
           <i className="fa-solid fa-chevron-left"></i>
         </Link>
-        <h1 style={{ fontSize: "1.25rem", fontWeight: 700, margin: 0 }}>Cartes</h1>
+        <h1 style={{ fontSize: "1.25rem", fontWeight: 700, margin: 0 }}>Tarjetas</h1>
         <div style={{ width: "38px" }}></div>
       </div>
 
@@ -209,7 +209,7 @@ export default function CartePage() {
       {loading ? (
         <div style={{ textAlign: "center", padding: "4rem 1rem", color: "rgba(255,255,255,0.5)" }}>
           <i className="fa-solid fa-circle-notch fa-spin" style={{ fontSize: "1.5rem" }}></i>
-          <p style={{ marginTop: "0.5rem" }}>Chargement de vos informations…</p>
+          <p style={{ marginTop: "0.5rem" }}>Cargando su información…</p>
         </div>
       ) : !activeCard ? (
         /* SCREEN 1: Commande de carte Visa (matching user's uploaded screenshot) */
@@ -272,7 +272,7 @@ export default function CartePage() {
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", position: "relative", zIndex: 1 }}>
               <div>
                 <span style={{ fontSize: "0.65rem", textTransform: "uppercase", letterSpacing: "1px", color: "rgba(255,255,255,0.65)", display: "block" }}>
-                  NOUVELLE CARTE
+                  NUEVA TARJETA
                 </span>
                 <span style={{ fontSize: "0.95rem", fontWeight: 700, letterSpacing: "1px", color: "#fff" }}>
                   {fullName}
@@ -280,7 +280,7 @@ export default function CartePage() {
               </div>
               <div style={{ textAlign: "right" }}>
                 <span style={{ fontSize: "0.6rem", fontWeight: 800, letterSpacing: "1px", color: "rgba(255,255,255,0.85)", display: "block" }}>
-                  DEBIT
+                  DÉBITO
                 </span>
                 <span style={{ fontSize: "1.3rem", fontWeight: 900, fontStyle: "italic", letterSpacing: "1px", color: "#fff" }}>
                   VISA
@@ -292,10 +292,10 @@ export default function CartePage() {
           {/* Texts matching screenshot */}
           <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
             <h2 style={{ fontSize: "1.4rem", fontWeight: 800, marginBottom: "0.4rem" }}>
-              Commandez votre carte Visa
+              Solicite su tarjeta Visa
             </h2>
             <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.65)", margin: 0 }}>
-              Votre carte physique C23, livrée chez vous en 5 à 7 jours ouvrés.
+              Su tarjeta física C23, entregada en su domicilio en 5 a 7 días laborables.
             </p>
           </div>
 
@@ -317,7 +317,7 @@ export default function CartePage() {
                 <i className="fa-solid fa-check"></i>
               </div>
               <span style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.9)", fontWeight: 500 }}>
-                Paiements sans contact, en ligne et à l&apos;étranger
+                Pagos sin contacto, online y en el extranjero
               </span>
             </div>
 
@@ -326,7 +326,7 @@ export default function CartePage() {
                 <i className="fa-solid fa-check"></i>
               </div>
               <span style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.9)", fontWeight: 500 }}>
-                Retraits aux distributeurs dans toute la zone euro
+                Retiradas en cajeros de toda la zona euro
               </span>
             </div>
 
@@ -335,7 +335,7 @@ export default function CartePage() {
                 <i className="fa-solid fa-check"></i>
               </div>
               <span style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.9)", fontWeight: 500 }}>
-                Gel, plafonds et code PIN gérés depuis l&apos;app
+                Bloqueo, límites y PIN gestionables desde la app
               </span>
             </div>
           </div>
@@ -364,10 +364,10 @@ export default function CartePage() {
           >
             {actionLoading ? (
               <>
-                <i className="fa-solid fa-circle-notch fa-spin"></i> Activation en cours…
+                <i className="fa-solid fa-circle-notch fa-spin"></i> Activando…
               </>
             ) : (
-              "Commander ma carte · 6,99 €"
+              "Solicitar tarjeta · 6,99 €"
             )}
           </button>
         </div>
@@ -407,7 +407,7 @@ export default function CartePage() {
                 </span>
                 {activeCard.status === "frozen" && (
                   <span style={{ background: "rgba(239, 68, 68, 0.3)", color: "#fca5a5", fontSize: "0.65rem", padding: "0.2rem 0.5rem", borderRadius: "100px", fontWeight: 700, border: "1px solid rgba(239, 68, 68, 0.5)" }}>
-                    GELÉE
+                    BLOQUEADA
                   </span>
                 )}
               </div>
@@ -435,7 +435,7 @@ export default function CartePage() {
               </div>
               <div style={{ display: "flex", gap: "1.5rem", marginTop: "0.4rem" }}>
                 <div>
-                  <span style={{ fontSize: "0.55rem", textTransform: "uppercase", color: "rgba(255,255,255,0.6)", display: "block" }}>EXPIRE FIN</span>
+                  <span style={{ fontSize: "0.55rem", textTransform: "uppercase", color: "rgba(255,255,255,0.6)", display: "block" }}>VÁLIDA HASTA</span>
                   <span style={{ fontSize: "0.85rem", fontWeight: 700, fontFamily: "monospace" }}>{activeCard.expiry || "08/29"}</span>
                 </div>
                 <div>
@@ -454,7 +454,7 @@ export default function CartePage() {
               </div>
               <div style={{ textAlign: "right" }}>
                 <span style={{ fontSize: "0.6rem", fontWeight: 800, letterSpacing: "1px", color: "rgba(255,255,255,0.85)", display: "block" }}>
-                  DEBIT
+                  DÉBITO
                 </span>
                 <span style={{ fontSize: "1.3rem", fontWeight: 900, fontStyle: "italic", letterSpacing: "1px", color: "#fff" }}>
                   VISA
@@ -485,7 +485,7 @@ export default function CartePage() {
               }}
             >
               <i className={`fa-solid ${showNumbers ? "fa-eye-slash" : "fa-eye"}`} style={{ fontSize: "1.1rem", color: "#60a5fa" }}></i>
-              <span>{showNumbers ? "Masquer" : "Afficher"}</span>
+              <span>{showNumbers ? "Ocultar" : "Mostrar"}</span>
             </button>
 
             {/* Freeze / Unfreeze */}
@@ -509,7 +509,7 @@ export default function CartePage() {
               }}
             >
               <i className={`fa-solid ${activeCard.status === "frozen" ? "fa-snowflake" : "fa-lock"}`} style={{ fontSize: "1.1rem", color: activeCard.status === "frozen" ? "#f87171" : "#fbbf24" }}></i>
-              <span>{activeCard.status === "frozen" ? "Dégeler" : "Geler"}</span>
+              <span>{activeCard.status === "frozen" ? "Desbloquear" : "Bloquear"}</span>
             </button>
 
             {/* PIN Code */}
@@ -532,7 +532,7 @@ export default function CartePage() {
               }}
             >
               <i className="fa-solid fa-key" style={{ fontSize: "1.1rem", color: "#34d399" }}></i>
-              <span>Code PIN</span>
+              <span>Código PIN</span>
             </button>
           </div>
 
@@ -558,13 +558,13 @@ export default function CartePage() {
               }}
             >
               <i className="fa-solid fa-copy"></i>
-              {copied ? "Numéro de carte copié !" : "Copier le numéro de carte"}
+              {copied ? "¡Número de tarjeta copiado!" : "Copiar número de tarjeta"}
             </button>
           </div>
 
           {/* Card Features List (Matching capture 5) */}
           <div style={{ marginBottom: "1.5rem" }}>
-            <h3 style={{ fontSize: "1.1rem", fontWeight: 700, marginBottom: "0.85rem" }}>Options & Plafonds</h3>
+            <h3 style={{ fontSize: "1.1rem", fontWeight: 700, marginBottom: "0.85rem" }}>Opciones y límites</h3>
             <div
               style={{
                 background: "rgba(255,255,255,0.04)",
@@ -575,34 +575,34 @@ export default function CartePage() {
             >
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "1rem 1.25rem", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
                 <div>
-                  <strong style={{ fontSize: "0.95rem", display: "block" }}>Plafond de paiement</strong>
-                  <span style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.5)" }}>Sur 30 jours glissants</span>
+                  <strong style={{ fontSize: "0.95rem", display: "block" }}>Límite de pagos</strong>
+                  <span style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.5)" }}>En 30 días rodantes</span>
                 </div>
                 <span style={{ fontSize: "0.95rem", fontWeight: 700, color: "#fff" }}>2 500,00 €</span>
               </div>
 
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "1rem 1.25rem", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
                 <div>
-                  <strong style={{ fontSize: "0.95rem", display: "block" }}>Plafond de retrait</strong>
-                  <span style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.5)" }}>Sur 7 jours glissants</span>
+                  <strong style={{ fontSize: "0.95rem", display: "block" }}>Límite de retiradas</strong>
+                  <span style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.5)" }}>En 7 días rodantes</span>
                 </div>
                 <span style={{ fontSize: "0.95rem", fontWeight: 700, color: "#fff" }}>500,00 €</span>
               </div>
 
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "1rem 1.25rem", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
                 <div>
-                  <strong style={{ fontSize: "0.95rem", display: "block" }}>Paiements sans contact</strong>
-                  <span style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.5)" }}>Jusqu&apos;à 50 € sans code</span>
+                  <strong style={{ fontSize: "0.95rem", display: "block" }}>Pagos sin contacto</strong>
+                  <span style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.5)" }}>Hasta 50 € sin PIN</span>
                 </div>
-                <span style={{ fontSize: "0.85rem", fontWeight: 600, color: "#10b981" }}>Activé</span>
+                <span style={{ fontSize: "0.85rem", fontWeight: 600, color: "#10b981" }}>Activado</span>
               </div>
 
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "1rem 1.25rem" }}>
                 <div>
-                  <strong style={{ fontSize: "0.95rem", display: "block" }}>Paiements sur Internet</strong>
-                  <span style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.5)" }}>Sécurisés par 3D Secure</span>
+                  <strong style={{ fontSize: "0.95rem", display: "block" }}>Pagos online</strong>
+                  <span style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.5)" }}>Protegidos con 3D Secure</span>
                 </div>
-                <span style={{ fontSize: "0.85rem", fontWeight: 600, color: "#10b981" }}>Activé</span>
+                <span style={{ fontSize: "0.85rem", fontWeight: 600, color: "#10b981" }}>Activado</span>
               </div>
             </div>
           </div>
@@ -624,7 +624,7 @@ export default function CartePage() {
               }}
             >
               <i className="fa-solid fa-trash" style={{ marginRight: "0.4rem" }}></i>
-              Supprimer cette carte
+              Eliminar esta tarjeta
             </button>
           </div>
         </div>
@@ -660,9 +660,9 @@ export default function CartePage() {
             <div style={{ width: "52px", height: "52px", borderRadius: "50%", background: "rgba(52, 211, 153, 0.15)", display: "flex", alignItems: "center", justifyContent: "center", color: "#34d399", fontSize: "1.3rem", margin: "0 auto 1rem" }}>
               <i className="fa-solid fa-key"></i>
             </div>
-            <h2 style={{ fontSize: "1.25rem", fontWeight: 700, margin: "0 0 0.5rem" }}>Votre code PIN confidentiel</h2>
+            <h2 style={{ fontSize: "1.25rem", fontWeight: 700, margin: "0 0 0.5rem" }}>Su PIN secreto</h2>
             <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.6)", margin: "0 0 1.5rem" }}>
-              Ne partagez jamais votre code confidentiel.
+              Nunca comparta su PIN con nadie.
             </p>
 
             <div
@@ -684,7 +684,7 @@ export default function CartePage() {
 
             <form onSubmit={handleChangePin} style={{ textAlign: "left", marginBottom: "1.5rem" }}>
               <label style={{ display: "block", fontSize: "0.8rem", color: "rgba(255,255,255,0.7)", marginBottom: "0.4rem" }}>
-                Modifier le code PIN (4 chiffres) :
+                Cambiar PIN (4 dígitos):
               </label>
               <div style={{ display: "flex", gap: "0.5rem" }}>
                 <input
@@ -718,7 +718,7 @@ export default function CartePage() {
                     cursor: newPin.length === 4 ? "pointer" : "not-allowed",
                   }}
                 >
-                  Modifier
+                  Cambiar
                 </button>
               </div>
             </form>
@@ -737,7 +737,7 @@ export default function CartePage() {
                 cursor: "pointer",
               }}
             >
-              Fermer
+              Cerrar
             </button>
           </div>
         </div>

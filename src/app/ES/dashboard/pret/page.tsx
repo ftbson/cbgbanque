@@ -19,13 +19,13 @@ interface LoanResponse {
 }
 
 function formatMoney(amount: number, currency: string) {
-  return new Intl.NumberFormat("fr-FR", { style: "currency", currency }).format(amount);
+  return new Intl.NumberFormat("es-ES", { style: "currency", currency }).format(amount);
 }
 
 function statusLabel(status: LoanRequest["status"]) {
-  if (status === "approved") return "Demande acceptée";
-  if (status === "rejected") return "Demande refusée";
-  return "En attente";
+  if (status === "approved") return "Solicitud aceptada";
+  if (status === "rejected") return "Solicitud rechazada";
+  return "Pendiente";
 }
 
 export default function PretPage() {
@@ -42,7 +42,7 @@ export default function PretPage() {
   const loadLoans = async () => {
     const response = await fetch("/api/dashboard/loans");
     const data: LoanResponse = await response.json();
-    if (!response.ok) throw new Error(data.message ?? "Impossible de charger les demandes.");
+    if (!response.ok) throw new Error(data.message ?? "No se pudieron cargar las solicitudes.");
     setLoans(data.loans ?? []);
     if (data.currency) setCurrency(data.currency);
   };
@@ -52,14 +52,14 @@ export default function PretPage() {
     fetch("/api/dashboard/loans")
       .then(async (response) => {
         const data: LoanResponse = await response.json();
-        if (!response.ok) throw new Error(data.message ?? "Impossible de charger les demandes.");
+        if (!response.ok) throw new Error(data.message ?? "No se pudieron cargar las solicitudes.");
         if (active) {
           setLoans(data.loans ?? []);
           if (data.currency) setCurrency(data.currency);
         }
       })
       .catch((cause: unknown) => {
-        if (active) setErrorMessage(cause instanceof Error ? cause.message : "Erreur de chargement.");
+        if (active) setErrorMessage(cause instanceof Error ? cause.message : "Error de carga.");
       })
       .finally(() => { if (active) setLoading(false); });
 
@@ -78,14 +78,14 @@ export default function PretPage() {
         body: JSON.stringify({ amount, durationMonths, purpose }),
       });
       const data: { message?: string } = await response.json();
-      if (!response.ok) throw new Error(data.message ?? "Impossible d'enregistrer la demande.");
+      if (!response.ok) throw new Error(data.message ?? "No se pudo registrar la solicitud.");
       setAmount("");
       setDurationMonths("");
       setPurpose("");
-      setSuccessMessage(data.message ?? "Demande enregistrée.");
+      setSuccessMessage(data.message ?? "Solicitud registrada.");
       await loadLoans();
     } catch (cause) {
-      setErrorMessage(cause instanceof Error ? cause.message : "Erreur lors de l'enregistrement.");
+      setErrorMessage(cause instanceof Error ? cause.message : "Error al registrar.");
     } finally {
       setSubmitting(false);
     }
@@ -94,24 +94,24 @@ export default function PretPage() {
   return (
     <div className="pret-page-container">
       <div className="carte-screen-header">
-        <Link href="/dashboard" className="btn-back-circle" aria-label="Retour au tableau de bord">
+        <Link href="/ES/dashboard" className="btn-back-circle" aria-label="Volver al panel">
           <i className="fa-solid fa-chevron-left"></i>
         </Link>
-        <h1 className="screen-title-center">Demande de financement</h1>
+        <h1 className="screen-title-center">Solicitud de financiación</h1>
         <div style={{ width: "38px" }}></div>
       </div>
 
       <section className="pret-form-card">
-        <h2 className="pret-card-title">Enregistrer une demande</h2>
+        <h2 className="pret-card-title">Registrar una solicitud</h2>
         <p className="pret-card-sub">
-          Les conditions, taux et frais ne sont pas configurés. Cette demande ne constitue pas une offre de crédit et aucun fonds ne sera crédité automatiquement.
+          Las condiciones, tasas y comisiones no están configuradas. Esta solicitud no constituye una oferta de crédito y ningún fondo se abonará automáticamente.
         </p>
         {errorMessage && <p role="alert">{errorMessage}</p>}
         {successMessage && <p role="status">{successMessage}</p>}
 
         <form onSubmit={submitRequest} className="pret-simulator-form">
           <label className="field-label" htmlFor="loan-amount">
-            Montant demandé{currency ? ` (${currency})` : ""}
+            Importe solicitado{currency ? ` (${currency})` : ""}
           </label>
           <input
             id="loan-amount"
@@ -125,7 +125,7 @@ export default function PretPage() {
             className="step-input"
           />
 
-          <label className="field-label" htmlFor="loan-duration">Durée souhaitée (mois)</label>
+          <label className="field-label" htmlFor="loan-duration">Duración deseada (meses)</label>
           <input
             id="loan-duration"
             type="number"
@@ -138,7 +138,7 @@ export default function PretPage() {
             className="step-input"
           />
 
-          <label className="field-label" htmlFor="loan-purpose">Motif de la demande</label>
+          <label className="field-label" htmlFor="loan-purpose">Motivo de la solicitud</label>
           <textarea
             id="loan-purpose"
             required
@@ -149,14 +149,14 @@ export default function PretPage() {
           />
 
           <button type="submit" disabled={submitting || !currency} className="btn-submit-loan">
-            {submitting ? "Enregistrement…" : "Enregistrer la demande"}
+            {submitting ? "Registrando…" : "Registrar la solicitud"}
           </button>
         </form>
       </section>
 
       {!loading && loans.length > 0 && (
         <section className="loans-history-section">
-          <h2 className="section-title">Mes demandes</h2>
+          <h2 className="section-title">Mis solicitudes</h2>
           <div className="loans-list-wrapper">
             {loans.map((loan) => (
               <article key={loan.id} className="loan-item-card">
@@ -164,7 +164,7 @@ export default function PretPage() {
                   <div>
                     <strong className="loan-item-purpose">{loan.purpose}</strong>
                     <div className="loan-item-date">
-                      {new Date(loan.createdAt).toLocaleDateString("fr-FR")} · {loan.durationMonths} mois
+                      {new Date(loan.createdAt).toLocaleDateString("es-ES")} · {loan.durationMonths} meses
                     </div>
                   </div>
                   <span className={`badge-loan-status ${loan.status}`}>
@@ -173,7 +173,7 @@ export default function PretPage() {
                 </div>
                 <div className="loan-item-grid">
                   <div>
-                    <span className="loan-meta-key">Montant demandé</span>
+                    <span className="loan-meta-key">Importe solicitado</span>
                     <span className="loan-meta-val">{formatMoney(loan.amount, currency)}</span>
                   </div>
                 </div>

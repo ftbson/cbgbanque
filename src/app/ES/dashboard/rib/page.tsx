@@ -40,7 +40,7 @@ export default function RibPage() {
   const [activeTab, setActiveTab] = useState<"official" | "request">("official");
   const [copied, setCopied] = useState(false);
 
-  // "Demander de l'argent" fields
+  // "Solicitar dinero" fields
   const [requestedAmount, setRequestedAmount] = useState("");
   const [requestReason, setRequestReason] = useState("");
   const [sharedToast, setSharedToast] = useState("");
@@ -53,7 +53,7 @@ export default function RibPage() {
           setData(resData);
         }
       })
-      .catch((err) => console.error("Erreur chargement RIB :", err))
+      .catch((err) => console.error("Error al cargar la información bancaria:", err))
       .finally(() => setLoading(false));
   }, []);
 
@@ -66,20 +66,20 @@ export default function RibPage() {
 
   const shareDetails = () => {
     if (!data) return;
-    const text = `Bonjour,\nVoici mes coordonnées bancaires CBG Banque Finance pour le virement${
+    const text = `Hola,\naquí están mis datos bancarios de CBG Banco Finance para la transferencia${
       requestedAmount ? ` de ${requestedAmount} €` : ""
-    }${requestReason ? ` (${requestReason})` : ""} :\n\nTitulaire : ${data.holder.name}\nIBAN : ${
+    }${requestReason ? ` (${requestReason})` : ""} :\n\nTitular: ${data.holder.name}\nIBAN: ${
       data.rib.iban
-    }\nBIC/SWIFT : ${data.rib.bic}\nBanque : ${data.bank.name}\n\nMerci !`;
+    }\nBIC/SWIFT: ${data.rib.bic}\nBanco: ${data.bank.name}\n\n¡Gracias!`;
 
     if (navigator.share) {
       navigator.share({
-        title: "Mes coordonnées bancaires (RIB)",
+        title: "Mis datos bancarios (RIB)",
         text,
       }).catch(() => {});
     } else {
       navigator.clipboard.writeText(text);
-      setSharedToast("Coordonnées copiées dans le presse-papier !");
+      setSharedToast("¡Datos bancarios copiados al portapapeles!");
       setTimeout(() => setSharedToast(""), 3000);
     }
   };
@@ -92,7 +92,7 @@ export default function RibPage() {
     return (
       <div style={{ maxWidth: "600px", margin: "4rem auto", textAlign: "center", color: "#fff" }}>
         <i className="fa-solid fa-circle-notch fa-spin" style={{ fontSize: "1.75rem" }}></i>
-        <p style={{ marginTop: "1rem" }}>Génération de votre Relevé d&apos;Identité Bancaire…</p>
+        <p style={{ marginTop: "1rem" }}>Generando su Relevé d'Identité Bancaire…</p>
       </div>
     );
   }
@@ -100,8 +100,8 @@ export default function RibPage() {
   if (!data) {
     return (
       <div style={{ maxWidth: "600px", margin: "4rem auto", textAlign: "center", color: "#f87171" }}>
-        <p>Impossible de charger votre RIB pour le moment.</p>
-        <Link href="/dashboard" style={{ color: "#60a5fa" }}>Retour au tableau de bord</Link>
+        <p>No se puede cargar su RIB en este momento.</p>
+        <Link href="/ES/dashboard" style={{ color: "#60a5fa" }}>Volver al panel</Link>
       </div>
     );
   }
@@ -111,7 +111,7 @@ export default function RibPage() {
       {/* Top Navigation */}
       <div className="no-print" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.5rem" }}>
         <Link
-          href="/dashboard"
+          href="/ES/dashboard"
           style={{
             width: "38px",
             height: "38px",
@@ -126,7 +126,7 @@ export default function RibPage() {
         >
           <i className="fa-solid fa-chevron-left"></i>
         </Link>
-        <h1 style={{ fontSize: "1.25rem", fontWeight: 700, margin: 0 }}>Relevé d&apos;Identité Bancaire (RIB)</h1>
+        <h1 style={{ fontSize: "1.25rem", fontWeight: 700, margin: 0 }}>Relevé d'Identité Bancario (RIB)</h1>
         <div style={{ width: "38px" }}></div>
       </div>
 
@@ -158,7 +158,7 @@ export default function RibPage() {
           }}
         >
           <i className="fa-solid fa-file-invoice" style={{ marginRight: "0.5rem" }}></i>
-          Attestation
+          Certificado
         </button>
         <button
           type="button"
@@ -177,7 +177,7 @@ export default function RibPage() {
           }}
         >
           <i className="fa-solid fa-hand-holding-dollar" style={{ marginRight: "0.5rem" }}></i>
-          Demander de l&apos;argent
+          Solicitar dinero
         </button>
       </div>
 
@@ -205,7 +205,7 @@ export default function RibPage() {
                 boxShadow: "0 4px 15px rgba(67, 97, 238, 0.35)",
               }}
             >
-              <i className="fa-solid fa-print"></i> Imprimer RIB (PDF)
+              <i className="fa-solid fa-print"></i> Imprimir RIB (PDF)
             </button>
             <button
               type="button"
@@ -226,7 +226,7 @@ export default function RibPage() {
               }}
             >
               <i className="fa-solid fa-copy"></i>
-              {copied ? "IBAN copié !" : "Copier l'IBAN"}
+              {copied ? "¡IBAN copiado!" : "Copiar IBAN"}
             </button>
           </div>
 
@@ -250,7 +250,7 @@ export default function RibPage() {
         <div style={{ width: "32px", height: "32px", borderRadius: "8px", background: "#2563eb", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 800 }}>
           C
         </div>
-        <strong style={{ fontSize: "1.3rem", letterSpacing: "1px", color: "#0f172a" }}>CBG BANQUE</strong>
+        <strong style={{ fontSize: "1.3rem", letterSpacing: "1px", color: "#0f172a" }}>CBG BANCO</strong>
       </div>
       <div style={{ fontSize: "0.75rem", color: "#64748b", lineHeight: 1.4 }}>
         {data.bank.legalName}<br />
@@ -261,13 +261,13 @@ export default function RibPage() {
 
     <div style={{ textAlign: "right" }}>
       <span style={{ fontSize: "0.7rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "1.5px", color: "#2563eb", display: "block" }}>
-        DOCUMENT OFFICIEL
+        DOCUMENTO OFICIAL
       </span>
       <strong style={{ fontSize: "1.1rem", color: "#0f172a", display: "block", marginTop: "0.2rem" }}>
-        RELEVÉ D&apos;IDENTITÉ BANCAIRE
-      </strong>
+        RELEVÉ D'IDENTITÉ BANCAIRE
+      </span>
       <span style={{ fontSize: "0.75rem", color: "#64748b" }}>
-        Émis le {new Date().toLocaleDateString("fr-FR")}
+        Emitido el {new Date().toLocaleDateString("es-ES")}
       </span>
     </div>
   </div>
@@ -275,7 +275,7 @@ export default function RibPage() {
   {/* Titulaire Card */}
   <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "10px", padding: "1.25rem", marginBottom: "1.75rem" }}>
     <span style={{ fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "1px", color: "#64748b", fontWeight: 700, display: "block", marginBottom: "0.4rem" }}>
-      TITULAIRE DU COMPTE
+      TITULAR DE LA CUENTA
     </span>
     <div style={{ fontSize: "1.1rem", fontWeight: 700, color: "#0f172a" }}>
       {data.holder.civility} {data.holder.name}
@@ -289,18 +289,18 @@ export default function RibPage() {
   {/* French Standard RIB List (Responsive & Styled) */}
   <div style={{ marginBottom: "1.75rem" }}>
     <span style={{ fontSize: "0.75rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1px", color: "#334155", display: "block", marginBottom: "0.75rem" }}>
-      COORDONNÉES BANCAIRES NATIONALES
+      COORDENADAS BANCARIAS NACIONALES
     </span>
-    
-    <div style={{ 
-      display: "grid", 
-      gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", 
-      gap: "0.75rem" 
+
+    <div style={{
+      display: "grid",
+      gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
+      gap: "0.75rem"
     }}>
       {/* Code Banque */}
       <div style={{ background: "#f8fafc", border: "1px solid #cbd5e1", borderRadius: "10px", padding: "0.9rem 1rem" }}>
         <span style={{ fontSize: "0.65rem", color: "#64748b", textTransform: "uppercase", fontWeight: 700, display: "block", marginBottom: "0.2rem" }}>
-          Code Banque
+          Código Banco
         </span>
         <span style={{ fontSize: "0.95rem", fontWeight: 800, color: "#0f172a", fontFamily: "monospace", letterSpacing: "1px" }}>
           {data.rib.codeBanque}
@@ -310,7 +310,7 @@ export default function RibPage() {
       {/* Code Guichet */}
       <div style={{ background: "#f8fafc", border: "1px solid #cbd5e1", borderRadius: "10px", padding: "0.9rem 1rem" }}>
         <span style={{ fontSize: "0.65rem", color: "#64748b", textTransform: "uppercase", fontWeight: 700, display: "block", marginBottom: "0.2rem" }}>
-          Code Guichet
+          Código Sucursal
         </span>
         <span style={{ fontSize: "0.95rem", fontWeight: 800, color: "#0f172a", fontFamily: "monospace", letterSpacing: "1px" }}>
           {data.rib.codeGuichet}
@@ -320,7 +320,7 @@ export default function RibPage() {
       {/* N° de Compte */}
       <div style={{ background: "#f8fafc", border: "1px solid #cbd5e1", borderRadius: "10px", padding: "0.9rem 1rem" }}>
         <span style={{ fontSize: "0.65rem", color: "#64748b", textTransform: "uppercase", fontWeight: 700, display: "block", marginBottom: "0.2rem" }}>
-          N° de Compte
+          Nº de Cuenta
         </span>
         <span style={{ fontSize: "0.95rem", fontWeight: 800, color: "#0f172a", fontFamily: "monospace", letterSpacing: "1px" }}>
           {data.rib.numeroCompte}
@@ -330,7 +330,7 @@ export default function RibPage() {
       {/* Clé RIB */}
       <div style={{ background: "#f8fafc", border: "1px solid #cbd5e1", borderRadius: "10px", padding: "0.9rem 1rem" }}>
         <span style={{ fontSize: "0.65rem", color: "#64748b", textTransform: "uppercase", fontWeight: 700, display: "block", marginBottom: "0.2rem" }}>
-          Clé RIB
+          Clave RIB
         </span>
         <span style={{ fontSize: "0.95rem", fontWeight: 800, color: "#0f172a", fontFamily: "monospace", letterSpacing: "1px" }}>
           {data.rib.cleRib}
@@ -341,7 +341,7 @@ export default function RibPage() {
     {/* Domiciliation (Affichée proprement en dessous en bloc complet) */}
     <div style={{ background: "#f8fafc", border: "1px solid #cbd5e1", borderRadius: "10px", padding: "0.9rem 1rem", marginTop: "0.75rem" }}>
       <span style={{ fontSize: "0.65rem", color: "#64748b", textTransform: "uppercase", fontWeight: 700, display: "block", marginBottom: "0.2rem" }}>
-        Domiciliation bancaire
+        Domiciliación bancaria
       </span>
       <span style={{ fontSize: "0.85rem", fontWeight: 600, color: "#0f172a" }}>
         {data.bank.domiciliation}
@@ -352,12 +352,12 @@ export default function RibPage() {
   {/* International Coordinates (IBAN & BIC) */}
   <div style={{ marginBottom: "1.75rem" }}>
     <span style={{ fontSize: "0.75rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1px", color: "#334155", display: "block", marginBottom: "0.5rem" }}>
-      IDENTIFIANT INTERNATIONAL (IBAN & BIC)
+      IDENTIFICADOR INTERNACIONAL (IBAN & BIC)
     </span>
 
     <div style={{ background: "#f8fafc", border: "1px solid #cbd5e1", borderRadius: "10px", padding: "1rem 1.25rem", marginBottom: "0.75rem" }}>
       <span style={{ fontSize: "0.7rem", color: "#64748b", textTransform: "uppercase", fontWeight: 700, display: "block" }}>
-        NUMÉRO IBAN (INTERNATIONAL BANK ACCOUNT NUMBER)
+        NÚMERO IBAN (INTERNATIONAL BANK ACCOUNT NUMBER)
       </span>
       <span style={{ fontSize: "1.15rem", fontWeight: 800, color: "#0f172a", fontFamily: "monospace", letterSpacing: "1.5px", display: "block", marginTop: "0.2rem", wordBreak: "break-all" }}>
         {data.rib.iban}
@@ -366,7 +366,7 @@ export default function RibPage() {
 
     <div style={{ background: "#f8fafc", border: "1px solid #cbd5e1", borderRadius: "10px", padding: "1rem 1.25rem" }}>
       <span style={{ fontSize: "0.7rem", color: "#64748b", textTransform: "uppercase", fontWeight: 700, display: "block" }}>
-        CODE BIC / SWIFT (BANK IDENTIFIER CODE)
+        CÓDIGO BIC / SWIFT (BANK IDENTIFIER CODE)
       </span>
       <span style={{ fontSize: "1.15rem", fontWeight: 800, color: "#0f172a", fontFamily: "monospace", letterSpacing: "1.5px", display: "block", marginTop: "0.2rem" }}>
         {data.rib.bic}
@@ -377,7 +377,7 @@ export default function RibPage() {
         </div>
       )}
 
-      {/* TAB 2: DEMANDER DE L'ARGENT (Matching Screenshot 5) */}
+      {/* TAB 2: SOLICITAR DINERO (Matching Screenshot 5) */}
       {activeTab === "request" && (
         <div
           style={{
@@ -389,9 +389,9 @@ export default function RibPage() {
           }}
         >
           <div style={{ borderBottom: "1px solid rgba(255,255,255,0.08)", paddingBottom: "1.25rem", marginBottom: "1.5rem" }}>
-            <h2 style={{ fontSize: "1.3rem", fontWeight: 700, margin: "0 0 0.3rem" }}>Demander de l&apos;argent</h2>
+            <h2 style={{ fontSize: "1.3rem", fontWeight: 700, margin: "0 0 0.3rem" }}>Solicitar dinero</h2>
             <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.6)", margin: 0 }}>
-              Partagez vos coordonnées bancaires pour recevoir un virement instantané.
+              Comparta sus datos bancarios para recibir una transferencia instantánea.
             </p>
           </div>
 
@@ -403,12 +403,12 @@ export default function RibPage() {
             </div>
 
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <span style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.6)" }}>Banque</span>
+              <span style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.6)" }}>Banco</span>
               <strong style={{ fontSize: "0.95rem" }}>{data.bank.name}</strong>
             </div>
 
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <span style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.6)" }}>Titulaire</span>
+              <span style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.6)" }}>Titular</span>
               <strong style={{ fontSize: "0.95rem" }}>{data.holder.name}</strong>
             </div>
 
@@ -421,7 +421,7 @@ export default function RibPage() {
           {/* Interactive Inputs */}
           <div style={{ marginBottom: "1.25rem" }}>
             <label style={{ display: "block", fontSize: "0.85rem", color: "rgba(255,255,255,0.75)", marginBottom: "0.4rem", fontWeight: 600 }}>
-              Montant demandé (optionnel)
+              Importe solicitado (opcional)
             </label>
             <input
               type="number"
@@ -446,13 +446,13 @@ export default function RibPage() {
 
           <div style={{ marginBottom: "1.75rem" }}>
             <label style={{ display: "block", fontSize: "0.85rem", color: "rgba(255,255,255,0.75)", marginBottom: "0.4rem", fontWeight: 600 }}>
-              Motif
+              Concepto
             </label>
             <input
               type="text"
               value={requestReason}
               onChange={(e) => setRequestReason(e.target.value)}
-              placeholder="Remboursement, cadeau, facture..."
+              placeholder="Reembolso, regalo, factura..."
               maxLength={80}
               style={{
                 width: "100%",
@@ -496,7 +496,7 @@ export default function RibPage() {
                 gap: "0.5rem",
               }}
             >
-              <i className="fa-solid fa-share-nodes"></i> Partager mes coordonnées
+              <i className="fa-solid fa-share-nodes"></i> Compartir mis datos bancarios
             </button>
 
             <button
@@ -519,7 +519,7 @@ export default function RibPage() {
               }}
             >
               <i className="fa-solid fa-copy"></i>
-              {copied ? "IBAN copié !" : "Copier l'IBAN"}
+              {copied ? "¡IBAN copiado!" : "Copiar IBAN"}
             </button>
           </div>
         </div>
