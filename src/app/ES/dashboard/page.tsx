@@ -49,13 +49,13 @@ interface DashboardData {
 }
 
 function formatMoney(cents: number, currency: string) {
-  return new Intl.NumberFormat("fr-FR", { style: "currency", currency }).format(cents / 100);
+  return new Intl.NumberFormat("es-ES", { style: "currency", currency }).format(cents / 100);
 }
 
 function statusLabel(status: string) {
-  if (status === "pending") return "En attente";
-  if (status === "cancelled") return "Annulée";
-  return "Enregistrée";
+  if (status === "pending") return "Pendiente";
+  if (status === "cancelled") return "Cancelada";
+  return "Registrada";
 }
 
 export default function DashboardHomePage() {
@@ -80,27 +80,27 @@ export default function DashboardHomePage() {
     fetch("/api/dashboard")
       .then(async (response) => {
         const result: DashboardData & { message?: string } = await response.json();
-        if (!response.ok) throw new Error(result.message ?? "Impossible de charger le compte.");
+        if (!response.ok) throw new Error(result.message ?? "No se pudo cargar la cuenta.");
         if (active) setData(result);
       })
       .catch((cause: unknown) => {
-        if (active) setError(cause instanceof Error ? cause.message : "Erreur de chargement.");
+        if (active) setError(cause instanceof Error ? cause.message : "Error de carga.");
       });
     return () => { active = false; };
   }, []);
 
   if (error) return <p className="dashboard-home" role="alert">{error}</p>;
-  if (!data) return <p className="dashboard-home" aria-live="polite">Chargement…</p>;
+  if (!data) return <p className="dashboard-home" aria-live="polite">Cargando…</p>;
 
   return (
     <div className="dashboard-home-redesign">
       <header className="dashboard-welcome">
-        <p>Votre espace personnel</p>
-        <h1>Bonjour, {data.user.firstName}</h1>
+        <p>Tu espacio personal</p>
+        <h1>Hola, {data.user.firstName}</h1>
       </header>
 
       <section className="cbg-balance-card">
-        <span className="balance-account-type">Compte Personnel · {data.account.currency}</span>
+        <span className="balance-account-type">Cuenta Personal · {data.account.currency}</span>
         <div className="balance-huge-row">
           <p className="balance-huge-value">
             {isBalanceHidden ? "••••••" : formatMoney(data.availableBalanceCents, data.account.currency)}
@@ -109,7 +109,7 @@ export default function DashboardHomePage() {
             type="button"
             onClick={() => setIsBalanceHidden((hidden) => !hidden)}
             className="balance-eye-btn"
-            aria-label={isBalanceHidden ? "Afficher le solde" : "Masquer le solde"}
+            aria-label={isBalanceHidden ? "Mostrar saldo" : "Ocultar saldo"}
           >
             <i className={`fa-regular ${isBalanceHidden ? "fa-eye-slash" : "fa-eye"}`}></i>
           </button>
@@ -118,8 +118,8 @@ export default function DashboardHomePage() {
         {/* Clickable IBAN badge leading to official RIB */}
         <div style={{ marginTop: "0.6rem" }}>
           <Link
-            href="/dashboard/rib"
-            title="Consulter mon RIB & Coordonnées bancaires"
+            href="/ES/dashboard/rib"
+            title="Ver mi RIB y datos bancarios"
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -141,29 +141,29 @@ export default function DashboardHomePage() {
         </div>
       </section>
 
-      <nav className="cbg-circle-actions-row" aria-label="Actions de compte">
-        <Link href="/dashboard/rib" className="circle-action-item">
+      <nav className="cbg-circle-actions-row" aria-label="Acciones de cuenta">
+        <Link href="/ES/dashboard/rib" className="circle-action-item">
           <div className="action-circle-bg"><i className="fa-solid fa-plus"></i></div>
-          <span>Ajouter de l&apos;argent</span>
+          <span>Añadir dinero</span>
         </Link>
-        <Link href="/dashboard/envoyer" className="circle-action-item">
+        <Link href="/ES/dashboard/envoyer" className="circle-action-item">
           <div className="action-circle-bg"><i className="fa-solid fa-arrow-right-arrow-left"></i></div>
-          <span>Virement & Retrait</span>
+          <span>Transferencia y Retiro</span>
         </Link>
-        <Link href="/dashboard/rib" className="circle-action-item">
+        <Link href="/ES/dashboard/rib" className="circle-action-item">
           <div className="action-circle-bg"><i className="fa-solid fa-building-columns"></i></div>
-          <span>Mon RIB</span>
+          <span>Mi RIB</span>
         </Link>
-        <Link href="/dashboard/pret" className="circle-action-item">
+        <Link href="/ES/dashboard/pret" className="circle-action-item">
           <div className="action-circle-bg"><i className="fa-solid fa-hand-holding-dollar"></i></div>
-          <span>Demander un prêt</span>
+          <span>Solicitar préstamo</span>
         </Link>
       </nav>
 
       {data.unreadNotifications > 0 && (
         <section className="cbg-transactions-section">
-          <Link href="/dashboard/notifications" className="cbg-sublink">
-            {data.unreadNotifications} notification(s) non lue(s)
+          <Link href="/ES/dashboard/notifications" className="cbg-sublink">
+            {data.unreadNotifications} notificación(es) sin leer
           </Link>
         </section>
       )}
@@ -172,8 +172,8 @@ export default function DashboardHomePage() {
         {data.transactions.length > 0 ? (
           <>
             <div className="section-head-title-row">
-              <h2 className="cbg-title-bold">Activité récente</h2>
-              <Link href="/dashboard/activite" className="cbg-sublink">Historique complet</Link>
+              <h2 className="cbg-title-bold">Actividad reciente</h2>
+              <Link href="/ES/dashboard/activite" className="cbg-sublink">Historial completo</Link>
             </div>
             <div className="history-list-wrapper">
               {data.transactions.map((transaction) => {
@@ -190,7 +190,7 @@ export default function DashboardHomePage() {
                     <div className="history-item-texts">
                       <span className="history-item-title">{transaction.description}</span>
                       <span className="history-item-sub">
-                        {new Date(transaction.createdAt).toLocaleString("fr-FR")} · {statusLabel(transaction.status)}
+                        {new Date(transaction.createdAt).toLocaleString("es-ES")} · {statusLabel(transaction.status)}
                       </span>
                     </div>
 
@@ -222,10 +222,10 @@ export default function DashboardHomePage() {
                             gap: "0.35rem",
                             boxShadow: "0 0 10px rgba(234, 179, 8, 0.25)",
                           }}
-                          title="Cliquer pour suivre l'état du virement"
+                          title="Haz clic para seguir el estado de la transferencia"
                         >
                           <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#fbbf24" }}></span>
-                          En attente
+                          Pendiente
                         </button>
                       )}
                     </div>
@@ -236,9 +236,9 @@ export default function DashboardHomePage() {
           </>
         ) : (
           <div className="dashboard-empty-state">
-            <h2 className="cbg-title-bold">Aucune activité pour le moment</h2>
-            <p>Vos opérations apparaîtront ici après leur enregistrement.</p>
-            <Link href="/dashboard/activite" className="cbg-sublink">Ouvrir l&apos;historique</Link>
+            <h2 className="cbg-title-bold">Ninguna actividad por ahora</h2>
+            <p>Tus operaciones aparecerán aquí después de su registro.</p>
+            <Link href="/ES/dashboard/activite" className="cbg-sublink">Abrir historial</Link>
           </div>
         )}
       </section>
@@ -247,24 +247,24 @@ export default function DashboardHomePage() {
         {data.cards.length > 0 ? (
           <>
             <div className="section-head-title-row">
-              <h2 className="cbg-title-bold">Ma carte bancaire Visa</h2>
-              <Link href="/dashboard/carte" className="cbg-sublink">Gérer ma carte</Link>
+              <h2 className="cbg-title-bold">Mi tarjeta bancaria Visa</h2>
+              <Link href="/ES/dashboard/carte" className="cbg-sublink">Gestionar mi tarjeta</Link>
             </div>
             {data.cards.map((card) => (
-              <Link key={card.id} href="/dashboard/carte" className="discover-tile dashboard-card-reference">
+              <Link key={card.id} href="/ES/dashboard/carte" className="discover-tile dashboard-card-reference">
                 <div>
                   <strong>{card.name}</strong>
-                  <span>{card.status === "frozen" ? "Carte temporairement gelée" : "Carte Visa Débit active"}</span>
+                  <span>{card.status === "frozen" ? "Tarjeta temporalmente bloqueada" : "Tarjeta Visa Débito activa"}</span>
                 </div>
-                <span style={{ fontSize: "0.85rem", color: "#60a5fa" }}>Gérer</span>
+                <span style={{ fontSize: "0.85rem", color: "#60a5fa" }}>Gestionar</span>
               </Link>
             ))}
           </>
         ) : (
           <div className="dashboard-empty-state">
-            <h2 className="cbg-title-bold">Aucune carte active</h2>
-            <p>Commandez et activez votre carte physique Visa pour vos paiements et retraits au quotidien.</p>
-            <Link href="/dashboard/carte" className="cbg-sublink">Commander ma carte Visa</Link>
+            <h2 className="cbg-title-bold">Ninguna tarjeta activa</h2>
+            <p>Pide y activa tu tarjeta física Visa para tus pagos y retiros diarios.</p>
+            <Link href="/ES/dashboard/carte" className="cbg-sublink">Pedir mi tarjeta Visa</Link>
           </div>
         )}
       </section>
@@ -273,26 +273,26 @@ export default function DashboardHomePage() {
         {data.loans.length > 0 ? (
           <>
             <div className="section-head-title-row">
-              <h2 className="cbg-title-bold">Mes demandes de financement</h2>
-              <Link href="/dashboard/pret" className="cbg-sublink">Voir les demandes</Link>
+              <h2 className="cbg-title-bold">Mis solicitudes de financiación</h2>
+              <Link href="/ES/dashboard/pret" className="cbg-sublink">Ver solicitudes</Link>
             </div>
             {data.loans.map((loan) => (
               <article key={loan.id} className="discover-tile dashboard-data-tile">
                 <div>
                   <strong>{loan.purpose}</strong>
-                  <span>{formatMoney(Math.round(loan.amount * 100), data.user.currency)} · {loan.durationMonths} mois</span>
+                  <span>{formatMoney(Math.round(loan.amount * 100), data.user.currency)} · {loan.durationMonths} meses</span>
                 </div>
                 <span>
-                  {loan.status === "approved" ? "Acceptée" : loan.status === "rejected" ? "Refusée" : "En attente"}
+                  {loan.status === "approved" ? "Aceptada" : loan.status === "rejected" ? "Rechazada" : "Pendiente"}
                 </span>
               </article>
             ))}
           </>
         ) : (
           <div className="dashboard-empty-state">
-            <h2 className="cbg-title-bold">Aucune demande de financement</h2>
-            <p>Les demandes que vous enregistrez seront listées ici.</p>
-            <Link href="/dashboard/pret" className="cbg-sublink">Enregistrer une demande</Link>
+            <h2 className="cbg-title-bold">Ninguna solicitud de financiación</h2>
+            <p>Las solicitudes que registres aparecerán aquí.</p>
+            <Link href="/ES/dashboard/pret" className="cbg-sublink">Registrar una solicitud</Link>
           </div>
         )}
       </section>
@@ -301,8 +301,8 @@ export default function DashboardHomePage() {
         {data.vaults.length > 0 ? (
           <>
             <div className="section-head-title-row">
-              <h2 className="cbg-title-bold">Mes coffres d&apos;épargne</h2>
-              <Link href="/dashboard/epargne" className="cbg-sublink">Gérer</Link>
+              <h2 className="cbg-title-bold">Mis cajas de ahorro</h2>
+              <Link href="/ES/dashboard/epargne" className="cbg-sublink">Gestionar</Link>
             </div>
             <div className="budget-gauges-grid">
               {data.vaults.map((vault) => {
@@ -323,9 +323,9 @@ export default function DashboardHomePage() {
           </>
         ) : (
           <div className="dashboard-empty-state">
-            <h2 className="cbg-title-bold">Aucun coffre d&apos;épargne</h2>
-            <p>Créez un coffre avec votre objectif pour commencer à suivre votre épargne.</p>
-            <Link href="/dashboard/epargne" className="cbg-sublink">Créer un coffre</Link>
+            <h2 className="cbg-title-bold">Ninguna caja de ahorro</h2>
+            <p>Crea una caja con tu objetivo para empezar a seguir tu ahorro.</p>
+            <Link href="/ES/dashboard/epargne" className="cbg-sublink">Crear una caja</Link>
           </div>
         )}
       </section>

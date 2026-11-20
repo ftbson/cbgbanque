@@ -32,7 +32,7 @@ export default function ActivitePage() {
   const loadTransactions = async (offset = 0, append = false) => {
     const response = await fetch(`/api/dashboard/transactions?offset=${offset}`);
     const data: ActivityResponse = await response.json();
-    if (!response.ok) throw new Error(data.message ?? "Impossible de charger l'historique.");
+    if (!response.ok) throw new Error(data.message ?? "Verlauf konnte nicht geladen werden.");
     setTransactions((current) => append ? [...current, ...(data.transactions ?? [])] : data.transactions ?? []);
     setHasMore(data.hasMore ?? false);
   };
@@ -42,14 +42,14 @@ export default function ActivitePage() {
     fetch("/api/dashboard/transactions?offset=0")
       .then(async (response) => {
         const data: ActivityResponse = await response.json();
-        if (!response.ok) throw new Error(data.message ?? "Impossible de charger l'historique.");
+        if (!response.ok) throw new Error(data.message ?? "Verlauf konnte nicht geladen werden.");
         if (active) {
           setTransactions(data.transactions ?? []);
           setHasMore(data.hasMore ?? false);
         }
       })
       .catch((cause: unknown) => {
-        if (active) setError(cause instanceof Error ? cause.message : "Erreur de chargement.");
+        if (active) setError(cause instanceof Error ? cause.message : "Ladefehler.");
       });
     return () => { active = false; };
   }, []);
@@ -59,7 +59,7 @@ export default function ActivitePage() {
     try {
       await loadTransactions(transactions.length, true);
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Erreur de chargement.");
+      setError(cause instanceof Error ? cause.message : "Ladefehler.");
     } finally {
       setLoadingMore(false);
     }
@@ -70,12 +70,12 @@ export default function ActivitePage() {
     try {
       const response = await fetch(`/api/dashboard/transactions/${id}`, { method: "DELETE" });
       const data: { message?: string } = await response.json();
-      if (!response.ok) throw new Error(data.message ?? "Impossible d'annuler la demande.");
+      if (!response.ok) throw new Error(data.message ?? "Anfrage konnte nicht storniert werden.");
       setTransactions((current) => current.map((item) =>
         item.id === id ? { ...item, status: "cancelled" } : item,
       ));
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Erreur lors de l'annulation.");
+      setError(cause instanceof Error ? cause.message : "Fehler beim Stornieren.");
     }
   };
 
@@ -89,16 +89,16 @@ export default function ActivitePage() {
       <div className="history-container">
         <div className="history-header">
           <div className="history-title-group">
-            <h1 className="history-main-title">Historique</h1>
-            <span className="history-count-badge">{filtered.length} opération(s)</span>
+            <h1 className="history-main-title">Verlauf</h1>
+            <span className="history-count-badge">{filtered.length} Vorgang/Vorgänge</span>
           </div>
         </div>
         <div className="history-search-box">
-          <label className="sr-only" htmlFor="activity-search">Rechercher une opération</label>
+          <label className="sr-only" htmlFor="activity-search">Vorgang suchen</label>
           <input
             id="activity-search"
             type="search"
-            placeholder="Rechercher une opération"
+            placeholder="Vorgang suchen"
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             className="history-search-input"
@@ -107,7 +107,7 @@ export default function ActivitePage() {
         <div className="history-pills-row">
           {(["all", "pending", "completed"] as const).map((value) => (
             <button key={value} className={`pill-filter ${filter === value ? "active" : ""}`} onClick={() => setFilter(value)}>
-              {value === "all" ? "Tout" : value === "pending" ? "En attente" : "Terminées"}
+              {value === "all" ? "Alle" : value === "pending" ? "Ausstehend" : "Abgeschlossen"}
             </button>
           ))}
         </div>
@@ -115,7 +115,7 @@ export default function ActivitePage() {
         {error ? <p role="alert">{error}</p> : filtered.length === 0 ? (
           <div className="history-empty-card">
             <div className="empty-icon-circle"><i className="fa-solid fa-bars-staggered"></i></div>
-            <p className="empty-state-text">Aucune opération enregistrée.</p>
+            <p className="empty-state-text">Keine Vorgänge erfasst.</p>
           </div>
         ) : (
           <div className="history-list-wrapper">
@@ -132,7 +132,7 @@ export default function ActivitePage() {
                     <div className="history-item-texts">
                       <span className="history-item-title">{item.description}</span>
                       <span className="history-item-sub">
-                        {new Date(item.createdAt).toLocaleString("fr-FR")} · {item.status === "pending" ? "En attente" : "Enregistrée"}
+                        {new Date(item.createdAt).toLocaleString("de-DE")} · {item.status === "pending" ? "Ausstehend" : "Erfasst"}
                       </span>
                     </div>
                   </div>
@@ -140,7 +140,7 @@ export default function ActivitePage() {
                     <span className="history-item-amount">
                       {item.amountCents === 0
                         ? "—"
-                        : new Intl.NumberFormat("fr-FR", { style: "currency", currency: item.currency }).format(signedCents / 100)}
+                        : new Intl.NumberFormat("de-DE", { style: "currency", currency: item.currency }).format(signedCents / 100)}
                     </span>
                     {isWithdrawal && item.status === "pending" && (
                       <div style={{ display: "flex", gap: "0.4rem" }}>
@@ -161,13 +161,13 @@ export default function ActivitePage() {
                             gap: "0.35rem",
                             boxShadow: "0 0 10px rgba(234, 179, 8, 0.25)",
                           }}
-                          title="Cliquer pour suivre l'état du virement"
+                          title="Klicken, um den Überweisungsstatus zu verfolgen"
                         >
                           <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#fbbf24" }}></span>
-                          En attente
+                          Ausstehend
                         </button>
                         <button type="button" className="btn-table-details" onClick={() => void cancelWithdrawal(item.id)}>
-                          Annuler
+                          Stornieren
                         </button>
                       </div>
                     )}
@@ -179,7 +179,7 @@ export default function ActivitePage() {
         )}
         {hasMore && (
           <button type="button" className="btn-table-details" onClick={() => void loadMore()} disabled={loadingMore}>
-            {loadingMore ? "Chargement…" : "Charger plus d'opérations"}
+            {loadingMore ? "Wird geladen…" : "Mehr Vorgänge laden"}
           </button>
         )}
       </div>

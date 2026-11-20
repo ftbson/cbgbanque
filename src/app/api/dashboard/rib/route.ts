@@ -1,9 +1,67 @@
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { getApprovedUser } from "@/lib/auth";
-import { getDeterministicIban, getOrCreateAccount } from "@/lib/dashboard-data";
+import { getOrCreateAccount } from "@/lib/dashboard-data";
 import { db } from "@/lib/db";
-import { usersTable } from "@/lib/schema";
+import { accountsTable, usersTable } from "@/lib/schema";
+
+interface ParsedIban {
+  iban: string;
+  rawIban: string;
+  bic: string;
+  codeBanque: string;
+  codeGuichet: string;
+  numeroCompte: string;
+  cleRib: string;
+}
+
+function parseStoredIban(rawIban: string): ParsedIban {
+  // IBAN format: CC + DD + BBAN
+  // FR: FR76 + 5 + 5 + 11 + 2 = 27 chars
+  // ES: ES91 + 4 + 4 + 2 + 10 = 24 chars
+  // DE: DE89 + 8 + 10 = 22 chars
+
+  const countryCode = rawIban.slice(0, 2);
+  const checkDigits = rawIban.slice(2, 4);
+  const bban = rawIban.slice(4);
+
+  let codeBanque = "30092";
+  let codeGuichet = "70002";
+  let numeroCompte = "";
+  let cleRib = "";
+
+  if (countryCode === "FR") {
+    // FR: 5 + 5 + 11 + 2
+    codeBanque = bban.slice(0, 5);
+    codeGuichet = bban.slice(5, 10);
+    numeroCompte = bban.slice(10, 21);
+    cleRib = bban.slice(21, 23);
+  } else if (countryCode === "ES") {
+    // ES: 4 + 4 + 2 + 10
+    codeBanque = bban.slice(0, 4);
+    codeGuichet = bban.slice(4, 8);
+    cleRib = bban.slice(8, 10);
+    numeroCompte = bban.slice(10, 20);
+  } else if (countryCode === "DE") {
+    // DE: 8 + 10
+    codeBanque = bban.slice(0, 8);
+    codeGuichet = ""; // Germany uses different structure
+    numeroCompte = bban.slice(8, 18);
+    cleRib = "00";
+  }
+
+  const formattedIban = rawIban.match(/.{1,4}/g)?.join(" ") || rawIban;
+
+  return {
+    iban: formattedIban,
+    rawIban,
+    bic: "C23QBEBB",
+    codeBanque,
+    codeGuichet,
+    numeroCompte,
+    cleRib,
+  };
+}
 
 export async function GET() {
   try {
@@ -25,7 +83,26 @@ export async function GET() {
       }).from(usersTable).where(eq(usersTable.id, user.id)).limit(1),
     ]);
 
-    const bankCoords = getDeterministicIban(user.id);
+    // Use stored IBAN from database, or fallback to deterministic generation for backwards compatibility
+    let bankCoords: ParsedIban;
+    if (account.iban) {
+      bankCoords = parseStoredIban(account.iban);
+    } else {
+      // Fallback: generate deterministic IBAN (for existing users without stored IBAN)
+      // Default to France for backwards compatibility
+      const { generateIban, getCountryCodeFromResidence } = await import("@/lib/iban");
+      const countryCode = userData?.residenceCountry ? getCountryCodeFromResidence(userData.residenceCountry) : "FR";
+      const generated = generateIban(user.id, countryCode);
+      bankCoords = {
+        iban: generated.formattedIban,
+        rawIban: generated.rawIban,
+        bic: generated.bic,
+        codeBanque: generated.codeBanque,
+        codeGuichet: generated.codeGuichet,
+        numeroCompte: generated.numeroCompte,
+        cleRib: generated.cleRib,
+      };
+    }
 
     return NextResponse.json({
       success: true,

@@ -42,6 +42,7 @@ export const accountsTable = sqliteTable("accounts", {
   balanceCents: integer("balance_cents").default(0).notNull(),
   reservedCents: integer("reserved_cents").default(0).notNull(),
   currency: text("currency").default("EUR").notNull(),
+  iban: text("iban"), // Generated IBAN based on user's country (FR/ES/DE)
   createdAt: text("created_at").notNull(),
 });
 
