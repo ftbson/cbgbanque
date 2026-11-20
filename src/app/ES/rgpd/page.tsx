@@ -6,89 +6,89 @@ export default function RgpdPage() {
       <div className="legal-hero-banner">
         <div className="legal-hero-glow" />
         <span className="legal-pill-badge">
-          <i className="fa-solid fa-user-shield"></i> Règlement Européen
+          <i className="fa-solid fa-user-shield"></i> Reglamento Europeo
         </span>
-        <h1 className="legal-main-heading">Conformité RGPD & Vos Droits</h1>
+        <h1 className="legal-main-heading">Cumplimiento RGPD & Sus Derechos</h1>
         <p className="legal-lead-text">
-          CBG Banque applique les standards les plus exigeants de l&apos;Union Européenne en matière de respect de la vie privée et de protection des données financières (Règlement UE 2016/679).
+          CBG Banco aplica los estándares más exigentes de la Unión Europea en materia de respeto a la vida privada y protección de datos financieros (Reglamento UE 2016/679).
         </p>
       </div>
 
       <div className="legal-page-container">
         <div className="legal-content-card">
-          
+
           <section className="legal-block">
-            <h3>Nos Engagements Fondamentaux RGPD</h3>
+            <h3>Nuestros Compromisos Fundamentales RGPD</h3>
             <div className="rgpd-grid-highlights">
               <div className="rgpd-card-item">
                 <div className="rgpd-item-icon blue">
                   <i className="fa-solid fa-shield-halved"></i>
                 </div>
-                <h4>Minimisation des données</h4>
-                <p>Nous ne collectons que les informations strictement nécessaires à la prestation de nos services bancaires et à nos obligations légales.</p>
+                <h4>Minimización de datos</h4>
+                <p>Solo recopilamos la información estrictamente necesaria para la prestación de nuestros servicios bancarios y nuestras obligaciones legales.</p>
               </div>
 
               <div className="rgpd-card-item">
                 <div className="rgpd-item-icon green">
                   <i className="fa-solid fa-key"></i>
                 </div>
-                <h4>Chiffrement de bout en bout</h4>
-                <p>Vos documents d&apos;identité et coordonnées bancaires sont chiffrés au repos et en transit selon les protocoles de pointe AES-256 / TLS 1.3.</p>
+                <h4>Cifrado de extremo a extremo</h4>
+                <p>Sus documentos de identidad y coordenadas bancarias están cifrados en reposo y en tránsito según los protocolos de punta AES-256 / TLS 1.3.</p>
               </div>
 
               <div className="rgpd-card-item">
                 <div className="rgpd-item-icon purple">
                   <i className="fa-solid fa-ban"></i>
                 </div>
-                <h4>Zéro revente de données</h4>
-                <p>Vos données personnelles ou financières ne sont jamais vendues, louées ou commercialisées à des régies publicitaires tierces.</p>
+                <h4>Cero reventa de datos</h4>
+                <p>Sus datos personales o financieros nunca se venden, alquilan ni comercializan a terceras redes publicitarias.</p>
               </div>
 
               <div className="rgpd-card-item">
                 <div className="rgpd-item-icon amber">
                   <i className="fa-solid fa-server"></i>
                 </div>
-                <h4>Hébergement 100% Européen</h4>
-                <p>Vos informations sont hébergées au sein de l&apos;Espace Économique Européen, sous le contrôle exclusif des lois européennes.</p>
+                <h4>Alojamiento 100% Europeo</h4>
+                <p>Su información se aloja en el Espacio Económico Europeo, bajo el control exclusivo de las leyes europeas.</p>
               </div>
             </div>
           </section>
 
           <section className="legal-block">
-            <h3>Vos Droits Individuels et Comment les Exercer</h3>
-            <p>Le Règlement Général sur la Protection des Données vous confère un ensemble de prérogatives :</p>
+            <h3>Sus Derechos Individuales y Cómo Ejercerlos</h3>
+            <p>El Reglamento General de Protección de Datos le confiere un conjunto de prerrogativas:</p>
             <ul>
-              <li><strong>Droit d&apos;accès (Article 15 RGPD) :</strong> Vous pouvez obtenir la confirmation que des données vous concernant sont traitées et en recevoir une copie complète.</li>
-              <li><strong>Droit de rectification (Article 16 RGPD) :</strong> Vous pouvez corriger ou actualiser vos données inexactes ou incomplètes depuis votre profil ou par demande écrite.</li>
-              <li><strong>Droit à l&apos;effacement (Article 17 RGPD) :</strong> Vous pouvez demander la suppression de vos données, dans les limites des obligations légales bancaires de conservation des archives monétaires (durée légale de 5 ans).</li>
-              <li><strong>Droit à la limitation du traitement (Article 18 RGPD) :</strong> Vous pouvez demander le gel temporaire du traitement de vos données dans certaines circonstances.</li>
-              <li><strong>Droit à la portabilité (Article 20 RGPD) :</strong> Vous avez le droit de récupérer vos données financières dans un format structuré, couramment utilisé et lisible par machine.</li>
-              <li><strong>Droit d&apos;opposition (Article 21 RGPD) :</strong> Vous pouvez vous opposer à tout moment à l&apos;utilisation de vos données à des fins de prospection commerciale.</li>
+              <li><strong>Derecho de acceso (Artículo 15 RGPD):</strong> Puede obtener la confirmación de que se tratan datos que le conciernen y recibir una copia completa.</li>
+              <li><strong>Derecho de rectificación (Artículo 16 RGPD):</strong> Puede corregir o actualizar sus datos inexactos o incompletos desde su perfil o por solicitud escrita.</li>
+              <li><strong>Derecho de supresión (Artículo 17 RGPD):</strong> Puede solicitar la supresión de sus datos, dentro de los límites de las obligaciones legales bancarias de conservación de archivos monetarios (duración legal de 5 años).</li>
+              <li><strong>Derecho a la limitación del tratamiento (Artículo 18 RGPD):</strong> Puede solicitar la congelación temporal del tratamiento de sus datos en determinadas circunstancias.</li>
+              <li><strong>Derecho a la portabilidad (Artículo 20 RGPD):</strong> Tiene derecho a recuperar sus datos financieros en un formato estructurado, de uso común y legible por máquina.</li>
+              <li><strong>Derecho de oposición (Artículo 21 RGPD):</strong> Puede oponerse en cualquier momento a la utilización de sus datos con fines de prospección comercial.</li>
             </ul>
           </section>
 
           <section className="legal-block">
-            <h3>Formulaire d&apos;exercice des droits RGPD</h3>
+            <h3>Formulario de ejercicio de derechos RGPD</h3>
             <p>
-              Pour toute demande relative à vos données personnelles, vous pouvez adresser votre requête accompagnée d&apos;une référence de votre compte à notre Délégué à la Protection des Données :
+              Para toda solicitud relativa a sus datos personales, puede dirigir su petición acompañada de una referencia de su cuenta a nuestro Delegado de Protección de Datos:
             </p>
             <div className="legal-contact-highlight">
               <i className="fa-solid fa-envelope-circle-check"></i>
               <div>
-                <strong>Bureau du Délégué à la Protection des Données (DPO)</strong>
-                <p>Courriel dédié : <a href="mailto:rgpd@cbgbanque.com">rgpd@cbgbanque.com</a></p>
-                <p>Adresse postale : CBG Banque Finance SA, DPO Service, Avenue Louise 542, 1050 Bruxelles</p>
+                <strong>Oficina del Delegado de Protección de Datos (DPO)</strong>
+                <p>Correo dedicado: <a href="mailto:rgpd@cbgbanque.com">rgpd@cbgbanque.com</a></p>
+                <p>Dirección postal: CBG Banco Finance SA, DPO Service, Avenue Louise 542, 1050 Bruselas</p>
                 <p style={{ marginTop: "0.5rem", fontSize: "0.85rem", color: "#94a3b8" }}>
-                  Délai de réponse : sous un mois maximum conformément à l&apos;article 12.3 du RGPD.
+                  Plazo de respuesta: dentro de un mes máximo conforme al artículo 12.3 del RGPD.
                 </p>
               </div>
             </div>
           </section>
 
           <section className="legal-block">
-            <h3>Autorité de Contrôle compétente</h3>
+            <h3>Autoridad de Control Competente</h3>
             <p>
-              Si vous estimez après nous avoir contactés que vos droits ne sont pas respectés, vous avez le droit d&apos;introduire une réclamation auprès de l&apos;Autorité de Protection des Données (APD en Belgique : <a href="https://www.autoriteprotectiondonnees.be" target="_blank" rel="noopener noreferrer">www.autoriteprotectiondonnees.be</a>) ou de la CNIL en France (<a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer">www.cnil.fr</a>).
+              Si considera que tras contactarnos sus derechos no son respetados, tiene derecho a presentar una reclamación ante la Autoridad de Protección de Datos (APD en Bélgica: <a href="https://www.autoriteprotectiondonnees.be" target="_blank" rel="noopener noreferrer">www.autoriteprotectiondonnees.be</a>) o la CNIL en Francia (<a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer">www.cnil.fr</a>).
             </p>
           </section>
 

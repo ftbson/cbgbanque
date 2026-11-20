@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 
 export default function CookiesPage() {
-  const [consentStatus, setConsentStatus] = useState<string>("Non défini");
+  const [consentStatus, setConsentStatus] = useState<string>("Nicht festgelegt");
 
   useEffect(() => {
     const consent = localStorage.getItem("cbg_cookie_consent");
@@ -13,13 +13,13 @@ export default function CookiesPage() {
         const parsed = JSON.parse(consent);
         setConsentStatus(
           parsed.marketing
-            ? "Tous les cookies acceptés"
+            ? "Alle Cookies akzeptiert"
             : parsed.analytics
-            ? "Essentiels et Analytiques acceptés"
-            : "Uniquement les cookies essentiels"
+            ? "Nur essenzielle und analytische Cookies"
+            : "Nur essenzielle Cookies"
         );
       } catch {
-        setConsentStatus("Enregistré");
+        setConsentStatus("Gespeichert");
       }
     }
   }, []);
@@ -34,99 +34,99 @@ export default function CookiesPage() {
       <div className="legal-hero-banner">
         <div className="legal-hero-glow" />
         <span className="legal-pill-badge">
-          <i className="fa-solid fa-cookie-bite"></i> Transparence & Traceurs
+          <i className="fa-solid fa-cookie-bite"></i> Transparenz & Tracker
         </span>
-        <h1 className="legal-main-heading">Politique relative aux Cookies</h1>
+        <h1 className="legal-main-heading">Cookie-Richtlinie</h1>
         <p className="legal-lead-text">
-          Comprenez comment CBG Banque utilise les témoins de connexion (cookies) et traceurs pour garantir la sécurité et la qualité de vos services bancaires.
+          Verstehen Sie, wie die CBG Bank Verbindungs-Cookies und Tracker verwendet, um die Sicherheit und Qualität Ihrer Bankdienstleistungen zu gewährleisten.
         </p>
       </div>
 
       <div className="legal-page-container">
         <div className="legal-content-card">
-          
+
           <div className="cookie-status-box">
             <div className="status-info">
-              <span className="status-tag">VOTRE STATUT DE CONSENTEMENT ACTUEL</span>
+              <span className="status-tag">IHR AKTUELLER ZUSTIMMUNGSSTATUS</span>
               <strong className="status-current">{consentStatus}</strong>
             </div>
             <button onClick={resetCookies} className="btn-table-details">
-              <i className="fa-solid fa-rotate-right"></i> Modifier mes préférences
+              <i className="fa-solid fa-rotate-right"></i> Meine Präferenzen ändern
             </button>
           </div>
 
           <section className="legal-block">
-            <h3>1. Qu&apos;est-ce qu&apos;un cookie ?</h3>
+            <h3>1. Was ist ein Cookie?</h3>
             <p>
-              Un cookie est un petit fichier texte déposé sur votre terminal (ordinateur, tablette ou smartphone) lors de la consultation d&apos;un site internet ou de l&apos;utilisation d&apos;une application web. Il permet au site de mémoriser vos actions, vos préférences de connexion et d&apos;assurer la sécurité de votre session bancaire pendant une période donnée.
+              Ein Cookie ist eine kleine Textdatei, die auf Ihrem Endgerät (Computer, Tablet oder Smartphone) beim Besuch einer Website oder Nutzung einer Webanwendung abgelegt wird. Sie ermöglicht es der Website, sich Ihre Aktionen, Ihre Verbindungseinstellungen zu merken und die Sicherheit Ihrer Bank-Sitzung für einen bestimmten Zeitraum zu gewährleisten.
             </p>
           </section>
 
           <section className="legal-block">
-            <h3>2. Les catégories de cookies utilisées sur CBG Banque</h3>
-            
+            <h3>2. Die auf der CBG Bank verwendeten Cookie-Kategorien</h3>
+
             <div className="cookie-category-block">
               <div className="cat-badge-title">
-                <span className="cat-badge required">Indispensables</span>
-                <h4>Cookies strictement nécessaires au fonctionnement et à la sécurité</h4>
+                <span className="cat-badge required">Unverzichtbar</span>
+                <h4>Für den Betrieb und die Sicherheit unbedingt erforderliche Cookies</h4>
               </div>
               <p>
-                Ces cookies sont indispensables au fonctionnement de la plateforme en ligne. Ils vous permettent de naviguer de manière sécurisée, de vous authentifier à votre Dashboard, de valider des opérations financières (KYC, virements, demandes de prêt) et de prévenir les attaques par falsification de requêtes (CSRF). Conformément aux directives de la CNIL et du RGPD, ces traceurs ne requièrent pas de consentement préalable.
+                Diese Cookies sind für den Betrieb der Online-Plattform unverzichtbar. Sie ermöglichen Ihnen eine sichere Navigation, die Authentifizierung in Ihrem Dashboard, die Validierung finanzieller Transaktionen (KYC, Überweisungen, Kreditanfragen) und den Schutz vor Cross-Site-Request-Forgery-Angriffen (CSRF). Gemäß den Richtlinien der CNIL und der DSGVO erfordern diese Tracker keine vorherige Einwilligung.
               </p>
             </div>
 
             <div className="cookie-category-block">
               <div className="cat-badge-title">
-                <span className="cat-badge optional">Optionnels</span>
-                <h4>Cookies de mesure d&apos;audience et d&apos;analyse de performance</h4>
+                <span className="cat-badge optional">Optional</span>
+                <h4>Cookies zur Zielgruppenmessung und Leistungsanalyse</h4>
               </div>
               <p>
-                Ces traceurs nous permettent de mesurer le volume de visites, les pages les plus consultées et d&apos;identifier d&apos;éventuels dysfonctionnements techniques afin d&apos;améliorer continuellement l&apos;ergonomie de votre espace bancaire. Toutes les adresses IP sont anonymisées avant tout traitement statistique.
+                Diese Tracker ermöglichen es uns, das Besuchervolumen, die meistbesuchten Seiten zu messen und eventuelle technische Störungen zu identifizieren, um die Ergonomie Ihres Bankbereichs kontinuierlich zu verbessern. Alle IP-Adressen werden vor jeglicher statistischen Verarbeitung anonymisiert.
               </p>
             </div>
 
             <div className="cookie-category-block">
               <div className="cat-badge-title">
-                <span className="cat-badge optional">Optionnels</span>
-                <h4>Cookies de préférences et personnalisation</h4>
+                <span className="cat-badge optional">Optional</span>
+                <h4>Präferenz- und Personalisierungs-Cookies</h4>
               </div>
               <p>
-                Ces témoins permettent de mémoriser votre langue préférée, votre devise de référence (EUR, CHF, USD) ainsi que vos choix d&apos;affichage de solde dans le Dashboard.
+                Diese Cookies ermöglichen es, Ihre bevorzugte Sprache, Ihre Referenzwährung (EUR, CHF, USD) sowie Ihre Anzeigeeinstellungen für den Kontostand im Dashboard zu speichern.
               </p>
             </div>
           </section>
 
           <section className="legal-block">
-            <h3>3. Tableau détaillé des principaux cookies</h3>
+            <h3>3. Detaillierte Tabelle der wichtigsten Cookies</h3>
             <div className="legal-info-table">
               <div className="info-row">
                 <span className="info-key">cbg_session</span>
-                <span className="info-val">Gestion de la session bancaire chiffrée (Durée : Session)</span>
+                <span className="info-val">Verwaltung der verschlüsselten Bank-Sitzung (Dauer: Sitzung)</span>
               </div>
               <div className="info-row">
                 <span className="info-key">cbg_cookie_consent</span>
-                <span className="info-val">Mémorisation de vos choix de cookies (Durée : 12 mois)</span>
+                <span className="info-val">Speicherung Ihrer Cookie-Wahl (Dauer: 12 Monate)</span>
               </div>
               <div className="info-row">
                 <span className="info-key">cbg_csrf_token</span>
-                <span className="info-val">Sécurité anti-falsification de formulaires (Durée : Session)</span>
+                <span className="info-val">Sicherheit gegen Formularfälschung (Dauer: Sitzung)</span>
               </div>
             </div>
           </section>
 
           <section className="legal-block">
-            <h3>4. Comment gérer ou désactiver les cookies dans votre navigateur ?</h3>
+            <h3>4. Wie verwalten oder deaktivieren Sie Cookies in Ihrem Browser?</h3>
             <p>
-              Vous pouvez à tout moment configurer votre logiciel de navigation pour autoriser ou refuser l&apos;enregistrement de cookies sur votre terminal :
+              Sie können Ihre Browsersoftware jederzeit so konfigurieren, dass die Ablage von Cookies auf Ihrem Endgerät erlaubt oder verweigert wird:
             </p>
             <ul>
-              <li><strong>Google Chrome :</strong> Paramètres &gt; Confidentialité et sécurité &gt; Cookies et autres données des sites.</li>
-              <li><strong>Mozilla Firefox :</strong> Paramètres &gt; Vie privée et sécurité &gt; Cookies et données de sites.</li>
-              <li><strong>Apple Safari :</strong> Préférences &gt; Confidentialité &gt; Bloquer tous les cookies.</li>
-              <li><strong>Microsoft Edge :</strong> Paramètres &gt; Confidentialité, recherche et services &gt; Cookies.</li>
+              <li><strong>Google Chrome:</strong> Einstellungen > Datenschutz und Sicherheit > Cookies und andere Websitedaten.</li>
+              <li><strong>Mozilla Firefox:</strong> Einstellungen > Datenschutz & Sicherheit > Cookies und Websitedaten.</li>
+              <li><strong>Apple Safari:</strong> Einstellungen > Datenschutz > Alle Cookies blockieren.</li>
+              <li><strong>Microsoft Edge:</strong> Einstellungen > Datenschutz, Suche und Dienste > Cookies.</li>
             </ul>
             <p>
-              <em>Attention : Le blocage intégral des cookies essentiels peut rendre impossible l&apos;accès à votre espace client sécurisé.</em>
+              <em>Achtung: Die vollständige Blockierung essenzieller Cookies kann den Zugriff auf Ihren sicheren Kundenbereich unmöglich machen.</em>
             </p>
           </section>
 

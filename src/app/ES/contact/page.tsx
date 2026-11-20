@@ -9,29 +9,29 @@ export default function ContactPage() {
 
   const faqs = [
     {
-      question: "Comment puis-je ouvrir un compte chez CBG Banque ?",
+      question: "¿Cómo puedo abrir una cuenta en CBG Banco?",
       answer:
-        "L'ouverture d'un compte s'effectue intégralement en ligne en moins de 5 minutes. Remplissez le formulaire, téléversez votre pièce d'identité (recto et verso), et notre équipe validera votre compte sous 24h ouvrées.",
+        "La apertura de una cuenta se realiza íntegramente en línea en menos de 5 minutos. Complete el formulario, suba su documento de identidad (anverso y reverso), y nuestro equipo validará su cuenta en 24 horas laborables.",
     },
     {
-      question: "Quels sont les délais d'obtention d'un prêt ?",
+      question: "¿Cuáles son los plazos para obtener un préstamo?",
       answer:
-        "Après avoir simulé et validé votre demande de prêt depuis votre espace client, nos analystes étudient votre dossier sous 24 à 48 heures. Dès approbation par l'administrateur, les fonds sont crédités directement sur votre compte.",
+        "Después de simular y validar su solicitud de préstamo desde su espacio de cliente, nuestros analistas estudian su expediente en 24 a 48 horas. Tras la aprobación del administrador, los fondos se acreditan directamente en su cuenta.",
     },
     {
-      question: "Comment activer une carte bancaire virtuelle ?",
+      question: "¿Cómo activar una tarjeta bancaria virtual?",
       answer:
-        "Depuis votre Dashboard, rendez-vous dans la section « Cartes ». Vous pouvez créer instantanément une carte virtuelle avec numéro chiffré, date d'expiration et cryptogramme CVV.",
+        "Desde su Dashboard, vaya a la sección «Tarjetas». Puede crear al instante una tarjeta virtual con número cifrado, fecha de caducidad y código CVV.",
     },
     {
-      question: "Mes dépôts et données personnelles sont-ils protégés ?",
+      question: "¿Están protegidos mis depósitos y datos personales?",
       answer:
-        "Absolument. CBG Banque applique les normes de sécurité bancaire les plus strictes (chiffrement TLS 1.3 / AES-256) et se conforme rigoureusement à la réglementation européenne RGPD.",
+        "Absolutamente. CBG Banco aplica las normas de seguridad bancaria más estrictas (cifrado TLS 1.3 / AES-256) y se ajusta rigurosamente al reglamento europeo RGPD.",
     },
     {
-      question: "Que faire en cas d'urgence ou de carte perdue ?",
+      question: "¿Qué hacer en caso de urgencia o tarjeta perdida?",
       answer:
-        "Vous pouvez verrouiller ou geler instantanément votre carte en un clic depuis votre Dashboard. Notre centre d'urgence est joignable 24h/24 et 7j/7.",
+        "Puede bloquear o congelar instantáneamente su tarjeta con un clic desde su Dashboard. Nuestro centro de urgencias está disponible 24/7.",
     },
   ];
 
@@ -52,10 +52,10 @@ export default function ContactPage() {
     <section className="contact-section">
       <div className="contact-container">
         <div className="contact-grid">
-          {/* COLONNE GAUCHE : QUESTIONS FRÉQUENTES */}
+          {/* COLUMNA IZQUIERDA: FAQ */}
           <div className="faq-column">
-            <span className="section-subtitle">ASSISTANCE & CONSEILS</span>
-            <h2 className="section-title">Questions fréquentes sur nos services</h2>
+            <span className="section-subtitle">ASISTENCIA & CONSEJOS</span>
+            <h2 className="section-title">Preguntas frecuentes sobre nuestros servicios</h2>
 
             <div className="faq-accordion">
               {faqs.map((faq, index) => (
@@ -86,22 +86,22 @@ export default function ContactPage() {
             </div>
           </div>
 
-          {/* SÉPARATEUR VERTICAL */}
+          {/* SEPARADOR VERTICAL */}
           <div className="vertical-divider"></div>
 
-          {/* COLONNE DROITE : FORMULAIRE */}
+          {/* COLUMNA DERECHA: FORMULARIO */}
           <div className="form-column">
-            <span className="section-subtitle">BESOIN D&apos;AIDE ?</span>
+            <span className="section-subtitle">¿NECESITA AYUDA?</span>
             <h2 className="section-title">
-              Notre équipe d&apos;experts bancaires est à votre écoute pour vous accompagner.
+              Nuestro equipo de expertos bancarios está a su escucha para acompañarle.
             </h2>
 
             {submitted ? (
               <div style={{ background: "rgba(34,197,94,0.15)", border: "1px solid rgba(34,197,94,0.3)", color: "#22c55e", padding: "1.5rem", borderRadius: "14px", marginTop: "1.5rem", textAlign: "center" }}>
                 <i className="fa-solid fa-circle-check" style={{ fontSize: "2rem", marginBottom: "0.5rem" }}></i>
-                <h4 style={{ margin: "0.5rem 0", color: "#ffffff" }}>Message envoyé avec succès</h4>
+                <h4 style={{ margin: "0.5rem 0", color: "#ffffff" }}>Mensaje enviado con éxito</h4>
                 <p style={{ margin: 0, fontSize: "0.9rem", color: "#cbd5e1" }}>
-                  Un conseiller CBG Banque vous recontactera sous 24h ouvrées.
+                  Un asesor de CBG Banco le contactará en 24 horas laborables.
                 </p>
               </div>
             ) : (
@@ -110,38 +110,38 @@ export default function ContactPage() {
                   <input
                     type="text"
                     className="input-underline"
-                    placeholder="Votre nom complet"
+                    placeholder="Su nombre completo"
                     required
                   />
                   <input
                     type="email"
                     className="input-underline"
-                    placeholder="Votre adresse e-mail"
+                    placeholder="Su dirección de e-mail"
                     required
                   />
                   <input
                     type="tel"
                     className="input-underline"
-                    placeholder="Numéro de téléphone"
+                    placeholder="Número de teléfono"
                   />
                   <input
                     type="text"
                     className="input-underline"
-                    placeholder="Objet de la demande"
+                    placeholder="Asunto de la solicitud"
                     required
                   />
                 </div>
 
-                {/* Message */}
+                {/* Mensaje */}
                 <textarea
                   className="input-underline textarea"
-                  placeholder="Décrivez votre projet ou votre demande en quelques lignes..."
+                  placeholder="Describa su proyecto o su solicitud en unas líneas..."
                   rows={4}
                   required
                 ></textarea>
 
                 <button type="submit" className="btn-submit-contact" disabled={loading}>
-                  {loading ? "ENVOI EN COURS..." : "ENVOYER MON MESSAGE"}
+                  {loading ? "ENVIANDO..." : "ENVIAR MI MENSAJE"}
                 </button>
               </form>
             )}

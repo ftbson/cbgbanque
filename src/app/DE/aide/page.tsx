@@ -11,44 +11,44 @@ interface FaqItem {
 
 const faqs: FaqItem[] = [
   {
-    category: "compte",
-    q: "Comment ouvrir un compte chez CBG Banque ?",
-    a: "L'ouverture se fait entièrement en ligne en moins de 5 minutes. Remplissez le formulaire, téléversez le recto et le verso de votre pièce d'identité en cours de validité, puis notre équipe de conformité valide votre dossier dans un délai de 24h ouvrées. Vous recevez un e-mail de confirmation dès que votre compte est actif.",
+    category: "konto",
+    q: "Wie eröffne ich ein Konto bei CBG Bank?",
+    a: "Die Eröffnung erfolgt vollständig online in weniger als 5 Minuten. Füllen Sie das Formular aus, laden Sie Vorder- und Rückseite Ihres gültigen Ausweisdokuments hoch, und unser Compliance-Team prüft Ihren Antrag innerhalb von 24 Werktstunden. Sie erhalten eine Bestätigungs-E-Mail, sobald Ihr Konto aktiv ist.",
   },
   {
-    category: "compte",
-    q: "Quels sont les documents acceptés pour l'inscription ?",
-    a: "Nous acceptons la Carte Nationale d'Identité européenne (recto et verso), le Passeport international en cours de validité, le Permis de conduire au format carte bancaire ou le Titre de séjour européen.",
+    category: "konto",
+    q: "Welche Dokumente werden für die Registrierung akzeptiert?",
+    a: "Wir akzeptieren den europäischen Personalausweis (Vorder- und Rückseite), den internationalen Reisepass, den Führerschein im Scheckkartenformat oder einen europäischen Aufenthaltstitel – alles in gültiger Form.",
   },
   {
-    category: "cartes",
-    q: "Comment commander ou créer une carte bancaire ?",
-    a: "Depuis votre Dashboard, accédez à la section « Mes cartes ». Vous pouvez instantanément générer une carte virtuelle sécurisée pour vos achats en ligne ou commander une carte physique Visa Classic livrée sous 5 à 7 jours ouvrés chez vous.",
+    category: "karten",
+    q: "Wie bestelle oder erstelle ich eine Bankkarte?",
+    a: "Gehen Sie in Ihrem Dashboard zum Bereich „Meine Karten“. Sie können sofort eine sichere virtuelle Karte für Ihre Online-Einkäufe generieren oder eine physische Visa Classic Karte bestellen, die innerhalb von 5 bis 7 Werktagen bei Ihnen eintreffen wird.",
   },
   {
-    category: "cartes",
-    q: "Puis-je geler temporairement ma carte ou masquer mes numéros ?",
-    a: "Oui ! En un clic depuis votre espace Cartes, vous pouvez masquer/afficher le numéro à 16 chiffres et le cryptogramme CVV, ou verrouiller/déverrouiller instantanément votre carte en cas de doute.",
+    category: "karten",
+    q: "Kann ich meine Karte vorübergehend sperren oder meine Nummern ausblenden?",
+    a: "Ja! Mit einem Klick in Ihrem Kartenbereich können Sie die 16-stellige Kartennummer und den CVV-Code ein- oder ausblenden oder Ihre Karte im Zweifel sofort sperren und wieder entsperren.",
   },
   {
-    category: "prets",
-    q: "Comment fonctionne la demande de prêt en ligne ?",
-    a: "Rendez-vous dans votre espace client, rubrique « Demande de prêt ». Utilisez le simulateur interactif pour choisir votre montant et la durée désirée. Le taux d'intérêt, les mensualités et les frais de dossier sont calculés instantanément en toute transparence avant soumission.",
+    category: "kredite",
+    q: "Wie funktioniert der Online-Kreditantrag?",
+    a: "Gehen Sie in Ihrem Kundenbereich zum Bereich „Kreditanfrage“. Nutzen Sie den interaktiven Simulator, um den gewünschten Betrag und die Laufzeit zu wählen. Zinssatz, monatliche Raten und Bearbeitungsgebühren werden sofort und transparent berechnet, bevor Sie den Antrag absenden.",
   },
   {
-    category: "prets",
-    q: "Quel est le délai de réponse pour une demande de crédit ?",
-    a: "Une fois votre simulation soumise, l'équipe d'analyse examine votre profil sous 24 à 48 heures. La décision est notifiée directement dans votre Dashboard et par e-mail.",
+    category: "kredite",
+    q: "Wie lange dauert die Antwort auf eine Kreditanfrage?",
+    a: "Nach Einreichung Ihrer Simulation prüft unser Analyseteam Ihr Profil innerhalb von 24 bis 48 Stunden. Die Entscheidung wird direkt in Ihrem Dashboard und per E-Mail mitgeteilt.",
   },
   {
-    category: "securite",
-    q: "Mes fonds et données personnelles sont-ils protégés ?",
-    a: "Absolument. CBG Banque applique les protocoles de chiffrement bancaire TLS 1.3 / AES-256 et respecte scrupuleusement la réglementation européenne RGPD. Vos dépôts bénéficient des mécanismes de garantie des dépôts en vigueur.",
+    category: "sicherheit",
+    q: "Sind meine Gelder und persönlichen Daten geschützt?",
+    a: "Absolut. CBG Bank wendet die banküblichen Verschlüsselungsprotokolle TLS 1.3 / AES-256 an und hält die europäische DSGVO-Vorschrift strikt ein. Ihre Einlagen profitieren von den geltenden Einlagensicherungsmechanismen.",
   },
   {
     category: "app",
-    q: "Comment installer l'application CBG sur mon téléphone ?",
-    a: "Notre application est une Progressive Web App (PWA). Cliquez sur le bouton « Télécharger l'application » en bas de page ou en haut du site. Sur iPhone, utilisez le menu Partager > « Sur l'écran d'accueil ». Sur Android et ordinateur, cliquez simplement sur « Installer ».",
+    q: "Wie installiere ich die CBG App auf meinem Handy?",
+    a: "Unsere Anwendung ist eine Progressive Web App (PWA). Klicken Sie auf den Button „App herunterladen“ am Seitenende oder oben auf der Seite. Auf dem iPhone nutzen Sie das Teilen-Menü > „Zum Home-Bildschirm“. Auf Android und am Computer klicken Sie einfach auf „Installieren“.",
   },
 ];
 
@@ -72,9 +72,9 @@ export default function AidePage() {
         <span className="legal-pill-badge">
           <i className="fa-solid fa-headset"></i> Support & FAQ
         </span>
-        <h1 className="legal-main-heading">Centre d&apos;aide & Assistance</h1>
+        <h1 className="legal-main-heading">Hilfezentrum & Support</h1>
         <p className="legal-lead-text">
-          Trouvez des réponses claires à vos questions ou contactez notre équipe de conseillers bancaires dédiée.
+          Finden Sie klare Antworten auf Ihre Fragen oder kontaktieren Sie unser Team aus engagierten Bankberatern.
         </p>
 
         {/* Search input */}
@@ -82,13 +82,13 @@ export default function AidePage() {
           <i className="fa-solid fa-magnifying-glass search-icon"></i>
           <input
             type="text"
-            placeholder="Rechercher une question (ex: prêt, carte virtuelle, inscription...)"
+            placeholder="Frage suchen (z. B. Kredit, virtuelle Karte, Registrierung...)"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="help-search-input"
           />
           {search && (
-            <button onClick={() => setSearch("")} className="search-clear-btn" aria-label="Effacer">
+            <button onClick={() => setSearch("")} className="search-clear-btn" aria-label="Löschen">
               <i className="fa-solid fa-xmark"></i>
             </button>
           )}
@@ -99,12 +99,12 @@ export default function AidePage() {
         {/* Category filters */}
         <div className="help-categories-bar">
           {[
-            { id: "all", label: "Toutes les questions", icon: "fa-list" },
-            { id: "compte", label: "Compte & Inscription", icon: "fa-user" },
-            { id: "cartes", label: "Cartes Visa", icon: "fa-credit-card" },
-            { id: "prets", label: "Prêts & Crédit", icon: "fa-hand-holding-dollar" },
-            { id: "securite", label: "Sécurité & RGPD", icon: "fa-shield-halved" },
-            { id: "app", label: "Application & PWA", icon: "fa-mobile-screen" },
+            { id: "all", label: "Alle Fragen", icon: "fa-list" },
+            { id: "konto", label: "Konto & Registrierung", icon: "fa-user" },
+            { id: "karten", label: "Visa Karten", icon: "fa-credit-card" },
+            { id: "kredite", label: "Kredite & Finanzierung", icon: "fa-hand-holding-dollar" },
+            { id: "sicherheit", label: "Sicherheit & DSGVO", icon: "fa-shield-halved" },
+            { id: "app", label: "App & PWA", icon: "fa-mobile-screen" },
           ].map((cat) => (
             <button
               key={cat.id}
@@ -121,9 +121,9 @@ export default function AidePage() {
           {filteredFaqs.length === 0 ? (
             <div className="faq-empty-state">
               <i className="fa-solid fa-circle-question"></i>
-              <p>Aucune réponse trouvée pour votre recherche.</p>
+              <p>Keine Antwort für Ihre Suche gefunden.</p>
               <button onClick={() => { setSearch(""); setActiveCategory("all"); }} className="btn-table-details">
-                Réinitialiser la recherche
+                Suche zurücksetzen
               </button>
             </div>
           ) : (
@@ -156,8 +156,8 @@ export default function AidePage() {
             <div className="contact-card-icon blue">
               <i className="fa-solid fa-envelope"></i>
             </div>
-            <h4>Par e-mail</h4>
-            <p>Notre équipe répond à vos messages sous 24h ouvrées.</p>
+            <h4>Per E-Mail</h4>
+            <p>Unser Team antwortet auf Ihre Nachrichten innerhalb von 24 Werktstunden.</p>
             <a href="mailto:serviceclient@cbgbanque.com" className="contact-card-link">
               serviceclient@cbgbanque.com
             </a>
@@ -167,8 +167,8 @@ export default function AidePage() {
             <div className="contact-card-icon green">
               <i className="fa-solid fa-phone"></i>
             </div>
-            <h4>Par téléphone</h4>
-            <p>Conseillers disponibles du lundi au samedi de 8h à 20h.</p>
+            <h4>Per Telefon</h4>
+            <p>Berater erreichbar von Montag bis Samstag, 8 bis 20 Uhr.</p>
             <a href="tel:+33189714200" className="contact-card-link">
               +33 (0) 1 89 71 42 00
             </a>
@@ -178,10 +178,10 @@ export default function AidePage() {
             <div className="contact-card-icon purple">
               <i className="fa-solid fa-comments"></i>
             </div>
-            <h4>Espace Client</h4>
-            <p>Accédez à votre messagerie sécurisée et à vos demandes de prêt.</p>
-            <Link href="/dashboard" className="contact-card-link">
-              Ouvrir mon dashboard <i className="fa-solid fa-arrow-right"></i>
+            <h4>Kundenbereich</h4>
+            <p>Greifen Sie auf Ihre sichere Mailbox und Kreditanfragen zu.</p>
+            <Link href="/DE/dashboard" className="contact-card-link">
+              Dashboard öffnen <i className="fa-solid fa-arrow-right"></i>
             </Link>
           </div>
         </div>

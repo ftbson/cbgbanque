@@ -6,71 +6,71 @@ export default function CguPage() {
       <div className="legal-hero-banner">
         <div className="legal-hero-glow" />
         <span className="legal-pill-badge">
-          <i className="fa-solid fa-file-contract"></i> Cadre Contractuel
+          <i className="fa-solid fa-file-contract"></i> Marco Contractual
         </span>
-        <h1 className="legal-main-heading">Conditions Générales d&apos;Utilisation (CGU)</h1>
+        <h1 className="legal-main-heading">Condiciones Generales de Uso (CGU)</h1>
         <p className="legal-lead-text">
-          Modalités applicables à l&apos;ouverture, l&apos;utilisation du compte en ligne, l&apos;émission de cartes bancaires et les services de crédit CBG Banque.
+          Modalidades aplicables a la apertura, el uso de la cuenta en línea, la emisión de tarjetas bancarias y los servicios de crédito de CBG Banco.
         </p>
       </div>
 
       <div className="legal-page-container">
         <div className="legal-content-card">
-          
+
           <section className="legal-block">
-            <h3>Article 1 : Objet et Champ d&apos;application</h3>
+            <h3>Artículo 1: Objeto y Ámbito de Aplicación</h3>
             <p>
-              Les présentes Conditions Générales d&apos;Utilisation (les « CGU ») définissent les règles et obligations contractuelles liant toute personne physique majeure (le « Client » ou « Utilisateur ») et la société <strong>CBG Banque Finance SA</strong> dans le cadre de l&apos;ouverture et de la gestion de ses comptes, instruments de paiement et produits financiers.
+              Las presentes Condiciones Generales de Uso (las «CGU») definen las reglas y obligaciones contractuales que vinculan a toda persona física mayor de edad (el «Cliente» o «Usuario») y la sociedad <strong>CBG Banco Finance SA</strong> en el marco de la apertura y gestión de sus cuentas, instrumentos de pago y productos financieros.
             </p>
           </section>
 
           <section className="legal-block">
-            <h3>Article 2 : Conditions d&apos;éligibilité et Ouverture de compte</h3>
+            <h3>Artículo 2: Condiciones de Elegibilidad y Apertura de Cuenta</h3>
             <p>
-              Pour devenir client chez CBG Banque, le demandeur doit remplir cumulativement les conditions suivantes :
+              Para convertirse en cliente de CBG Banco, el solicitante debe cumplir cumulativamente las siguientes condiciones:
             </p>
             <ul>
-              <li>Être une personne physique âgée d&apos;au moins 18 ans et jouir de sa pleine capacité juridique.</li>
-              <li>Résider légalement dans un État membre de l&apos;Union Européenne, en Suisse, au Royaume-Uni ou au Canada.</li>
-              <li>Fournir une adresse e-mail valide, un numéro de téléphone mobile opérationnel et compléter le protocole de vérification d&apos;identité KYC en téléversant le recto et le verso d&apos;une pièce d&apos;identité officielle en cours de validité.</li>
-              <li>Mentionner sa situation professionnelle et ses revenus mensuels avec exactitude.</li>
+              <li>Ser una persona física mayor de 18 años y gozar de su plena capacidad jurídica.</li>
+              <li>Residir legalmente en un Estado miembro de la Unión Europea, en Suiza, en el Reino Unido o en Canadá.</li>
+              <li>Facilitar una dirección de correo electrónico válida, un número de teléfono móvil operativo y completar el protocolo de verificación de identidad KYC subiendo el anverso y reverso de un documento de identidad oficial en vigor.</li>
+              <li>Mencionar su situación profesional y sus ingresos mensuales con exactitud.</li>
             </ul>
             <p>
-              L&apos;ouverture définitive du compte est soumise à la validation expresse par l&apos;administrateur et les équipes de conformité CBG Banque. Un e-mail d&apos;approbation confirme la validation du compte.
+              La apertura definitiva de la cuenta está sujeta a la validación expresa por el administrador y los equipos de cumplimiento de CBG Banco. Un correo de aprobación confirma la validación de la cuenta.
             </p>
           </section>
 
           <section className="legal-block">
-            <h3>Article 3 : Fonctionnement du compte et des Cartes</h3>
+            <h3>Artículo 3: Funcionamiento de la Cuenta y de las Tarjetas</h3>
             <p>
-              Le compte en ligne permet d&apos;effectuer des opérations de dépôt, de virement SEPA, de consultation du solde en temps réel et de gestion de coffres d&apos;épargne.
+              La cuenta en línea permite efectuar operaciones de depósito, transferencia SEPA, consulta del saldo en tiempo real y gestión de cajas de ahorro.
             </p>
             <p>
-              <strong>Cartes virtuelles et physiques :</strong> Le Client a la faculté d&apos;activer une ou plusieurs cartes virtuelles pour sécuriser ses règlements sur internet, ou de commander une carte physique Visa. Le Client peut à tout moment modifier le statut de sa carte (verrouillage / déverrouillage temporaire), masquer ou afficher ses numéros, ou résilier sa carte virtuelle directement depuis son espace client sécurisé.
-            </p>
-          </section>
-
-          <section className="legal-block">
-            <h3>Article 4 : Souscription et Octroi de Prêts</h3>
-            <p>
-              Le Client éligible peut déposer une demande de prêt personnel ou de financement depuis son Dashboard. Un simulateur dynamique affiche le montant emprunté, la durée en mois, le Taux Annuel Effectif Global (TAEG), le montant des mensualités et les frais de dossier afférents.
-            </p>
-            <p>
-              La soumission d&apos;une demande de prêt ne vaut pas acceptation automatique : le dossier est examiné par notre comité de crédit. L&apos;approbation ou le rejet de la demande est notifié sur le Dashboard du client et par notification e-mail. Un crédit vous engage et doit être remboursé : vérifiez vos capacités de remboursement avant de vous engager.
+              <strong>Tarjetas virtuales y físicas:</strong> El Cliente tiene la facultad de activar una o varias tarjetas virtuales para asegurar sus pagos en internet, o de solicitar una tarjeta física Visa. El Cliente puede en cualquier momento modificar el estado de su tarjeta (bloqueo / desbloqueo temporal), ocultar o mostrar sus números, o anular su tarjeta virtual directamente desde su espacio de cliente seguro.
             </p>
           </section>
 
           <section className="legal-block">
-            <h3>Article 5 : Sécurité et Obligations du Client</h3>
+            <h3>Artículo 4: Suscripción y Concesión de Préstamos</h3>
             <p>
-              Le Client est strictement responsable de la confidentialité de ses identifiants personnels, de son mot de passe et de ses codes de validation temporaires (OTP). Tout partage de codes confidentiels est formellement prohibé. En cas de suspicion de fraude ou d&apos;accès frauduleux, le Client doit immédiatement verrouiller ses cartes et contacter le support d&apos;urgence.
+              El Cliente elegible puede depositar una solicitud de préstamo personal o de financiación desde su Dashboard. Un simulador dinámico muestra el importe prestado, la duración en meses, la Tasa Anual Equivalente (TAE), el importe de las cuotas mensuales y los gastos de gestión correspondientes.
+            </p>
+            <p>
+              El envío de una solicitud de préstamo no constituye aceptación automática: el expediente es examinado por nuestro comité de crédito. La aprobación o el rechazo de la solicitud se notifica en el Dashboard del cliente y por notificación por correo electrónico. Un crédito le compromete y debe ser reembolsado: verifique sus capacidades de reembolso antes de comprometerse.
             </p>
           </section>
 
           <section className="legal-block">
-            <h3>Article 6 : Clôture de compte et Résiliation</h3>
+            <h3>Artículo 5: Seguridad y Obligaciones del Cliente</h3>
             <p>
-              Le Client peut demander la clôture de son compte à tout moment sans préavis ni pénalité, sous réserve du règlement préalable de tout solde débiteur ou échéance de prêt en cours. CBG Banque se réserve le droit de suspendre ou clôturer un compte en cas de fausse déclaration, d&apos;inactivité prolongée ou de manquement aux obligations légales.
+              El Cliente es estrictamente responsable de la confidencialidad de sus identificadores personales, de su contraseña y de sus códigos de validación temporales (OTP). Todo compartido de códigos confidenciales está formalmente prohibido. En caso de sospecha de fraude o acceso fraudulento, el Cliente debe bloquear inmediatamente sus tarjetas y contactar con el soporte de urgencia.
+            </p>
+          </section>
+
+          <section className="legal-block">
+            <h3>Artículo 6: Cierre de Cuenta y Resolución</h3>
+            <p>
+              El Cliente puede solicitar el cierre de su cuenta en cualquier momento sin preaviso ni penalización, con reserva del pago previo de todo saldo deudor o vencimiento de préstamo en curso. CBG Banco se reserva el derecho de suspender o cerrar una cuenta en caso de declaración falsa, inactividad prolongada o incumplimiento de obligaciones legales.
             </p>
           </section>
 

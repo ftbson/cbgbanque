@@ -6,85 +6,85 @@ export default function MentionsLegalesPage() {
       <div className="legal-hero-banner">
         <div className="legal-hero-glow" />
         <span className="legal-pill-badge">
-          <i className="fa-solid fa-scale-balanced"></i> Informations légales
+          <i className="fa-solid fa-scale-balanced"></i> Rechtliche Hinweise
         </span>
-        <h1 className="legal-main-heading">Mentions Légales</h1>
+        <h1 className="legal-main-heading">Impressum</h1>
         <p className="legal-lead-text">
-          Conformément aux dispositions des lois européennes sur la confiance dans l&apos;économie numérique et les services de paiement.
+          Gemäß den Bestimmungen der europäischen Gesetze über das Vertrauen in die digitale Wirtschaft und Zahlungsdienste.
         </p>
       </div>
 
       <div className="legal-page-container">
         <div className="legal-content-card">
-          
+
           <section className="legal-block">
-            <h3>1. Éditeur de la plateforme</h3>
-            <p>Le site internet et l&apos;application bancaire <strong>CBG Banque</strong> sont édités et exploités par :</p>
+            <h3>1. Herausgeber der Plattform</h3>
+            <p>Die Internetseite und die Bankanwendung <strong>CBG Bank</strong> werden herausgegeben und betrieben von:</p>
             <div className="legal-info-table">
               <div className="info-row">
-                <span className="info-key">Dénomination sociale :</span>
-                <span className="info-val">CBG Banque Finance SA</span>
+                <span className="info-key">Firmenname:</span>
+                <span className="info-val">CBG Bank Finance AG</span>
               </div>
               <div className="info-row">
-                <span className="info-key">Forme juridique :</span>
-                <span className="info-val">Société Anonyme de droit belge</span>
+                <span className="info-key">Rechtsform:</span>
+                <span className="info-val">Aktiengesellschaft belgischen Rechts</span>
               </div>
               <div className="info-row">
-                <span className="info-key">Capital social :</span>
-                <span className="info-val">50 000 000 € entièrement libéré</span>
+                <span className="info-key">Stammkapital:</span>
+                <span className="info-val">50 000 000 € voll eingezahlt</span>
               </div>
               <div className="info-row">
-                <span className="info-key">Siège social :</span>
-                <span className="info-val">Avenue Louise 542, 1050 Ixelles, Bruxelles, Belgique</span>
+                <span className="info-key">Sitz:</span>
+                <span className="info-val">Avenue Louise 542, 1050 Ixelles, Brüssel, Belgien</span>
               </div>
               <div className="info-row">
-                <span className="info-key">Numéro d&apos;entreprise (BCE) :</span>
+                <span className="info-key">Unternehmensnummer (BCE):</span>
                 <span className="info-val">BE 0789.456.123</span>
               </div>
               <div className="info-row">
-                <span className="info-key">Identifiant LEI :</span>
+                <span className="info-key">LEI-Identifikator:</span>
                 <span className="info-val">549300C23BQ2026B7</span>
               </div>
               <div className="info-row">
-                <span className="info-key">Code SWIFT / BIC :</span>
+                <span className="info-key">SWIFT / BIC Code:</span>
                 <span className="info-val">C23QBEBB</span>
               </div>
               <div className="info-row">
-                <span className="info-key">Courriel de contact :</span>
+                <span className="info-key">Kontakt-E-Mail:</span>
                 <span className="info-val"><a href="mailto:contact@cbgbanque.com">contact@cbgbanque.com</a></span>
               </div>
               <div className="info-row">
-                <span className="info-key">Téléphone :</span>
+                <span className="info-key">Telefon:</span>
                 <span className="info-val">+33 (0) 1 89 71 42 00</span>
               </div>
             </div>
           </section>
 
           <section className="legal-block">
-            <h3>2. Autorité de Contrôle et Agrément</h3>
+            <h3>2. Aufsichtsbehörde und Zulassung</h3>
             <p>
-              CBG Banque Finance SA exerce ses activités financières sous la supervision et le contrôle prudentiel des autorités monétaires européennes compétentes et de la Banque Nationale de Belgique (BNB). Les services de paiement et d&apos;émission de monnaie électronique sont strictement régis par la Directive Européenne sur les Services de Paiement (DSP2).
+              Die CBG Bank Finance AG übt ihre Finanzdienstleistungen unter der Aufsicht und dem prudentiellen Control der zuständigen europäischen Geldbehörden und der Belgischen Nationalbank (BNB) aus. Die Zahlungsdienste und die Ausgabe von E-Geld unterliegen streng der Europäischen Zahlungsdiensterichtlinie (PSD2).
             </p>
           </section>
 
           <section className="legal-block">
-            <h3>3. Hébergement du Service</h3>
+            <h3>3. Hosting des Dienstes</h3>
             <p>
-              L&apos;infrastructure d&apos;hébergement et les bases de données haute sécurité de CBG Banque sont réparties sur des centres de données européens certifiés ISO/IEC 27001, SOC 2 Type II et PCI-DSS niveau 1, garantissant une disponibilité permanente de 99,99%.
+              Die Hosting-Infrastruktur und die Hochsicherheitsdatenbanken der CBG Bank verteilen sich auf europäische Rechenzentren, die nach ISO/IEC 27001, SOC 2 Type II und PCI-DSS Level 1 zertifiziert sind und eine permanente Verfügbarkeit von 99,99 % garantieren.
             </p>
           </section>
 
           <section className="legal-block">
-            <h3>4. Propriété intellectuelle</h3>
+            <h3>4. Geistiges Eigentum</h3>
             <p>
-              L&apos;ensemble des éléments composant le site et l&apos;application (marques CBG, logos, chartes graphiques, logiciels, codes sources, icônes et textes) est la propriété exclusive de CBG Banque Finance SA ou fait l&apos;objet d&apos;une licence légale. Toute reproduction, copie ou diffusion intégrale ou partielle sans consentement préalable écrit est formellement interdite.
+              Die Gesamtheit der Elemente der Website und der Anwendung (Marken CBG, Logos, Grafikcharts, Software, Quellcodes, Icons und Texte) ist Eigentum der CBG Bank Finance AG oder Gegenstand einer rechtmäßigen Lizenz. Jede vollständige oder teilweise Vervielfältigung, Kopie oder Verbreitung ohne vorherige schriftliche Zustimmung ist formell untersagt.
             </p>
           </section>
 
           <section className="legal-block">
-            <h3>5. Réclamation et Médiation</h3>
+            <h3>5. Beschwerde und Mediation</h3>
             <p>
-              En cas de réclamation, le client est invité à contacter en priorité le service clientèle à <a href="mailto:reclamation@cbgbanque.com">reclamation@cbgbanque.com</a>. Si aucun accord n&apos;est trouvé, le consommateur peut faire appel gratuitement au médiateur indépendant du secteur financier : <strong>Ombudsfin</strong> (<a href="https://ombudsfin.be" target="_blank" rel="noopener noreferrer">www.ombudsfin.be</a>).
+              Im Falle einer Beschwerde wird der Kunde aufgefordert, primär den Kundendienst unter <a href="mailto:reclamation@cbgbanque.com">reclamation@cbgbanque.com</a> zu kontaktieren. Wird keine Einigung erzielt, kann der Verbraucher kostenlos den unabhängigen Finanzmediator anrufen: <strong>Ombudsfin</strong> (<a href="https://ombudsfin.be" target="_blank" rel="noopener noreferrer">www.ombudsfin.be</a>).
             </p>
           </section>
 
