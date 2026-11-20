@@ -265,7 +265,7 @@ export default function RibPage() {
       </span>
       <strong style={{ fontSize: "1.1rem", color: "#0f172a", display: "block", marginTop: "0.2rem" }}>
         BANKVERBINDUNG (RIB)
-      </span>
+      </strong>
       <span style={{ fontSize: "0.75rem", color: "#64748b" }}>
         Ausgestellt am {new Date().toLocaleDateString("de-DE")}
       </span>

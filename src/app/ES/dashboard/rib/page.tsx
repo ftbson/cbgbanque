@@ -265,7 +265,7 @@ export default function RibPage() {
       </span>
       <strong style={{ fontSize: "1.1rem", color: "#0f172a", display: "block", marginTop: "0.2rem" }}>
         RELEVÉ D'IDENTITÉ BANCAIRE
-      </span>
+      </strong>
       <span style={{ fontSize: "0.75rem", color: "#64748b" }}>
         Emitido el {new Date().toLocaleDateString("es-ES")}
       </span>
