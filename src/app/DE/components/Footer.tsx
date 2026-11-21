@@ -79,11 +79,11 @@ export default function Footer() {
           {/* Bottom Bar: Links & Copyright */}
           <div className="footer-bottom-bar">
             <div className="footer-legal-links">
-              <Link href="/DE/hilfe">Hilfe & FAQ</Link>
-              <Link href="/DE/datenschutz">Datenschutz</Link>
-              <Link href="/DE/impressum">Impressum</Link>
-              <Link href="/DE/agb">AGB</Link>
-              <Link href="/DE/dsgvo">DSGVO</Link>
+              <Link href="/DE/aide">Hilfe & FAQ</Link>
+              <Link href="/DE/politique-de-confidentialite">Datenschutz</Link>
+              <Link href="/DE/mentions-legales">Impressum</Link>
+              <Link href="/DE/termes-et-conditions">AGB</Link>
+              <Link href="/DE/rgpd">DSGVO</Link>
               <Link href="/DE/cookies">Cookies</Link>
             </div>
             <div className="footer-copyright">

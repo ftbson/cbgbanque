@@ -46,7 +46,7 @@ export default function RibPage() {
   const [sharedToast, setSharedToast] = useState("");
 
   useEffect(() => {
-    fetch("/FR/api/dashboard/rib")
+    fetch("/api/dashboard/rib")
       .then((res) => res.json())
       .then((resData) => {
         if (resData.success) {

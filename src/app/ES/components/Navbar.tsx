@@ -40,16 +40,16 @@ export default function Navbar() {
 
         {/* Center navigation links (Desktop + Animated Mobile Drawer) */}
         <div className={`nav-links ${isOpen ? "open" : ""}`}>
-          <Link href="/ES/funciones" className="nav-link" onClick={() => setIsOpen(false)}>
+          <Link href="/ES" className="nav-link" onClick={() => setIsOpen(false)}>
             Funciones
           </Link>
-          <Link href="/ES/compromisos" className="nav-link" onClick={() => setIsOpen(false)}>
+          <Link href="/ES" className="nav-link" onClick={() => setIsOpen(false)}>
             Compromisos
           </Link>
           <Link href="/ES/ayuda" className="nav-link" onClick={() => setIsOpen(false)}>
             Ayuda
           </Link>
-          <Link href="/ES/descargar" className="nav-link mobile-only-download" onClick={() => setIsOpen(false)}>
+          <Link href="/ES/download" className="nav-link mobile-only-download" onClick={() => setIsOpen(false)}>
             <i className="fa-solid fa-download"></i> Descargar la app
           </Link>
           {/* Bouton visible uniquement dans le menu mobile ouvert */}

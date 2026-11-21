@@ -41,21 +41,21 @@ export default function Navbar() {
         {/* Center navigation links (Desktop + Animated Mobile Drawer) */}
         <div className={`nav-links ${isOpen ? "open" : ""}`}>
           <Link
-            href="/DE/funktionen"
+            href="/DE"
             className="nav-link"
             onClick={() => setIsOpen(false)}
           >
             Funktionen
           </Link>
           <Link
-            href="/DE/versprechen"
+            href="/DE"
             className="nav-link"
             onClick={() => setIsOpen(false)}
           >
             Versprechen
           </Link>
           <Link
-            href="/DE/hilfe"
+            href="/DE/aide"
             className="nav-link"
             onClick={() => setIsOpen(false)}
           >

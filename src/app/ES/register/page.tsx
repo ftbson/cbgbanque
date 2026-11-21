@@ -84,7 +84,7 @@ export default function RegisterPage() {
     setLoading(true);
     setErrorMessage("");
     try {
-      const response = await fetch("/ES/api/register/otp", {
+      const response = await fetch("/api/register/otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: formData.email }),
@@ -106,7 +106,7 @@ export default function RegisterPage() {
     setLoading(true);
     setErrorMessage("");
     try {
-      const response = await fetch("/ES/api/register/verify-otp", {
+      const response = await fetch("/api/register/verify-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: formData.email, otpCode: formData.otpCode.join("") }),
@@ -141,7 +141,7 @@ export default function RegisterPage() {
     setErrorMessage("");
 
     try {
-      const response = await fetch("/ES/api/register", {
+      const response = await fetch("/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

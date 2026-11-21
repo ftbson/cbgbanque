@@ -65,7 +65,7 @@ export default function DashboardHomePage() {
   const [trackingTransferId, setTrackingTransferId] = useState<string | null>(null);
 
   const loadDashboard = () => {
-    fetch("/DE/api/dashboard")
+    fetch("/api/dashboard")
       .then(async (response) => {
         const result: DashboardData & { message?: string } = await response.json();
         if (response.ok) {
@@ -77,7 +77,7 @@ export default function DashboardHomePage() {
 
   useEffect(() => {
     let active = true;
-    fetch("/DE/api/dashboard")
+    fetch("/api/dashboard")
       .then(async (response) => {
         const result: DashboardData & { message?: string } = await response.json();
         if (!response.ok) throw new Error(result.message ?? "Konto konnte nicht geladen werden.");

@@ -40,10 +40,10 @@ export default function Navbar() {
 
         {/* Center navigation links (Desktop + Animated Mobile Drawer) */}
         <div className={`nav-links ${isOpen ? "open" : ""}`}>
-          <Link href="/FR/fonctionnalites" className="nav-link" onClick={() => setIsOpen(false)}>
+          <Link href="/FR" className="nav-link" onClick={() => setIsOpen(false)}>
             Fonctionnalités
           </Link>
-          <Link href="/FR/engagements" className="nav-link" onClick={() => setIsOpen(false)}>
+          <Link href="/FR" className="nav-link" onClick={() => setIsOpen(false)}>
             Engagements
           </Link>
           <Link href="/FR/aide" className="nav-link" onClick={() => setIsOpen(false)}>

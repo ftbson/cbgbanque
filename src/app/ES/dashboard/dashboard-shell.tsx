@@ -19,7 +19,7 @@ export default function DashboardShell({
   const [identity, setIdentity] = useState<DashboardIdentity | null>(null);
 
   useEffect(() => {
-    fetch("/ES/api/dashboard")
+    fetch("/api/dashboard")
       .then(async (response) => {
         if (!response.ok) return;
         const data = await response.json();
@@ -29,7 +29,7 @@ export default function DashboardShell({
   }, []);
 
   const handleLogout = async () => {
-    const response = await fetch("/ES/api/auth/logout", { method: "POST" });
+    const response = await fetch("/api/auth/logout", { method: "POST" });
     if (!response.ok) {
       console.error("La déconnexion n'a pas abouti.");
       return;
@@ -102,42 +102,42 @@ export default function DashboardShell({
       <nav className="dashboard-bottom-nav">
         <Link
           href="/ES/dashboard"
-          className={`nav-item-bottom ${pathname === "/dashboard" ? "active" : ""}`}
+          className={`nav-item-bottom ${pathname === "/ES/dashboard" ? "active" : ""}`}
         >
           <i className="fa-solid fa-house"></i>
           <span>Accueil</span>
         </Link>
         <Link
           href="/ES/dashboard/pret"
-          className={`nav-item-bottom ${pathname === "/dashboard/pret" ? "active" : ""}`}
+          className={`nav-item-bottom ${pathname === "/ES/dashboard/pret" ? "active" : ""}`}
         >
           <i className="fa-solid fa-arrow-trend-up"></i>
           <span>Prêts</span>
         </Link>
         <Link
           href="/ES/dashboard/envoyer"
-          className={`nav-item-bottom ${pathname === "/dashboard/envoyer" ? "active" : ""}`}
+          className={`nav-item-bottom ${pathname === "/ES/dashboard/envoyer" ? "active" : ""}`}
         >
           <i className="fa-solid fa-arrow-right-arrow-left"></i>
           <span>Virements</span>
         </Link>
         <Link
           href="/ES/dashboard/carte"
-          className={`nav-item-bottom ${pathname === "/dashboard/carte" ? "active" : ""}`}
+          className={`nav-item-bottom ${pathname === "/ES/dashboard/carte" ? "active" : ""}`}
         >
           <i className="fa-regular fa-credit-card"></i>
           <span>Cartes</span>
         </Link>
         <Link
           href="/ES/dashboard/epargne"
-          className={`nav-item-bottom ${pathname === "/dashboard/epargne" ? "active" : ""}`}
+          className={`nav-item-bottom ${pathname === "/ES/dashboard/epargne" ? "active" : ""}`}
         >
           <i className="fa-solid fa-piggy-bank"></i>
           <span>Épargne</span>
         </Link>
         <Link
           href="/ES/dashboard/parametres"
-          className={`nav-item-bottom ${pathname === "/dashboard/parametres" ? "active" : ""}`}
+          className={`nav-item-bottom ${pathname === "/ES/dashboard/parametres" ? "active" : ""}`}
         >
           <i className="fa-solid fa-gear"></i>
           <span>Paramètres</span>

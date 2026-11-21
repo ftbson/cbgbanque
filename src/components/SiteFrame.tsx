@@ -61,11 +61,11 @@ export default function SiteFrame({ children }: SiteFrameProps) {
     "/FR/login",
     "/FR/register",
     "/FR/admin",
-    "/DE/anmelden",
+    "/DE/login",
     "/DE/register",
     "/DE/admin",
-    "/ES/iniciar-sesion",
-    "/ES/abrir-cuenta",
+    "/ES/login",
+    "/ES/register",
     "/ES/admin",
   ].includes(pathname);
   const isDashboardPage =

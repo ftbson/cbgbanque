@@ -18,7 +18,7 @@ export default function NotificationsPage() {
   const unreadCount = notifications.filter((item) => item.readAt === null).length;
 
   const loadNotifications = async () => {
-    const response = await fetch("/FR/api/dashboard/notifications");
+    const response = await fetch("/api/dashboard/notifications");
     const data: { notifications?: NotificationItem[]; message?: string } = await response.json();
     if (!response.ok) throw new Error(data.message ?? "Impossible de charger les notifications.");
     setNotifications(data.notifications ?? []);
@@ -26,7 +26,7 @@ export default function NotificationsPage() {
 
   useEffect(() => {
     let active = true;
-    fetch("/FR/api/dashboard/notifications")
+    fetch("/api/dashboard/notifications")
       .then(async (response) => {
         const data: { notifications?: NotificationItem[]; message?: string } = await response.json();
         if (!response.ok) throw new Error(data.message ?? "Impossible de charger les notifications.");

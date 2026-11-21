@@ -1,238 +1,289 @@
-quand je veux mettre sur vercel  10:52:10.528 Running build in Washington, D.C., USA (East) – iad1
-10:52:10.529 Build machine configuration: 2 cores, 8 GB
-10:52:10.644 Cloning github.com/ftbson/cbgbanque (Branch: main, Commit: 53ec6f1)
-10:52:10.645 Previous build caches not available.
-10:52:10.941 Cloning completed: 296.000ms
-10:52:11.486 Running "vercel build"
-10:52:11.494 Vercel CLI 65.11.0
-10:52:11.782 Installing dependencies...
-10:52:12.468 npm warn Unknown env config "cache-dir". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
-10:52:15.827 npm warn deprecated @esbuild-kit/esm-loader@2.6.5: Merged into tsx: https://tsx.is
-10:52:15.872 npm warn deprecated @esbuild-kit/core-utils@3.3.2: Merged into tsx: https://tsx.is
-10:52:25.007 
-10:52:25.007 added 378 packages in 13s
-10:52:25.007 
-10:52:25.007 141 packages are looking for funding
-10:52:25.007   run `npm fund` for details
-10:52:25.014 npm warn install-scripts 5 packages have install scripts not yet covered by allowScripts:
-10:52:25.014 npm warn install-scripts   esbuild@0.18.20 (postinstall: node install.js)
-10:52:25.014 npm warn install-scripts   esbuild@0.25.12 (postinstall: node install.js)
-10:52:25.014 npm warn install-scripts   sharp@0.34.5 (install: node install/check.js || npm run build)
-10:52:25.014 npm warn install-scripts   esbuild@0.28.0 (postinstall: node install.js)
-10:52:25.014 npm warn install-scripts   unrs-resolver@1.11.1 (postinstall: napi-postinstall unrs-resolver 1.11.1 check)
-10:52:25.014 npm warn install-scripts
-10:52:25.014 npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
-10:52:25.064 Detected Next.js version: 16.2.6
-10:52:25.070 Running "npm run build"
-10:52:25.178 npm warn Unknown env config "cache-dir". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
-10:52:25.199 
-10:52:25.199 > bonboisfr@0.1.0 build
-10:52:25.199 > next build
-10:52:25.199 
-10:52:25.710   Applying modifyConfig from Vercel
-10:52:25.757 Attention: Next.js now collects completely anonymous telemetry regarding usage.
-10:52:25.757 This information is used to shape Next.js' roadmap and prioritize features.
-10:52:25.757 You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
-10:52:25.757 https://nextjs.org/telemetry
-10:52:25.757 
-10:52:25.775 ▲ Next.js 16.2.6 (Turbopack)
-10:52:25.776 
-10:52:25.826   Creating an optimized production build ...
-10:52:38.519 
-10:52:38.520 > Build error occurred
-10:52:38.525 Error: Turbopack build failed with 11 errors:
-10:52:38.525 ./src/app/api/checkout/bank-transfer/route.ts:4:1
-10:52:38.525 Module not found: Can't resolve '@/data/products'
-10:52:38.525   2 | import { db } from "@/lib/db";
-10:52:38.525   3 | import { orders } from "@/lib/schema";
-10:52:38.525 > 4 | import { productsData } from "@/data/products";
-10:52:38.525     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-10:52:38.525   5 | import { getBankTransferSettings } from "@/lib/bank-transfer";
-10:52:38.525   6 |
-10:52:38.525   7 | export async function POST(request: Request) {
-10:52:38.525 
-10:52:38.525 Import map: aliased to relative './src/data/products' inside of [project]/
-10:52:38.525 
-10:52:38.525 
-10:52:38.525 https://nextjs.org/docs/messages/module-not-found
-10:52:38.525 
-10:52:38.525 
-10:52:38.525 ./src/app/api/checkout/bizum/route.ts:4:1
-10:52:38.526 Module not found: Can't resolve '@/data/products'
-10:52:38.526   2 | import { db } from "@/lib/db";
-10:52:38.526   3 | import { orders, bizumSettings } from "@/lib/schema";
-10:52:38.526 > 4 | import { productsData } from "@/data/products";
-10:52:38.526     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-10:52:38.526   5 |
-10:52:38.526   6 | export async function POST(request: Request) {
-10:52:38.526   7 |   try {
-10:52:38.526 
-10:52:38.526 Import map: aliased to relative './src/data/products' inside of [project]/
-10:52:38.526 
-10:52:38.526 
-10:52:38.526 https://nextjs.org/docs/messages/module-not-found
-10:52:38.526 
-10:52:38.526 
-10:52:38.526 ./src/app/api/checkout/stripe/route.ts:4:1
-10:52:38.526 Module not found: Can't resolve '@/data/products'
-10:52:38.527   2 | import { db } from "@/lib/db";
-10:52:38.527   3 | import { orders } from "@/lib/schema";
-10:52:38.527 > 4 | import { productsData } from "@/data/products";
-10:52:38.528     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-10:52:38.528   5 | import { getStripe } from "@/lib/stripe";
-10:52:38.528   6 |
-10:52:38.528   7 | export async function POST(request: Request) {
-10:52:38.528 
-10:52:38.528 Import map: aliased to relative './src/data/products' inside of [project]/
-10:52:38.528 
-10:52:38.528 
-10:52:38.528 https://nextjs.org/docs/messages/module-not-found
-10:52:38.528 
-10:52:38.528 
-10:52:38.529 ./src/app/api/checkout/bank-transfer/route.ts:5:1
-10:52:38.529 Module not found: Can't resolve '@/lib/bank-transfer'
-10:52:38.529   3 | import { orders } from "@/lib/schema";
-10:52:38.529   4 | import { productsData } from "@/data/products";
-10:52:38.529 > 5 | import { getBankTransferSettings } from "@/lib/bank-transfer";
-10:52:38.529     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-10:52:38.529   6 |
-10:52:38.529   7 | export async function POST(request: Request) {
-10:52:38.529   8 |   try {
-10:52:38.529 
-10:52:38.530 Import map: aliased to relative './src/lib/bank-transfer' inside of [project]/
-10:52:38.530 
-10:52:38.530 
-10:52:38.530 https://nextjs.org/docs/messages/module-not-found
-10:52:38.530 
-10:52:38.530 
-10:52:38.530 ./src/app/api/analytics/route.ts:5:1
-10:52:38.530 Export analyticsVisits doesn't exist in target module
-10:52:38.530   3 | import { cookies } from "next/headers";
-10:52:38.530   4 | import { db } from "@/lib/db";
-10:52:38.531 > 5 | import { analyticsVisits } from "@/lib/schema";
-10:52:38.531     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-10:52:38.531   6 |
-10:52:38.531   7 | function getCountryCode(request: Request) {
-10:52:38.532   8 |   const country =
-10:52:38.532 
-10:52:38.532 The export analyticsVisits was not found in module [project]/src/lib/schema.ts [app-route] (ecmascript).
-10:52:38.532 Did you mean to import notificationsTable?
-10:52:38.532 All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
-10:52:38.532 
-10:52:38.532 
-10:52:38.533 ./src/app/api/checkout/bizum/route.ts:3:1
-10:52:38.533 Export bizumSettings doesn't exist in target module
-10:52:38.534   1 | import { NextResponse } from "next/server";
-10:52:38.534   2 | import { db } from "@/lib/db";
-10:52:38.534 > 3 | import { orders, bizumSettings } from "@/lib/schema";
-10:52:38.534     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-10:52:38.534   4 | import { productsData } from "@/data/products";
-10:52:38.534   5 |
-10:52:38.534   6 | export async function POST(request: Request) {
-10:52:38.534 
-10:52:38.534 The export bizumSettings was not found in module [project]/src/lib/schema.ts [app-route] (ecmascript).
-10:52:38.534 Did you mean to import registrationOtpsTable?
-10:52:38.534 All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
-10:52:38.535 
-10:52:38.535 
-10:52:38.535 ./src/app/api/checkout/bank-transfer/route.ts:3:1
-10:52:38.535 Export orders doesn't exist in target module
-10:52:38.535   1 | import { NextResponse } from "next/server";
-10:52:38.535   2 | import { db } from "@/lib/db";
-10:52:38.535 > 3 | import { orders } from "@/lib/schema";
-10:52:38.535     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-10:52:38.535   4 | import { productsData } from "@/data/products";
-10:52:38.536   5 | import { getBankTransferSettings } from "@/lib/bank-transfer";
-10:52:38.536   6 |
-10:52:38.536 
-10:52:38.536 The export orders was not found in module [project]/src/lib/schema.ts [app-route] (ecmascript).
-10:52:38.536 Did you mean to import cardsTable?
-10:52:38.536 All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
-10:52:38.537 
-10:52:38.537 
-10:52:38.537 ./src/app/api/checkout/bizum/route.ts:3:1
-10:52:38.537 Export orders doesn't exist in target module
-10:52:38.537   1 | import { NextResponse } from "next/server";
-10:52:38.537   2 | import { db } from "@/lib/db";
-10:52:38.537 > 3 | import { orders, bizumSettings } from "@/lib/schema";
-10:52:38.537     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-10:52:38.537   4 | import { productsData } from "@/data/products";
-10:52:38.537   5 |
-10:52:38.537   6 | export async function POST(request: Request) {
-10:52:38.537 
-10:52:38.537 The export orders was not found in module [project]/src/lib/schema.ts [app-route] (ecmascript).
-10:52:38.537 Did you mean to import cardsTable?
-10:52:38.537 All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
-10:52:38.537 
-10:52:38.537 
-10:52:38.537 ./src/app/api/checkout/stripe/confirm/route.ts:3:1
-10:52:38.537 Export orders doesn't exist in target module
-10:52:38.537   1 | import { NextResponse } from "next/server";
-10:52:38.537   2 | import { db } from "@/lib/db";
-10:52:38.537 > 3 | import { orders } from "@/lib/schema";
-10:52:38.537     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-10:52:38.537   4 | import { getStripe } from "@/lib/stripe";
-10:52:38.537   5 | import { eq } from "drizzle-orm";
-10:52:38.537   6 |
-10:52:38.537 
-10:52:38.537 The export orders was not found in module [project]/src/lib/schema.ts [app-route] (ecmascript).
-10:52:38.537 Did you mean to import cardsTable?
-10:52:38.537 All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
-10:52:38.537 
-10:52:38.537 
-10:52:38.537 ./src/app/api/checkout/stripe/route.ts:3:1
-10:52:38.537 Export orders doesn't exist in target module
-10:52:38.537   1 | import { NextResponse } from "next/server";
-10:52:38.538   2 | import { db } from "@/lib/db";
-10:52:38.538 > 3 | import { orders } from "@/lib/schema";
-10:52:38.538     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-10:52:38.538   4 | import { productsData } from "@/data/products";
-10:52:38.539   5 | import { getStripe } from "@/lib/stripe";
-10:52:38.539   6 |
-10:52:38.539 
-10:52:38.539 The export orders was not found in module [project]/src/lib/schema.ts [app-route] (ecmascript).
-10:52:38.539 Did you mean to import cardsTable?
-10:52:38.540 All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
-10:52:38.540 
-10:52:38.540 
-10:52:38.540 ./src/app/api/orders/route.ts:4:1
-10:52:38.540 Export orders doesn't exist in target module
-10:52:38.540   2 | import { NextResponse } from "next/server";
-10:52:38.540   3 | import { db } from "@/lib/db";
-10:52:38.541 > 4 | import { orders } from "@/lib/schema";
-10:52:38.541     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-10:52:38.541   5 | import { cookies } from "next/headers";
-10:52:38.541   6 |
-10:52:38.541   7 | // POST: Eine neue Bestellung speichern
-10:52:38.541 
-10:52:38.541 The export orders was not found in module [project]/src/lib/schema.ts [app-route] (ecmascript).
-10:52:38.541 Did you mean to import cardsTable?
-10:52:38.542 All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
-10:52:38.542 
-10:52:38.542 
-10:52:38.542     at <unknown> (./src/app/api/checkout/bank-transfer/route.ts:4:1)
-10:52:38.543     at <unknown> (https://nextjs.org/docs/messages/module-not-found)
-10:52:38.543     at <unknown> (./src/app/api/checkout/bizum/route.ts:4:1)
-10:52:38.543     at <unknown> (https://nextjs.org/docs/messages/module-not-found)
-10:52:38.543     at <unknown> (./src/app/api/checkout/stripe/route.ts:4:1)
-10:52:38.543     at <unknown> (https://nextjs.org/docs/messages/module-not-found)
-10:52:38.543     at <unknown> (./src/app/api/checkout/bank-transfer/route.ts:5:1)
-10:52:38.543     at <unknown> (https://nextjs.org/docs/messages/module-not-found)
-10:52:38.543     at <unknown> (./src/app/api/analytics/route.ts:5:1)
-10:52:38.543     at <unknown> (./src/app/api/checkout/bizum/route.ts:3:1)
-10:52:38.543     at <unknown> (./src/app/api/checkout/bank-transfer/route.ts:3:1)
-10:52:38.543     at <unknown> (./src/app/api/checkout/bizum/route.ts:3:1)
-10:52:38.544     at <unknown> (./src/app/api/checkout/stripe/confirm/route.ts:3:1)
-10:52:38.544     at <unknown> (./src/app/api/checkout/stripe/route.ts:3:1)
-10:52:38.544     at <unknown> (./src/app/api/orders/route.ts:4:1)
-10:52:38.618 Error: [BUILD_UTILS_SPAWN_1] Command "npm run build" exited with 1
+Je veux que tu effectues un audit approfondi et que tu corriges les problèmes actuellement présents dans mon application. Il y a deux problèmes majeurs qui doivent être résolus : les erreurs de connexion à l'application et l'implémentation inachevée du système multilingue avec les slugs.
 
+Ne te contente pas d'analyser ou de me proposer des solutions. Tu dois examiner le code, identifier les causes réelles et effectuer les corrections directement dans le projet.
 
+1. Corriger le problème de connexion au serveur
 
+Actuellement, lorsque j'essaie de me connecter à l'application, j'obtiens une erreur indiquant que l'application ne parvient pas à contacter le serveur.
 
+Je veux que tu identifies précisément l'origine de cette erreur.
 
+Examine notamment :
 
+Le système d'authentification.
 
+Les routes API de connexion et d'inscription.
 
+Les requêtes HTTP effectuées depuis le frontend.
 
+Les URL des API.
 
+Les variables d'environnement.
+
+Les configurations du backend.
+
+Les éventuels middlewares.
+
+Les cookies et sessions.
+
+La gestion des tokens.
+
+Les redirections après connexion.
+
+Les erreurs de réseau, de configuration ou de serveur.
+
+Les éventuels problèmes provoqués par les modifications récentes du système multilingue.
+
+Ne suppose pas que le serveur est indisponible sans vérifier le code et les configurations disponibles.
+
+Identifie la cause réelle du problème et corrige-la.
+
+La connexion doit fonctionner normalement, sans erreur de communication avec le serveur, et l'inscription doit également être vérifiée si elle utilise le même système.
+
+Ne désactive pas les contrôles de sécurité pour faire fonctionner la connexion.
+
+2. Finaliser complètement le système multilingue
+
+Le système multilingue n'est pas encore correctement terminé. Les dossiers FR, DE et ES existent déjà, mais l'implémentation n'est pas encore cohérente sur l'ensemble du site.
+
+Je veux que tu vérifies l'intégralité de l'architecture actuelle et que tu finalises réellement le système.
+
+Les trois espaces doivent fonctionner indépendamment :
+
+/FR pour le français.
+
+/DE pour l'allemand.
+
+/ES pour l'espagnol.
+
+Il ne suffit pas de traduire la page d'accueil. Toutes les pages, tous les composants, tous les liens, les formulaires, les pages de connexion, d'inscription et le dashboard doivent être rattachés à leur espace linguistique respectif.
+
+3. Les slugs doivent être respectés sur toutes les pages
+
+Voici le comportement que je veux :
+
+Version française :
+
+/FR
+
+/FR/login
+
+/FR/register
+
+/FR/dashboard
+
+/FR/dashboard/settings
+
+Version allemande :
+
+/DE
+
+/DE/login
+
+/DE/register
+
+/DE/dashboard
+
+/DE/dashboard/settings
+
+Version espagnole :
+
+/ES
+
+/ES/login
+
+/ES/register
+
+/ES/dashboard
+
+/ES/dashboard/settings
+
+Chaque navigation doit conserver le préfixe linguistique actif.
+
+Si je suis dans l'espace allemand, toutes mes navigations doivent rester dans /DE.
+
+Si je suis dans l'espace espagnol, toutes mes navigations doivent rester dans /ES.
+
+Si je suis dans l'espace français, toutes mes navigations doivent rester dans /FR.
+
+Il ne doit plus y avoir de redirections involontaires vers une autre langue.
+
+4. Corriger tous les liens et redirections
+
+Examine tous les liens du projet et toutes les navigations.
+
+Je veux que tu vérifies notamment :
+
+Les boutons Se connecter.
+
+Les boutons S'inscrire.
+
+Les boutons de retour.
+
+Les menus de navigation.
+
+Les liens du footer.
+
+Les liens du dashboard.
+
+Les liens de paramètres.
+
+Les liens de profil.
+
+Les redirections après connexion.
+
+Les redirections après inscription.
+
+Les redirections après déconnexion.
+
+Les liens des formulaires.
+
+Les liens vers les pages internes.
+
+Les éventuelles routes codées en dur.
+
+Les routes qui ne possèdent pas de préfixe linguistique.
+
+Les routes qui renvoient systématiquement vers FR.
+
+Chaque lien doit respecter le contexte linguistique actuel.
+
+Par exemple, une connexion depuis /DE/login doit rediriger vers /DE/dashboard et non vers /FR/dashboard.
+
+Une connexion depuis /ES/login doit rediriger vers /ES/dashboard et non vers /FR/dashboard.
+
+Ne définis pas de redirection globale qui écrase la langue actuelle.
+
+5. Le sélecteur de langue doit fonctionner partout où il est prévu
+
+Le changement de langue doit être une action volontaire de l'utilisateur.
+
+Lorsque je change de langue, l'URL doit changer réellement.
+
+Par exemple :
+
+/FR vers /DE.
+
+/FR/login vers /DE/login.
+
+/FR/dashboard vers /DE/dashboard lorsque la page équivalente existe.
+
+/DE vers /ES.
+
+/ES/dashboard vers /FR/dashboard lorsque je sélectionne le français.
+
+Le sélecteur doit fonctionner correctement depuis les pages concernées, sans perdre la langue sélectionnée lors des navigations suivantes.
+
+Ne change pas automatiquement la langue lorsque l'utilisateur clique sur un bouton qui ne concerne pas le sélecteur de langue.
+
+6. Traductions et fichiers
+
+Je ne veux pas d'un système centralisé de traduction basé sur des clés JSON telles que hero.title, nav.login ou features.subtitle.
+
+Les vrais textes doivent être présents directement dans les fichiers de chaque espace linguistique.
+
+Vérifie les dossiers FR, DE et ES existants.
+
+Si les fichiers DE et ES sont incomplets, tu dois les compléter.
+
+Traduis littéralement les contenus de chaque fichier, sans réécriture marketing ni modification de la logique fonctionnelle.
+
+Aucun texte technique de traduction ne doit apparaître à l'écran, comme :
+
+hero.title
+
+hero.subtitle
+
+nav.login
+
+features.items.account.title
+
+footer.legalText
+
+Les pages doivent afficher les vrais textes dans la langue correspondante.
+
+7. Vérifier le dashboard et les fonctionnalités existantes
+
+Le dashboard doit être pleinement fonctionnel dans les trois langues.
+
+Vérifie les pages, composants, menus, formulaires, paramètres, boutons, actions, API et redirections.
+
+Ne crée pas uniquement des pages visuellement traduites. Vérifie que les fonctionnalités réelles restent opérationnelles.
+
+Ne casse pas les fonctionnalités existantes et ne supprime aucune fonctionnalité pour simplifier l'implémentation.
+
+8. Procéder avec méthode
+
+Avant de modifier le code :
+
+Examine l'architecture réelle du projet.
+
+Identifie les problèmes de connexion.
+
+Identifie les problèmes de routage.
+
+Examine les dossiers FR, DE et ES.
+
+Examine les routes API.
+
+Examine les composants de navigation.
+
+Examine les middlewares.
+
+Examine les systèmes d'authentification et de redirection.
+
+Identifie les éventuels conflits entre les modifications récentes.
+
+Ensuite, effectue les corrections directement dans le projet.
+
+Ne recrée pas inutilement l'application.
+
+Ne supprime pas des fichiers simplement parce qu'ils compliquent la correction.
+
+Ne remplace pas l'architecture existante sans raison technique valable.
+
+9. Tests et vérifications
+
+Après les corrections, effectue les tests que l'environnement permet réellement :
+
+Vérifier que le serveur démarre.
+
+Vérifier que les routes principales sont accessibles.
+
+Vérifier que les API de connexion et d'inscription répondent correctement.
+
+Vérifier les parcours de connexion et d'inscription si l'environnement permet de les tester.
+
+Vérifier les redirections après authentification.
+
+Vérifier que /FR, /DE et /ES fonctionnent.
+
+Vérifier les pages de connexion et d'inscription dans les trois langues.
+
+Vérifier les routes du dashboard.
+
+Vérifier les liens internes.
+
+Vérifier le changement de langue.
+
+Vérifier que les slugs changent correctement.
+
+Vérifier qu'aucune navigation ne renvoie involontairement vers FR.
+
+Vérifier qu'aucune clé de traduction ne s'affiche.
+
+Vérifier les éventuelles erreurs de compilation et de console accessibles.
+
+Si un test nécessite des identifiants, une base de données, une API externe ou une variable d'environnement que tu ne possèdes pas, ne simule pas son résultat. Indique précisément ce qui n'a pas pu être vérifié.
+
+Objectif final
+
+Je veux que mon application soit stable et fonctionnelle.
+
+Le problème de communication avec le serveur lors de la connexion doit être corrigé.
+
+Le système multilingue doit être entièrement terminé, avec trois espaces distincts : /FR, /DE et /ES.
+
+Les pages, les slugs, les liens, les redirections, l'authentification et le dashboard doivent respecter la langue active.
+
+Je ne veux pas d'un simple rapport, d'une liste de suggestions ou de corrections partielles. Je veux que tu travailles directement sur le code, que tu corriges les problèmes, que tu vérifies ce qui peut l'être et que tu me présentes à la fin un compte rendu précis des modifications effectuées et des tests réellement exécutés.

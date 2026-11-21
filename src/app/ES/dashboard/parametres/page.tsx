@@ -46,7 +46,7 @@ export default function ParametresPage() {
   const [showPasswordSection, setShowPasswordSection] = useState(false);
 
   useEffect(() => {
-    fetch("/ES/api/dashboard/profile")
+    fetch("/api/dashboard/profile")
       .then(async (res) => {
         const data = await res.json();
         if (!res.ok || !data.success || !data.user) {

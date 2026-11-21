@@ -43,7 +43,7 @@ export default function EpargnePage() {
 
   const loadVaults = async () => {
     try {
-      const response = await fetch("/FR/api/dashboard/vaults");
+      const response = await fetch("/api/dashboard/vaults");
       const data: VaultData = await response.json();
       if (!response.ok) throw new Error(data.message ?? "Impossible de charger les coffres.");
       setVaults(data.vaults ?? []);
