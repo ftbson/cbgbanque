@@ -60,9 +60,17 @@ export default function RegisterPage() {
     reader.onload = (e) => {
       const base64 = (e.target?.result as string) || "";
       if (type === "front") {
-        setFormData((prev) => ({ ...prev, docFront: file, docFrontBase64: base64 }));
+        setFormData((prev) => ({
+          ...prev,
+          docFront: file,
+          docFrontBase64: base64,
+        }));
       } else {
-        setFormData((prev) => ({ ...prev, docBack: file, docBackBase64: base64 }));
+        setFormData((prev) => ({
+          ...prev,
+          docBack: file,
+          docBackBase64: base64,
+        }));
       }
     };
     reader.readAsDataURL(file);
@@ -91,7 +99,9 @@ export default function RegisterPage() {
       });
       const data: { message?: string } = await response.json();
       if (!response.ok) {
-        setErrorMessage(data.message ?? "No se pudo enviar el código de verificación.");
+        setErrorMessage(
+          data.message ?? "No se pudo enviar el código de verificación.",
+        );
         return;
       }
       setStep(2);
@@ -109,7 +119,10 @@ export default function RegisterPage() {
       const response = await fetch("/api/register/verify-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: formData.email, otpCode: formData.otpCode.join("") }),
+        body: JSON.stringify({
+          email: formData.email,
+          otpCode: formData.otpCode.join(""),
+        }),
       });
       const data: { message?: string } = await response.json();
       if (!response.ok) {
@@ -174,7 +187,9 @@ export default function RegisterPage() {
       if (response.ok) {
         setRegistrationComplete(true);
       } else {
-        setErrorMessage(data.message || "Se ha producido un error durante el registro.");
+        setErrorMessage(
+          data.message || "Se ha producido un error durante el registro.",
+        );
         setLoading(false);
       }
     } catch {
@@ -190,9 +205,10 @@ export default function RegisterPage() {
           <div className="step-card step-welcome">
             <h1 className="step-title-hero">Registro completado</h1>
             <p className="step-subtitle-hero">
-              Su cuenta está pendiente de validación por el administrador. Podrá iniciar sesión una vez aprobada.
+              Su cuenta está pendiente de validación por el administrador. Podrá
+              iniciar sesión una vez aprobada.
             </p>
-            <Link href="/ES/iniciar-sesion" className="btn-step-primary">
+            <Link href="/ES/login" className="btn-step-primary">
               Ir a iniciar sesión
             </Link>
           </div>
@@ -204,10 +220,13 @@ export default function RegisterPage() {
   return (
     <div className="onboarding-container">
       <div className="onboarding-wrapper">
-
         {step > 0 && (
           <div className="onboarding-header">
-            <button onClick={handleBack} className="btn-back-round" aria-label="Volver">
+            <button
+              onClick={handleBack}
+              className="btn-back-round"
+              aria-label="Volver"
+            >
               <i className="fa-solid fa-chevron-left"></i>
             </button>
             <div className="progress-bar-container">
@@ -231,14 +250,34 @@ export default function RegisterPage() {
           <div className="step-card step-welcome">
             <div className="welcome-logo">
               <svg viewBox="0 0 100 100" className="brand-svg">
-                <circle cx="50" cy="50" r="40" fill="none" stroke="url(#blue-grad)" strokeWidth="12" />
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="40"
+                  fill="none"
+                  stroke="url(#blue-grad)"
+                  strokeWidth="12"
+                />
                 <defs>
-                  <linearGradient id="blue-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <linearGradient
+                    id="blue-grad"
+                    x1="0%"
+                    y1="0%"
+                    x2="100%"
+                    y2="100%"
+                  >
                     <stop offset="0%" stopColor="#3b82f6" />
                     <stop offset="100%" stopColor="#8b5cf6" />
                   </linearGradient>
                 </defs>
-                <text x="50" y="57" textAnchor="middle" fill="#ffffff" fontSize="22" fontWeight="bold">
+                <text
+                  x="50"
+                  y="57"
+                  textAnchor="middle"
+                  fill="#ffffff"
+                  fontSize="22"
+                  fontWeight="bold"
+                >
                   CBG
                 </text>
               </svg>
@@ -251,7 +290,7 @@ export default function RegisterPage() {
               <button onClick={handleNext} className="btn-step-primary">
                 Registrarse
               </button>
-              <Link href="/ES/iniciar-sesion" className="btn-step-secondary">
+              <Link href="/ES/login" className="btn-step-secondary">
                 Iniciar sesión
               </Link>
               <Link href="/ES" className="btn-step-secondary">
@@ -264,7 +303,9 @@ export default function RegisterPage() {
         {step === 1 && (
           <div className="step-card">
             <h2 className="step-title">¿Cuál es su dirección de e-mail?</h2>
-            <p className="step-subtitle">Le enviaremos un código para verificarlo.</p>
+            <p className="step-subtitle">
+              Le enviaremos un código para verificarlo.
+            </p>
 
             <div className="form-group">
               <input
@@ -290,13 +331,18 @@ export default function RegisterPage() {
 
             <button
               onClick={requestOtp}
-              disabled={loading || !formData.email.includes("@") || formData.password.length < 8}
+              disabled={
+                loading ||
+                !formData.email.includes("@") ||
+                formData.password.length < 8
+              }
               className="btn-step-primary"
             >
               {loading ? "Enviando..." : "Enviar código"}
             </button>
             <p className="step-helper-text">
-              Recibirá un código de 6 dígitos. Revise también la carpeta de spam.
+              Recibirá un código de 6 dígitos. Revise también la carpeta de
+              spam.
             </p>
           </div>
         )}
@@ -305,7 +351,8 @@ export default function RegisterPage() {
           <div className="step-card">
             <h2 className="step-title">Introduzca el código</h2>
             <p className="step-subtitle">
-              Enviado a <strong>{formData.email || "su dirección de e-mail"}</strong>
+              Enviado a{" "}
+              <strong>{formData.email || "su dirección de e-mail"}</strong>
             </p>
 
             <div className="otp-inputs-grid">
@@ -323,9 +370,15 @@ export default function RegisterPage() {
             </div>
 
             <p className="step-helper-text">
-              ¿No lo ha recibido? Revise la carpeta de spam. El código es válido durante 30 minutos.
+              ¿No lo ha recibido? Revise la carpeta de spam. El código es válido
+              durante 30 minutos.
             </p>
-            <button type="button" onClick={requestOtp} disabled={loading} className="btn-step-secondary">
+            <button
+              type="button"
+              onClick={requestOtp}
+              disabled={loading}
+              className="btn-step-secondary"
+            >
               {loading ? "Enviando..." : "Reenviar código"}
             </button>
             <button onClick={() => setStep(1)} className="btn-step-secondary">
@@ -344,7 +397,9 @@ export default function RegisterPage() {
         {step === 3 && (
           <div className="step-card">
             <h2 className="step-title">¿Cómo se llama?</h2>
-            <p className="step-subtitle">Indique su nombre tal como aparece en su documento de identidad.</p>
+            <p className="step-subtitle">
+              Indique su nombre tal como aparece en su documento de identidad.
+            </p>
 
             <div className="civility-selector">
               {["Señor", "Señora", "Mx"].map((c) => (
@@ -392,7 +447,9 @@ export default function RegisterPage() {
         {step === 4 && (
           <div className="step-card">
             <h2 className="step-title">¿Cuándo nació?</h2>
-            <p className="step-subtitle">Debe tener al menos 18 años para abrir una cuenta.</p>
+            <p className="step-subtitle">
+              Debe tener al menos 18 años para abrir una cuenta.
+            </p>
 
             <div className="form-group-stack">
               <input
@@ -444,14 +501,18 @@ export default function RegisterPage() {
         {step === 5 && (
           <div className="step-card">
             <h2 className="step-title">¿Dónde vive?</h2>
-            <p className="step-subtitle">Su dirección de residencia principal.</p>
+            <p className="step-subtitle">
+              Su dirección de residencia principal.
+            </p>
 
             <div className="form-group-stack">
               <div className="select-wrapper">
                 <label className="select-label">País de residencia</label>
                 <select
                   value={formData.residenceCountry}
-                  onChange={(e) => updateForm("residenceCountry", e.target.value)}
+                  onChange={(e) =>
+                    updateForm("residenceCountry", e.target.value)
+                  }
                   className="step-select"
                 >
                   <optgroup label="Unión Europea">
@@ -519,7 +580,9 @@ export default function RegisterPage() {
         {step === 6 && (
           <div className="step-card">
             <h2 className="step-title">¿Cuál es su situación profesional?</h2>
-            <p className="step-subtitle">Indique su actividad y sus ingresos mensuales netos.</p>
+            <p className="step-subtitle">
+              Indique su actividad y sus ingresos mensuales netos.
+            </p>
 
             <div className="radio-options-list">
               {[
@@ -548,7 +611,15 @@ export default function RegisterPage() {
             </div>
 
             <div style={{ marginTop: "1.5rem" }}>
-              <label className="select-label" style={{ display: "block", marginBottom: "0.5rem", fontWeight: 600, color: "#e2e8f0" }}>
+              <label
+                className="select-label"
+                style={{
+                  display: "block",
+                  marginBottom: "0.5rem",
+                  fontWeight: 600,
+                  color: "#e2e8f0",
+                }}
+              >
                 Ingreso mensual neto estimado (salario en €)
               </label>
               <div style={{ position: "relative" }}>
@@ -561,18 +632,37 @@ export default function RegisterPage() {
                   className="step-input"
                   style={{ paddingRight: "3rem" }}
                 />
-                <span style={{ position: "absolute", right: "1rem", top: "50%", transform: "translateY(-50%)", color: "#94a3b8", fontWeight: 600 }}>
+                <span
+                  style={{
+                    position: "absolute",
+                    right: "1rem",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    color: "#94a3b8",
+                    fontWeight: 600,
+                  }}
+                >
                   € / mes
                 </span>
               </div>
-              <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginTop: "0.5rem" }}>
+              <div
+                style={{
+                  display: "flex",
+                  gap: "0.5rem",
+                  flexWrap: "wrap",
+                  marginTop: "0.5rem",
+                }}
+              >
                 {["1500", "2200", "3000", "4500", "6000"].map((val) => (
                   <button
                     key={val}
                     type="button"
                     onClick={() => updateForm("monthlyIncome", val)}
                     style={{
-                      background: formData.monthlyIncome === val ? "#2563eb" : "rgba(255,255,255,0.06)",
+                      background:
+                        formData.monthlyIncome === val
+                          ? "#2563eb"
+                          : "rgba(255,255,255,0.06)",
                       color: "#fff",
                       border: "1px solid rgba(255,255,255,0.1)",
                       borderRadius: "6px",
@@ -600,14 +690,36 @@ export default function RegisterPage() {
         {step === 7 && (
           <div className="step-card">
             <h2 className="step-title">Fotografie su documento</h2>
-            <p className="step-subtitle">Anverso y reverso, bien encuadrados, sin reflejos ni desenfoque.</p>
+            <p className="step-subtitle">
+              Anverso y reverso, bien encuadrados, sin reflejos ni desenfoque.
+            </p>
 
             <div className="document-type-selector">
               {[
-                { id: "id_card", label: "DNI / Carné de identidad", sub: "Anverso y reverso", icon: "fa-id-card" },
-                { id: "passport", label: "Pasaporte", sub: "Solo página con foto", icon: "fa-passport" },
-                { id: "driver", label: "Carnet de conducir", sub: "Anverso y reverso", icon: "fa-id-badge" },
-                { id: "residence", label: "Tarjeta de residencia", sub: "Anverso y reverso", icon: "fa-address-card" },
+                {
+                  id: "id_card",
+                  label: "DNI / Carné de identidad",
+                  sub: "Anverso y reverso",
+                  icon: "fa-id-card",
+                },
+                {
+                  id: "passport",
+                  label: "Pasaporte",
+                  sub: "Solo página con foto",
+                  icon: "fa-passport",
+                },
+                {
+                  id: "driver",
+                  label: "Carnet de conducir",
+                  sub: "Anverso y reverso",
+                  icon: "fa-id-badge",
+                },
+                {
+                  id: "residence",
+                  label: "Tarjeta de residencia",
+                  sub: "Anverso y reverso",
+                  icon: "fa-address-card",
+                },
               ].map((doc) => (
                 <div
                   key={doc.id}
@@ -630,30 +742,62 @@ export default function RegisterPage() {
               <div className="upload-box">
                 <div className="upload-box-header">
                   <span>Anverso del documento</span>
-                  <span className="badge-required" style={{ background: formData.docFrontBase64 ? "rgba(34,197,94,0.2)" : undefined, color: formData.docFrontBase64 ? "#22c55e" : undefined }}>
+                  <span
+                    className="badge-required"
+                    style={{
+                      background: formData.docFrontBase64
+                        ? "rgba(34,197,94,0.2)"
+                        : undefined,
+                      color: formData.docFrontBase64 ? "#22c55e" : undefined,
+                    }}
+                  >
                     {formData.docFrontBase64 ? "✓ Cargado" : "Requerido"}
                   </span>
                 </div>
                 <div className="upload-frame">
                   {formData.docFrontBase64 ? (
-                    <div style={{ position: "relative", width: "100%", maxHeight: "120px", overflow: "hidden", borderRadius: "8px", margin: "0.5rem 0" }}>
-                      <img src={formData.docFrontBase64} alt="Anverso vista previa" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    <div
+                      style={{
+                        position: "relative",
+                        width: "100%",
+                        maxHeight: "120px",
+                        overflow: "hidden",
+                        borderRadius: "8px",
+                        margin: "0.5rem 0",
+                      }}
+                    >
+                      <img
+                        src={formData.docFrontBase64}
+                        alt="Anverso vista previa"
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                        }}
+                      />
                     </div>
                   ) : (
                     <>
                       <i className="fa-solid fa-id-card frame-icon"></i>
-                      <span className="frame-text">Tomar foto o cargar archivo</span>
+                      <span className="frame-text">
+                        Tomar foto o cargar archivo
+                      </span>
                     </>
                   )}
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={(e) => handleFileChange("front", e.target.files?.[0] || null)}
+                    onChange={(e) =>
+                      handleFileChange("front", e.target.files?.[0] || null)
+                    }
                     className="file-input-hidden"
                     id="doc-front"
                   />
                   <label htmlFor="doc-front" className="btn-upload-trigger">
-                    <i className="fa-solid fa-upload"></i> {formData.docFront ? formData.docFront.name : "Cargar anverso"}
+                    <i className="fa-solid fa-upload"></i>{" "}
+                    {formData.docFront
+                      ? formData.docFront.name
+                      : "Cargar anverso"}
                   </label>
                 </div>
               </div>
@@ -662,30 +806,62 @@ export default function RegisterPage() {
                 <div className="upload-box">
                   <div className="upload-box-header">
                     <span>Reverso del documento</span>
-                    <span className="badge-required" style={{ background: formData.docBackBase64 ? "rgba(34,197,94,0.2)" : undefined, color: formData.docBackBase64 ? "#22c55e" : undefined }}>
+                    <span
+                      className="badge-required"
+                      style={{
+                        background: formData.docBackBase64
+                          ? "rgba(34,197,94,0.2)"
+                          : undefined,
+                        color: formData.docBackBase64 ? "#22c55e" : undefined,
+                      }}
+                    >
                       {formData.docBackBase64 ? "✓ Cargado" : "Requerido"}
                     </span>
                   </div>
                   <div className="upload-frame">
                     {formData.docBackBase64 ? (
-                      <div style={{ position: "relative", width: "100%", maxHeight: "120px", overflow: "hidden", borderRadius: "8px", margin: "0.5rem 0" }}>
-                        <img src={formData.docBackBase64} alt="Reverso vista previa" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                      <div
+                        style={{
+                          position: "relative",
+                          width: "100%",
+                          maxHeight: "120px",
+                          overflow: "hidden",
+                          borderRadius: "8px",
+                          margin: "0.5rem 0",
+                        }}
+                      >
+                        <img
+                          src={formData.docBackBase64}
+                          alt="Reverso vista previa"
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                          }}
+                        />
                       </div>
                     ) : (
                       <>
                         <i className="fa-solid fa-id-card frame-icon"></i>
-                        <span className="frame-text">Tomar foto o cargar archivo</span>
+                        <span className="frame-text">
+                          Tomar foto o cargar archivo
+                        </span>
                       </>
                     )}
                     <input
                       type="file"
                       accept="image/*"
-                      onChange={(e) => handleFileChange("back", e.target.files?.[0] || null)}
+                      onChange={(e) =>
+                        handleFileChange("back", e.target.files?.[0] || null)
+                      }
                       className="file-input-hidden"
                       id="doc-back"
                     />
                     <label htmlFor="doc-back" className="btn-upload-trigger">
-                      <i className="fa-solid fa-upload"></i> {formData.docBack ? formData.docBack.name : "Cargar reverso"}
+                      <i className="fa-solid fa-upload"></i>{" "}
+                      {formData.docBack
+                        ? formData.docBack.name
+                        : "Cargar reverso"}
                     </label>
                   </div>
                 </div>
@@ -701,7 +877,6 @@ export default function RegisterPage() {
             </button>
           </div>
         )}
-
       </div>
     </div>
   );

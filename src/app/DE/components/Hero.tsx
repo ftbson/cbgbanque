@@ -60,7 +60,7 @@ export default function Hero() {
               Mein Konto eröffnen <i className="fa-solid fa-arrow-right"></i>
             </Link>
             <div className="hero-secondary-group">
-              <Link href="/DE/anmelden" className="btn-hero-secondary">
+              <Link href="/DE/login" className="btn-hero-secondary">
                 Ich habe bereits ein Konto
               </Link>
               <Link href="/DE/download" className="btn-hero-outline">

@@ -60,9 +60,17 @@ export default function RegisterPage() {
     reader.onload = (e) => {
       const base64 = (e.target?.result as string) || "";
       if (type === "front") {
-        setFormData((prev) => ({ ...prev, docFront: file, docFrontBase64: base64 }));
+        setFormData((prev) => ({
+          ...prev,
+          docFront: file,
+          docFrontBase64: base64,
+        }));
       } else {
-        setFormData((prev) => ({ ...prev, docBack: file, docBackBase64: base64 }));
+        setFormData((prev) => ({
+          ...prev,
+          docBack: file,
+          docBackBase64: base64,
+        }));
       }
     };
     reader.readAsDataURL(file);
@@ -91,7 +99,9 @@ export default function RegisterPage() {
       });
       const data: { message?: string } = await response.json();
       if (!response.ok) {
-        setErrorMessage(data.message ?? "Verifizierungscode konnte nicht gesendet werden.");
+        setErrorMessage(
+          data.message ?? "Verifizierungscode konnte nicht gesendet werden.",
+        );
         return;
       }
       setStep(2);
@@ -109,7 +119,10 @@ export default function RegisterPage() {
       const response = await fetch("/api/register/verify-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: formData.email, otpCode: formData.otpCode.join("") }),
+        body: JSON.stringify({
+          email: formData.email,
+          otpCode: formData.otpCode.join(""),
+        }),
       });
       const data: { message?: string } = await response.json();
       if (!response.ok) {
@@ -174,7 +187,9 @@ export default function RegisterPage() {
       if (response.ok) {
         setRegistrationComplete(true);
       } else {
-        setErrorMessage(data.message || "Ein Fehler ist bei der Registrierung aufgetreten.");
+        setErrorMessage(
+          data.message || "Ein Fehler ist bei der Registrierung aufgetreten.",
+        );
         setLoading(false);
       }
     } catch {
@@ -190,7 +205,8 @@ export default function RegisterPage() {
           <div className="step-card step-welcome">
             <h1 className="step-title-hero">Registrierung erfasst</h1>
             <p className="step-subtitle-hero">
-              Ihr Konto wartet auf die Validierung durch den Administrator. Sie können sich anmelden, sobald es genehmigt wurde.
+              Ihr Konto wartet auf die Validierung durch den Administrator. Sie
+              können sich login, sobald es genehmigt wurde.
             </p>
             <Link href="/DE/login" className="btn-step-primary">
               Zur Anmeldung
@@ -204,10 +220,13 @@ export default function RegisterPage() {
   return (
     <div className="onboarding-container">
       <div className="onboarding-wrapper">
-
         {step > 0 && (
           <div className="onboarding-header">
-            <button onClick={handleBack} className="btn-back-round" aria-label="Zurück">
+            <button
+              onClick={handleBack}
+              className="btn-back-round"
+              aria-label="Zurück"
+            >
               <i className="fa-solid fa-chevron-left"></i>
             </button>
             <div className="progress-bar-container">
@@ -231,28 +250,49 @@ export default function RegisterPage() {
           <div className="step-card step-welcome">
             <div className="welcome-logo">
               <svg viewBox="0 0 100 100" className="brand-svg">
-                <circle cx="50" cy="50" r="40" fill="none" stroke="url(#blue-grad)" strokeWidth="12" />
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="40"
+                  fill="none"
+                  stroke="url(#blue-grad)"
+                  strokeWidth="12"
+                />
                 <defs>
-                  <linearGradient id="blue-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <linearGradient
+                    id="blue-grad"
+                    x1="0%"
+                    y1="0%"
+                    x2="100%"
+                    y2="100%"
+                  >
                     <stop offset="0%" stopColor="#3b82f6" />
                     <stop offset="100%" stopColor="#8b5cf6" />
                   </linearGradient>
                 </defs>
-                <text x="50" y="57" textAnchor="middle" fill="#ffffff" fontSize="22" fontWeight="bold">
+                <text
+                  x="50"
+                  y="57"
+                  textAnchor="middle"
+                  fill="#ffffff"
+                  fontSize="22"
+                  fontWeight="bold"
+                >
                   CBG
                 </text>
               </svg>
             </div>
             <h1 className="step-title-hero">Willkommen bei CBG Bank</h1>
             <p className="step-subtitle-hero">
-              Eröffnen Sie Ihr Konto in wenigen Minuten, von Ihrem Telefon oder Computer aus.
+              Eröffnen Sie Ihr Konto in wenigen Minuten, von Ihrem Telefon oder
+              Computer aus.
             </p>
             <div className="welcome-actions">
               <button onClick={handleNext} className="btn-step-primary">
                 Registrieren
               </button>
               <Link href="/DE/login" className="btn-step-secondary">
-                Anmelden
+                login
               </Link>
               <Link href="/DE" className="btn-step-secondary">
                 <i className="fa-solid fa-arrow-left"></i> Zur Startseite
@@ -264,7 +304,9 @@ export default function RegisterPage() {
         {step === 1 && (
           <div className="step-card">
             <h2 className="step-title">Wie lautet Ihre E-Mail-Adresse?</h2>
-            <p className="step-subtitle">Wir senden Ihnen einen Code zur Verifizierung.</p>
+            <p className="step-subtitle">
+              Wir senden Ihnen einen Code zur Verifizierung.
+            </p>
 
             <div className="form-group">
               <input
@@ -290,13 +332,18 @@ export default function RegisterPage() {
 
             <button
               onClick={requestOtp}
-              disabled={loading || !formData.email.includes("@") || formData.password.length < 8}
+              disabled={
+                loading ||
+                !formData.email.includes("@") ||
+                formData.password.length < 8
+              }
               className="btn-step-primary"
             >
               {loading ? "Wird gesendet..." : "Code senden"}
             </button>
             <p className="step-helper-text">
-              Sie erhalten einen 6-stelligen Code. Bitte auch im Spam-Ordner nachsehen.
+              Sie erhalten einen 6-stelligen Code. Bitte auch im Spam-Ordner
+              nachsehen.
             </p>
           </div>
         )}
@@ -305,7 +352,8 @@ export default function RegisterPage() {
           <div className="step-card">
             <h2 className="step-title">Code eingeben</h2>
             <p className="step-subtitle">
-              Gesendet an <strong>{formData.email || "Ihre E-Mail-Adresse"}</strong>
+              Gesendet an{" "}
+              <strong>{formData.email || "Ihre E-Mail-Adresse"}</strong>
             </p>
 
             <div className="otp-inputs-grid">
@@ -323,9 +371,15 @@ export default function RegisterPage() {
             </div>
 
             <p className="step-helper-text">
-              Nicht erhalten? Bitte im Spam-Ordner nachsehen. Der Code ist 30 Minuten gültig.
+              Nicht erhalten? Bitte im Spam-Ordner nachsehen. Der Code ist 30
+              Minuten gültig.
             </p>
-            <button type="button" onClick={requestOtp} disabled={loading} className="btn-step-secondary">
+            <button
+              type="button"
+              onClick={requestOtp}
+              disabled={loading}
+              className="btn-step-secondary"
+            >
               {loading ? "Wird gesendet..." : "Code erneut senden"}
             </button>
             <button onClick={() => setStep(1)} className="btn-step-secondary">
@@ -344,7 +398,9 @@ export default function RegisterPage() {
         {step === 3 && (
           <div className="step-card">
             <h2 className="step-title">Wie heißen Sie?</h2>
-            <p className="step-subtitle">Geben Sie Ihren Namen so an, wie er auf Ihrem Ausweis steht.</p>
+            <p className="step-subtitle">
+              Geben Sie Ihren Namen so an, wie er auf Ihrem Ausweis steht.
+            </p>
 
             <div className="civility-selector">
               {["Herr", "Frau", "Mx"].map((c) => (
@@ -392,7 +448,9 @@ export default function RegisterPage() {
         {step === 4 && (
           <div className="step-card">
             <h2 className="step-title">Wann sind Sie geboren?</h2>
-            <p className="step-subtitle">Sie müssen mindestens 18 Jahre alt sein, um ein Konto zu eröffnen.</p>
+            <p className="step-subtitle">
+              Sie müssen mindestens 18 Jahre alt sein, um ein Konto zu eröffnen.
+            </p>
 
             <div className="form-group-stack">
               <input
@@ -451,7 +509,9 @@ export default function RegisterPage() {
                 <label className="select-label">Wohnsitzland</label>
                 <select
                   value={formData.residenceCountry}
-                  onChange={(e) => updateForm("residenceCountry", e.target.value)}
+                  onChange={(e) =>
+                    updateForm("residenceCountry", e.target.value)
+                  }
                   className="step-select"
                 >
                   <optgroup label="Europäische Union">
@@ -519,7 +579,9 @@ export default function RegisterPage() {
         {step === 6 && (
           <div className="step-card">
             <h2 className="step-title">Wie ist Ihre berufliche Situation?</h2>
-            <p className="step-subtitle">Geben Sie Ihre Tätigkeit und Ihr monatliches Nettoeinkommen an.</p>
+            <p className="step-subtitle">
+              Geben Sie Ihre Tätigkeit und Ihr monatliches Nettoeinkommen an.
+            </p>
 
             <div className="radio-options-list">
               {[
@@ -548,7 +610,15 @@ export default function RegisterPage() {
             </div>
 
             <div style={{ marginTop: "1.5rem" }}>
-              <label className="select-label" style={{ display: "block", marginBottom: "0.5rem", fontWeight: 600, color: "#e2e8f0" }}>
+              <label
+                className="select-label"
+                style={{
+                  display: "block",
+                  marginBottom: "0.5rem",
+                  fontWeight: 600,
+                  color: "#e2e8f0",
+                }}
+              >
                 Geschätztes monatliches Nettoeinkommen (Gehalt in €)
               </label>
               <div style={{ position: "relative" }}>
@@ -561,18 +631,37 @@ export default function RegisterPage() {
                   className="step-input"
                   style={{ paddingRight: "3rem" }}
                 />
-                <span style={{ position: "absolute", right: "1rem", top: "50%", transform: "translateY(-50%)", color: "#94a3b8", fontWeight: 600 }}>
+                <span
+                  style={{
+                    position: "absolute",
+                    right: "1rem",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    color: "#94a3b8",
+                    fontWeight: 600,
+                  }}
+                >
                   € / Monat
                 </span>
               </div>
-              <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginTop: "0.5rem" }}>
+              <div
+                style={{
+                  display: "flex",
+                  gap: "0.5rem",
+                  flexWrap: "wrap",
+                  marginTop: "0.5rem",
+                }}
+              >
                 {["1500", "2200", "3000", "4500", "6000"].map((val) => (
                   <button
                     key={val}
                     type="button"
                     onClick={() => updateForm("monthlyIncome", val)}
                     style={{
-                      background: formData.monthlyIncome === val ? "#2563eb" : "rgba(255,255,255,0.06)",
+                      background:
+                        formData.monthlyIncome === val
+                          ? "#2563eb"
+                          : "rgba(255,255,255,0.06)",
                       color: "#fff",
                       border: "1px solid rgba(255,255,255,0.1)",
                       borderRadius: "6px",
@@ -600,14 +689,37 @@ export default function RegisterPage() {
         {step === 7 && (
           <div className="step-card">
             <h2 className="step-title">Fotografieren Sie Ihren Ausweis</h2>
-            <p className="step-subtitle">Vorder- und Rückseite, gut ausgeleuchtet, ohne Reflexionen oder Unschärfe.</p>
+            <p className="step-subtitle">
+              Vorder- und Rückseite, gut ausgeleuchtet, ohne Reflexionen oder
+              Unschärfe.
+            </p>
 
             <div className="document-type-selector">
               {[
-                { id: "id_card", label: "Personalausweis", sub: "Vorder- und Rückseite", icon: "fa-id-card" },
-                { id: "passport", label: "Reisepass", sub: "Nur Foto-Seite", icon: "fa-passport" },
-                { id: "driver", label: "Führerschein", sub: "Vorder- und Rückseite", icon: "fa-id-badge" },
-                { id: "residence", label: "Aufenthaltstitel", sub: "Vorder- und Rückseite", icon: "fa-address-card" },
+                {
+                  id: "id_card",
+                  label: "Personalausweis",
+                  sub: "Vorder- und Rückseite",
+                  icon: "fa-id-card",
+                },
+                {
+                  id: "passport",
+                  label: "Reisepass",
+                  sub: "Nur Foto-Seite",
+                  icon: "fa-passport",
+                },
+                {
+                  id: "driver",
+                  label: "Führerschein",
+                  sub: "Vorder- und Rückseite",
+                  icon: "fa-id-badge",
+                },
+                {
+                  id: "residence",
+                  label: "Aufenthaltstitel",
+                  sub: "Vorder- und Rückseite",
+                  icon: "fa-address-card",
+                },
               ].map((doc) => (
                 <div
                   key={doc.id}
@@ -630,30 +742,62 @@ export default function RegisterPage() {
               <div className="upload-box">
                 <div className="upload-box-header">
                   <span>Vorderseite des Ausweises</span>
-                  <span className="badge-required" style={{ background: formData.docFrontBase64 ? "rgba(34,197,94,0.2)" : undefined, color: formData.docFrontBase64 ? "#22c55e" : undefined }}>
+                  <span
+                    className="badge-required"
+                    style={{
+                      background: formData.docFrontBase64
+                        ? "rgba(34,197,94,0.2)"
+                        : undefined,
+                      color: formData.docFrontBase64 ? "#22c55e" : undefined,
+                    }}
+                  >
                     {formData.docFrontBase64 ? "✓ Geladen" : "Erforderlich"}
                   </span>
                 </div>
                 <div className="upload-frame">
                   {formData.docFrontBase64 ? (
-                    <div style={{ position: "relative", width: "100%", maxHeight: "120px", overflow: "hidden", borderRadius: "8px", margin: "0.5rem 0" }}>
-                      <img src={formData.docFrontBase64} alt="Vorderseite Vorschau" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    <div
+                      style={{
+                        position: "relative",
+                        width: "100%",
+                        maxHeight: "120px",
+                        overflow: "hidden",
+                        borderRadius: "8px",
+                        margin: "0.5rem 0",
+                      }}
+                    >
+                      <img
+                        src={formData.docFrontBase64}
+                        alt="Vorderseite Vorschau"
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                        }}
+                      />
                     </div>
                   ) : (
                     <>
                       <i className="fa-solid fa-id-card frame-icon"></i>
-                      <span className="frame-text">Aufnehmen oder hochladen</span>
+                      <span className="frame-text">
+                        Aufnehmen oder hochladen
+                      </span>
                     </>
                   )}
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={(e) => handleFileChange("front", e.target.files?.[0] || null)}
+                    onChange={(e) =>
+                      handleFileChange("front", e.target.files?.[0] || null)
+                    }
                     className="file-input-hidden"
                     id="doc-front"
                   />
                   <label htmlFor="doc-front" className="btn-upload-trigger">
-                    <i className="fa-solid fa-upload"></i> {formData.docFront ? formData.docFront.name : "Vorderseite hochladen"}
+                    <i className="fa-solid fa-upload"></i>{" "}
+                    {formData.docFront
+                      ? formData.docFront.name
+                      : "Vorderseite hochladen"}
                   </label>
                 </div>
               </div>
@@ -662,30 +806,62 @@ export default function RegisterPage() {
                 <div className="upload-box">
                   <div className="upload-box-header">
                     <span>Rückseite des Ausweises</span>
-                    <span className="badge-required" style={{ background: formData.docBackBase64 ? "rgba(34,197,94,0.2)" : undefined, color: formData.docBackBase64 ? "#22c55e" : undefined }}>
+                    <span
+                      className="badge-required"
+                      style={{
+                        background: formData.docBackBase64
+                          ? "rgba(34,197,94,0.2)"
+                          : undefined,
+                        color: formData.docBackBase64 ? "#22c55e" : undefined,
+                      }}
+                    >
                       {formData.docBackBase64 ? "✓ Geladen" : "Erforderlich"}
                     </span>
                   </div>
                   <div className="upload-frame">
                     {formData.docBackBase64 ? (
-                      <div style={{ position: "relative", width: "100%", maxHeight: "120px", overflow: "hidden", borderRadius: "8px", margin: "0.5rem 0" }}>
-                        <img src={formData.docBackBase64} alt="Rückseite Vorschau" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                      <div
+                        style={{
+                          position: "relative",
+                          width: "100%",
+                          maxHeight: "120px",
+                          overflow: "hidden",
+                          borderRadius: "8px",
+                          margin: "0.5rem 0",
+                        }}
+                      >
+                        <img
+                          src={formData.docBackBase64}
+                          alt="Rückseite Vorschau"
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                          }}
+                        />
                       </div>
                     ) : (
                       <>
                         <i className="fa-solid fa-id-card frame-icon"></i>
-                        <span className="frame-text">Aufnehmen oder hochladen</span>
+                        <span className="frame-text">
+                          Aufnehmen oder hochladen
+                        </span>
                       </>
                     )}
                     <input
                       type="file"
                       accept="image/*"
-                      onChange={(e) => handleFileChange("back", e.target.files?.[0] || null)}
+                      onChange={(e) =>
+                        handleFileChange("back", e.target.files?.[0] || null)
+                      }
                       className="file-input-hidden"
                       id="doc-back"
                     />
                     <label htmlFor="doc-back" className="btn-upload-trigger">
-                      <i className="fa-solid fa-upload"></i> {formData.docBack ? formData.docBack.name : "Rückseite hochladen"}
+                      <i className="fa-solid fa-upload"></i>{" "}
+                      {formData.docBack
+                        ? formData.docBack.name
+                        : "Rückseite hochladen"}
                     </label>
                   </div>
                 </div>
@@ -701,7 +877,6 @@ export default function RegisterPage() {
             </button>
           </div>
         )}
-
       </div>
     </div>
   );

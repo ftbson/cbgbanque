@@ -25,7 +25,7 @@ export default function DashboardShell({
         const data = await response.json();
         setIdentity(data);
       })
-      .catch((error: unknown) => console.error("Erreur lors du chargement du compte :", error));
+      .catch((error: unknown) => console.error("Error al cargar la cuenta:", error));
   }, []);
 
   const handleLogout = async () => {
@@ -63,7 +63,7 @@ export default function DashboardShell({
           <Link
             href="/ES/dashboard/analyse"
             className="topbar-icon-round"
-            title="Analyses & Statistiques"
+            title="Análisis y estadísticas"
           >
             <i className="fa-solid fa-chart-simple"></i>
           </Link>
@@ -71,7 +71,7 @@ export default function DashboardShell({
           <Link
             href="/ES/dashboard/carte"
             className="topbar-icon-round card-icon-wrap"
-            title="Mes Cartes"
+            title="Mes Tarjetas"
           >
             <i className="fa-regular fa-credit-card"></i>
           </Link>
@@ -105,7 +105,7 @@ export default function DashboardShell({
           className={`nav-item-bottom ${pathname === "/ES/dashboard" ? "active" : ""}`}
         >
           <i className="fa-solid fa-house"></i>
-          <span>Accueil</span>
+          <span>Inicio</span>
         </Link>
         <Link
           href="/ES/dashboard/pret"
@@ -119,14 +119,14 @@ export default function DashboardShell({
           className={`nav-item-bottom ${pathname === "/ES/dashboard/envoyer" ? "active" : ""}`}
         >
           <i className="fa-solid fa-arrow-right-arrow-left"></i>
-          <span>Virements</span>
+          <span>Transferencias</span>
         </Link>
         <Link
           href="/ES/dashboard/carte"
           className={`nav-item-bottom ${pathname === "/ES/dashboard/carte" ? "active" : ""}`}
         >
           <i className="fa-regular fa-credit-card"></i>
-          <span>Cartes</span>
+          <span>Tarjetas</span>
         </Link>
         <Link
           href="/ES/dashboard/epargne"

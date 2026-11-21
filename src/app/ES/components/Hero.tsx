@@ -50,7 +50,9 @@ export default function Hero() {
           </h1>
 
           <p className="hero-subtitle">
-            Cuenta sin comisiones, rentabilidad hasta 4,2 %, tarjetas virtuales instantáneas y transferencias sin demora. Toma el control de tu dinero con CBGBanco.
+            Cuenta sin comisiones, rentabilidad hasta 4,2 %, tarjetas virtuales
+            instantáneas y transferencias sin demora. Toma el control de tu
+            dinero con CBGBanco.
           </p>
 
           <div className="hero-actions">
@@ -58,7 +60,7 @@ export default function Hero() {
               Abrir mi cuenta <i className="fa-solid fa-arrow-right"></i>
             </Link>
             <div className="hero-secondary-group">
-              <Link href="/ES/iniciar-sesion" className="btn-hero-secondary">
+              <Link href="/ES/login" className="btn-hero-secondary">
                 Ya tengo una cuenta
               </Link>
               <Link href="/ES/descargar" className="btn-hero-outline">

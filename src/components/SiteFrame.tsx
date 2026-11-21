@@ -40,17 +40,9 @@ const FooterES = dynamic(() => import("@/app/ES/components/Footer"), {
   ssr: false,
 });
 
-function getNavbar(locale: "fr" | "de" | "es") {
-  if (locale === "de") return NavbarDE;
-  if (locale === "es") return NavbarES;
-  return NavbarFR;
-}
 
-function getFooter(locale: "fr" | "de" | "es") {
-  if (locale === "de") return FooterDE;
-  if (locale === "es") return FooterES;
-  return FooterFR;
-}
+
+
 
 export default function SiteFrame({ children }: SiteFrameProps) {
   const pathname = usePathname();
@@ -80,8 +72,8 @@ export default function SiteFrame({ children }: SiteFrameProps) {
     document.documentElement.lang = getLocaleForDocument(locale);
   }, [locale]);
 
-  const Navbar = getNavbar(locale);
-  const Footer = getFooter(locale);
+  const Navbar = locale === "de" ? NavbarDE : locale === "es" ? NavbarES : NavbarFR;
+  const Footer = locale === "de" ? FooterDE : locale === "es" ? FooterES : FooterFR;
 
   return (
     <div className="site-frame">
