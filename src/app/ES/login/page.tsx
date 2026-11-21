@@ -48,7 +48,7 @@ export default function LoginPage() {
           <Link href="/ES" className="btn-auth-switch">
             <i className="fa-solid fa-arrow-left" style={{ marginRight: "0.5rem" }}></i> Inicio
           </Link>
-          <Link href="/ES/abrir-cuenta" className="btn-auth-switch">
+          <Link href="/ES/register" className="btn-auth-switch">
             Registrarse
           </Link>
         </div>
@@ -123,7 +123,7 @@ export default function LoginPage() {
 
           <div className="auth-footer-link">
             <span>¿No tienes cuenta?</span>{" "}
-            <Link href="/ES/abrir-cuenta" className="auth-link-bold">
+            <Link href="/ES/register" className="auth-link-bold">
               Registrarse
             </Link>
           </div>

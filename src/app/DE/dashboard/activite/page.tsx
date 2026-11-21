@@ -30,7 +30,7 @@ export default function ActivitePage() {
   const [trackingTransferId, setTrackingTransferId] = useState<string | null>(null);
 
   const loadTransactions = async (offset = 0, append = false) => {
-    const response = await fetch(`/api/dashboard/transactions?offset=${offset}`);
+    const response = await fetch(`/DE/api/dashboard/transactions?offset=${offset}`);
     const data: ActivityResponse = await response.json();
     if (!response.ok) throw new Error(data.message ?? "Verlauf konnte nicht geladen werden.");
     setTransactions((current) => append ? [...current, ...(data.transactions ?? [])] : data.transactions ?? []);
@@ -39,7 +39,7 @@ export default function ActivitePage() {
 
   useEffect(() => {
     let active = true;
-    fetch("/api/dashboard/transactions?offset=0")
+    fetch("/DE/api/dashboard/transactions?offset=0")
       .then(async (response) => {
         const data: ActivityResponse = await response.json();
         if (!response.ok) throw new Error(data.message ?? "Verlauf konnte nicht geladen werden.");
@@ -68,7 +68,7 @@ export default function ActivitePage() {
   const cancelWithdrawal = async (id: string) => {
     setError("");
     try {
-      const response = await fetch(`/api/dashboard/transactions/${id}`, { method: "DELETE" });
+      const response = await fetch(`/DE/api/dashboard/transactions/${id}`, { method: "DELETE" });
       const data: { message?: string } = await response.json();
       if (!response.ok) throw new Error(data.message ?? "Anfrage konnte nicht storniert werden.");
       setTransactions((current) => current.map((item) =>

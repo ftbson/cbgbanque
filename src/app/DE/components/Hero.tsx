@@ -50,11 +50,13 @@ export default function Hero() {
           </h1>
 
           <p className="hero-subtitle">
-            Konto ohne Gebühren, Verzinsung bis zu 4,2 %, sofortige virtuelle Karten und Transfers ohne Verzögerung. Übernehmen Sie die Kontrolle über Ihr Geld mit CBGBank.
+            Konto ohne Gebühren, Verzinsung bis zu 4,2 %, sofortige virtuelle
+            Karten und Transfers ohne Verzögerung. Übernehmen Sie die Kontrolle
+            über Ihr Geld mit CBGBank.
           </p>
 
           <div className="hero-actions">
-            <Link href="/DE/konto-eroeffnen" className="btn-hero-primary">
+            <Link href="/DE/register" className="btn-hero-primary">
               Mein Konto eröffnen <i className="fa-solid fa-arrow-right"></i>
             </Link>
             <div className="hero-secondary-group">

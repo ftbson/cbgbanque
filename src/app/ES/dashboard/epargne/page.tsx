@@ -43,7 +43,7 @@ export default function EpargnePage() {
 
   const loadVaults = async () => {
     try {
-      const response = await fetch("/api/dashboard/vaults");
+      const response = await fetch("/ES/api/dashboard/vaults");
       const data: VaultData = await response.json();
       if (!response.ok) throw new Error(data.message ?? "No se pudieron cargar las cajas.");
       setVaults(data.vaults ?? []);

@@ -40,7 +40,7 @@ export default function PretPage() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const loadLoans = async () => {
-    const response = await fetch("/api/dashboard/loans");
+    const response = await fetch("/DE/api/dashboard/loans");
     const data: LoanResponse = await response.json();
     if (!response.ok) throw new Error(data.message ?? "Anfragen konnten nicht geladen werden.");
     setLoans(data.loans ?? []);
@@ -49,7 +49,7 @@ export default function PretPage() {
 
   useEffect(() => {
     let active = true;
-    fetch("/api/dashboard/loans")
+    fetch("/DE/api/dashboard/loans")
       .then(async (response) => {
         const data: LoanResponse = await response.json();
         if (!response.ok) throw new Error(data.message ?? "Anfragen konnten nicht geladen werden.");

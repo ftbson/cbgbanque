@@ -34,7 +34,7 @@ export default function CartePage() {
 
   const loadData = async () => {
     try {
-      const res = await fetch("/api/dashboard/cards");
+      const res = await fetch("/FR/api/dashboard/cards");
       const data = await res.json();
       if (!res.ok) throw new Error(data.message ?? "Erreur de chargement");
       setCards(data.cards ?? []);
@@ -59,7 +59,7 @@ export default function CartePage() {
     setError("");
     setMessage("");
     try {
-      const res = await fetch("/api/dashboard/cards", {
+      const res = await fetch("/FR/api/dashboard/cards", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: "create" }),
@@ -81,7 +81,7 @@ export default function CartePage() {
     setError("");
     setMessage("");
     try {
-      const res = await fetch("/api/dashboard/cards", {
+      const res = await fetch("/FR/api/dashboard/cards", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ cardId: activeCard.id, action: "toggle_freeze" }),
@@ -108,7 +108,7 @@ export default function CartePage() {
     setError("");
     setMessage("");
     try {
-      const res = await fetch("/api/dashboard/cards", {
+      const res = await fetch("/FR/api/dashboard/cards", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ cardId: activeCard.id, action: "change_pin", newPin }),
@@ -133,7 +133,7 @@ export default function CartePage() {
     setError("");
     setMessage("");
     try {
-      const res = await fetch("/api/dashboard/cards", {
+      const res = await fetch("/FR/api/dashboard/cards", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ cardId: activeCard.id }),

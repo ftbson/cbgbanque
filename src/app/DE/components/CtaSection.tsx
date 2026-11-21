@@ -21,7 +21,7 @@ export default function CtaSection() {
           if (sectionRef.current) observer.unobserve(sectionRef.current);
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.2 },
     );
 
     if (sectionRef.current) {
@@ -64,7 +64,6 @@ export default function CtaSection() {
   return (
     <section ref={sectionRef} className="cta-section">
       <div className={`cta-container ${isVisible ? "is-visible" : ""}`}>
-
         <div className="stats-card reveal-item reveal-card-1">
           <div className="stats-tag">CBGBANK IN ZAHLEN</div>
 
@@ -99,15 +98,18 @@ export default function CtaSection() {
           <div className="cta-content">
             <h2 className="cta-title">
               Bereit, Ihre{" "}
-              <span className="gradient-text">Bankerfahrung zu transformieren?</span>
+              <span className="gradient-text">
+                Bankerfahrung zu transformieren?
+              </span>
             </h2>
 
             <p className="cta-description">
-              Eröffnen Sie Ihr Konto in weniger als 5 Minuten. Keine versteckten Gebühren, keine Verpflichtung.
+              Eröffnen Sie Ihr Konto in weniger als 5 Minuten. Keine versteckten
+              Gebühren, keine Verpflichtung.
             </p>
 
             <div className="cta-actions">
-              <Link href="/DE/konto-eroeffnen" className="btn-cta-white">
+              <Link href="/DE/register" className="btn-cta-white">
                 Konto eröffnen <i className="fa-solid fa-arrow-right"></i>
               </Link>
               <Link href="/DE/download" className="btn-cta-glow">
@@ -116,7 +118,6 @@ export default function CtaSection() {
             </div>
           </div>
         </div>
-
       </div>
     </section>
   );

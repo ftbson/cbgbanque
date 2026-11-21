@@ -1,9 +1,32 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
 
+function getLocalizedPath(pathname: string, targetLocale: string): string {
+  // Remove current locale prefix if present
+  const localePrefixes = ["/FR", "/DE", "/ES"];
+  let pathWithoutLocale = pathname;
+  for (const prefix of localePrefixes) {
+    if (pathname.startsWith(prefix)) {
+      pathWithoutLocale = pathname.slice(prefix.length);
+      break;
+    }
+  }
+  // If path is empty or just "/", use "/"
+  if (!pathWithoutLocale || pathWithoutLocale === "/") {
+    return `/${targetLocale}`;
+  }
+  // Ensure path starts with /
+  if (!pathWithoutLocale.startsWith("/")) {
+    pathWithoutLocale = "/" + pathWithoutLocale;
+  }
+  return `/${targetLocale}${pathWithoutLocale}`;
+}
+
 export default function Navbar() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [showLangMenu, setShowLangMenu] = useState(false);
 
@@ -30,7 +53,7 @@ export default function Navbar() {
             <i className="fa-solid fa-download"></i> Descargar la app
           </Link>
           {/* Bouton visible uniquement dans le menu mobile ouvert */}
-          <Link href="/ES/abrir-cuenta" className="btn-primary mobile-only-cta" onClick={() => setIsOpen(false)}>
+          <Link href="/ES/register" className="btn-primary mobile-only-cta" onClick={() => setIsOpen(false)}>
             Abrir una cuenta
           </Link>
         </div>
@@ -55,7 +78,7 @@ export default function Navbar() {
               <div className="lang-dropdown" role="menu">
                 <button
                   className="lang-option"
-                  onClick={() => (window.location.href = "/FR")}
+                  onClick={() => (window.location.href = getLocalizedPath(pathname, "FR"))}
                   role="menuitem"
                   aria-selected={false}
                 >
@@ -64,7 +87,7 @@ export default function Navbar() {
                 </button>
                 <button
                   className="lang-option"
-                  onClick={() => (window.location.href = "/DE")}
+                  onClick={() => (window.location.href = getLocalizedPath(pathname, "DE"))}
                   role="menuitem"
                   aria-selected={false}
                 >
@@ -73,7 +96,7 @@ export default function Navbar() {
                 </button>
                 <button
                   className="lang-option active"
-                  onClick={() => (window.location.href = "/ES")}
+                  onClick={() => (window.location.href = getLocalizedPath(pathname, "ES"))}
                   role="menuitem"
                   aria-selected={true}
                 >
@@ -86,7 +109,7 @@ export default function Navbar() {
           </div>
 
           {/* Desktop primary CTA (Unique sur PC) */}
-          <Link href="/ES/abrir-cuenta" className="btn-primary desktop-cta">
+          <Link href="/ES/register" className="btn-primary desktop-cta">
             Abrir una cuenta
           </Link>
 

@@ -43,7 +43,7 @@ export default function EpargnePage() {
 
   const loadVaults = async () => {
     try {
-      const response = await fetch("/api/dashboard/vaults");
+      const response = await fetch("/DE/api/dashboard/vaults");
       const data: VaultData = await response.json();
       if (!response.ok) throw new Error(data.message ?? "Tresore konnten nicht geladen werden.");
       setVaults(data.vaults ?? []);
@@ -66,7 +66,7 @@ export default function EpargnePage() {
     setError("");
     setMessage("");
     try {
-      const response = await fetch("/api/dashboard/vaults", {
+      const response = await fetch("/DE/api/dashboard/vaults", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, target }),

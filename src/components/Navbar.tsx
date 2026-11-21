@@ -79,7 +79,7 @@ const routes: Record<Locale, Record<string, string>> = {
     help: "/DE/hilfe",
     download: "/DE/download",
     login: "/DE/anmelden",
-    register: "/DE/konto-eroeffnen",
+    register: "/DE/register",
   },
   es: {
     home: "/ES",
@@ -114,14 +114,14 @@ export default function Navbar({ locale }: { locale: Locale }) {
       "/FR/aide": "/DE/hilfe",
       "/FR/download": "/DE/download",
       "/FR/login": "/DE/anmelden",
-      "/FR/register": "/DE/konto-eroeffnen",
+      "/FR/register": "/DE/register",
       "/DE": "/FR",
       "/DE/funktionen": "/FR/fonctionnalites",
       "/DE/versprechen": "/FR/engagements",
       "/DE/hilfe": "/FR/aide",
       "/DE/download": "/FR/download",
       "/DE/anmelden": "/FR/login",
-      "/DE/konto-eroeffnen": "/FR/register",
+      "/DE/register": "/FR/register",
       "/ES": "/FR",
       "/ES/funciones": "/FR/fonctionnalites",
       "/ES/compromisos": "/FR/engagements",
@@ -195,9 +195,13 @@ export default function Navbar({ locale }: { locale: Locale }) {
               aria-haspopup="true"
             >
               <i className="fa-solid fa-globe"></i>
-              <span className="lang-flag" aria-hidden="true">{currentFlag}</span>
+              <span className="lang-flag" aria-hidden="true">
+                {currentFlag}
+              </span>
               <span className="lang-code">{locale.toUpperCase()}</span>
-              <i className={`fa-solid fa-chevron-down ${showLangMenu ? "rotate" : ""}`}></i>
+              <i
+                className={`fa-solid fa-chevron-down ${showLangMenu ? "rotate" : ""}`}
+              ></i>
             </button>
             {showLangMenu && (
               <div className="lang-dropdown" role="menu">
@@ -209,9 +213,13 @@ export default function Navbar({ locale }: { locale: Locale }) {
                     role="menuitem"
                     aria-selected={locale === lang.code}
                   >
-                    <span className="lang-flag" aria-hidden="true">{flags[lang.code]}</span>
+                    <span className="lang-flag" aria-hidden="true">
+                      {flags[lang.code]}
+                    </span>
                     <span className="lang-native-name">{lang.name}</span>
-                    {locale === lang.code && <i className="fa-solid fa-check"></i>}
+                    {locale === lang.code && (
+                      <i className="fa-solid fa-check"></i>
+                    )}
                   </button>
                 ))}
               </div>
@@ -219,7 +227,10 @@ export default function Navbar({ locale }: { locale: Locale }) {
           </div>
 
           {/* Desktop primary CTA (Unique sur PC) */}
-          <Link href={currentRoutes.register} className="btn-primary desktop-cta">
+          <Link
+            href={currentRoutes.register}
+            className="btn-primary desktop-cta"
+          >
             {t.register}
           </Link>
 

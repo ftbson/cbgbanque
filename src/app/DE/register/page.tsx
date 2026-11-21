@@ -192,7 +192,7 @@ export default function RegisterPage() {
             <p className="step-subtitle-hero">
               Ihr Konto wartet auf die Validierung durch den Administrator. Sie können sich anmelden, sobald es genehmigt wurde.
             </p>
-            <Link href="/DE/anmelden" className="btn-step-primary">
+            <Link href="/DE/login" className="btn-step-primary">
               Zur Anmeldung
             </Link>
           </div>
@@ -251,7 +251,7 @@ export default function RegisterPage() {
               <button onClick={handleNext} className="btn-step-primary">
                 Registrieren
               </button>
-              <Link href="/DE/anmelden" className="btn-step-secondary">
+              <Link href="/DE/login" className="btn-step-secondary">
                 Anmelden
               </Link>
               <Link href="/DE" className="btn-step-secondary">

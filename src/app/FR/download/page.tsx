@@ -34,7 +34,7 @@ export default function DownloadPage() {
             <i className="fa-solid fa-download"></i>
             <span>{isInstalled ? "Application déjà installée" : "Installer l'application"}</span>
           </button>
-          <Link href="/register" className="btn-hero-account">
+          <Link href="/FR/register" className="btn-hero-account">
             Ouvrir un compte gratuit
           </Link>
         </div>

@@ -20,13 +20,25 @@ function getLocaleForDocument(locale: "fr" | "de" | "es"): string {
 }
 
 // Dynamically import locale-specific Navbar and Footer
-const NavbarFR = dynamic(() => import("@/app/FR/components/Navbar"), { ssr: false });
-const NavbarDE = dynamic(() => import("@/app/DE/components/Navbar"), { ssr: false });
-const NavbarES = dynamic(() => import("@/app/ES/components/Navbar"), { ssr: false });
+const NavbarFR = dynamic(() => import("@/app/FR/components/Navbar"), {
+  ssr: false,
+});
+const NavbarDE = dynamic(() => import("@/app/DE/components/Navbar"), {
+  ssr: false,
+});
+const NavbarES = dynamic(() => import("@/app/ES/components/Navbar"), {
+  ssr: false,
+});
 
-const FooterFR = dynamic(() => import("@/app/FR/components/Footer"), { ssr: false });
-const FooterDE = dynamic(() => import("@/app/DE/components/Footer"), { ssr: false });
-const FooterES = dynamic(() => import("@/app/ES/components/Footer"), { ssr: false });
+const FooterFR = dynamic(() => import("@/app/FR/components/Footer"), {
+  ssr: false,
+});
+const FooterDE = dynamic(() => import("@/app/DE/components/Footer"), {
+  ssr: false,
+});
+const FooterES = dynamic(() => import("@/app/ES/components/Footer"), {
+  ssr: false,
+});
 
 function getNavbar(locale: "fr" | "de" | "es") {
   if (locale === "de") return NavbarDE;
@@ -46,11 +58,20 @@ export default function SiteFrame({ children }: SiteFrameProps) {
 
   // Masquer sur les pages d'authentification et sur TOUTES les pages du dashboard
   const isAuthPage = [
-    "/FR/login", "/FR/register", "/FR/admin",
-    "/DE/anmelden", "/DE/konto-eroeffnen", "/DE/admin",
-    "/ES/iniciar-sesion", "/ES/abrir-cuenta", "/ES/admin"
+    "/FR/login",
+    "/FR/register",
+    "/FR/admin",
+    "/DE/anmelden",
+    "/DE/register",
+    "/DE/admin",
+    "/ES/iniciar-sesion",
+    "/ES/abrir-cuenta",
+    "/ES/admin",
   ].includes(pathname);
-  const isDashboardPage = pathname.startsWith("/FR/dashboard") || pathname.startsWith("/DE/dashboard") || pathname.startsWith("/ES/dashboard");
+  const isDashboardPage =
+    pathname.startsWith("/FR/dashboard") ||
+    pathname.startsWith("/DE/dashboard") ||
+    pathname.startsWith("/ES/dashboard");
 
   const hideSiteNavFooter = isAuthPage || isDashboardPage;
 

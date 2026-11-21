@@ -53,7 +53,7 @@ export default function EnvoyerPage() {
 
   const loadAccount = async () => {
     try {
-      const res = await fetch("/api/dashboard/transactions");
+      const res = await fetch("/DE/api/dashboard/transactions");
       const data: AccountData = await res.json();
       if (!res.ok) throw new Error(data.message ?? "Saldo-Fehler");
       setAccount(data);
@@ -64,7 +64,7 @@ export default function EnvoyerPage() {
 
   useEffect(() => {
     let active = true;
-    fetch("/api/dashboard/transactions")
+    fetch("/DE/api/dashboard/transactions")
       .then(async (res) => {
         const data: AccountData = await res.json();
         if (!res.ok) throw new Error(data.message ?? "Saldo-Fehler");
@@ -85,7 +85,7 @@ export default function EnvoyerPage() {
     let active = true;
     const refreshTransfers = async () => {
       try {
-        const res = await fetch("/api/dashboard/transactions");
+        const res = await fetch("/DE/api/dashboard/transactions");
         const data: AccountData = await res.json();
         if (!res.ok) throw new Error(data.message ?? "Aktualisierung der Überweisungen fehlgeschlagen.");
         if (active) setAccount(data);
@@ -107,7 +107,7 @@ export default function EnvoyerPage() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/dashboard/transactions/withdraw-otp", {
+      const res = await fetch("/DE/api/dashboard/transactions/withdraw-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
