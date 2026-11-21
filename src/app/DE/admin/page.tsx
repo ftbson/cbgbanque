@@ -199,7 +199,7 @@ export default function AdminPage() {
       const response = await fetch("/api/admin/logout", { method: "POST" });
       if (!response.ok) throw new Error("Échec de la déconnexion.");
       setIsAuthenticated(false);
-      router.push("/admin");
+      router.push("/DE/admin");
     } catch (error) {
       console.error("Erreur lors de la déconnexion administrateur :", error);
       setErrorMsg("Impossible de fermer la session administrateur.");

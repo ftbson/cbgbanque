@@ -51,7 +51,7 @@ export default function DashboardShell({
       <header className="dashboard-topbar">
         {/* User Avatar Circle (CH) linking to Paramètres */}
         <Link
-          href="/DE/dashboard/parametres"
+          href="/DE/dashboard/settings"
           className="topbar-avatar-round"
           title={`${identity?.user.firstName || ""} ${identity?.user.lastName || ""} - Ouvrir les paramètres`}
           style={{ textDecoration: "none" }}
@@ -77,7 +77,7 @@ export default function DashboardShell({
           </Link>
 
           <Link
-            href="/DE/dashboard/parametres"
+            href="/DE/dashboard/settings"
             className="topbar-icon-round topbar-settings-link"
             title="Paramètres du compte"
           >
@@ -136,8 +136,8 @@ export default function DashboardShell({
           <span>Épargne</span>
         </Link>
         <Link
-          href="/DE/dashboard/parametres"
-          className={`nav-item-bottom ${pathname === "/DE/dashboard/parametres" ? "active" : ""}`}
+          href="/DE/dashboard/settings"
+          className={`nav-item-bottom ${pathname === "/DE/dashboard/settings" ? "active" : ""}`}
         >
           <i className="fa-solid fa-gear"></i>
           <span>Paramètres</span>

@@ -80,9 +80,9 @@ export default function Footer() {
           <div className="footer-bottom-bar">
             <div className="footer-legal-links">
               <Link href="/DE/aide">Hilfe & FAQ</Link>
-              <Link href="/DE/politique-de-confidentialite">Datenschutz</Link>
+              <Link href="/DE/confidentialite">Datenschutz</Link>
               <Link href="/DE/mentions-legales">Impressum</Link>
-              <Link href="/DE/termes-et-conditions">AGB</Link>
+              <Link href="/DE/cgu">AGB</Link>
               <Link href="/DE/rgpd">DSGVO</Link>
               <Link href="/DE/cookies">Cookies</Link>
             </div>

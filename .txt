@@ -1,289 +1,437 @@
-Je veux que tu effectues un audit approfondi et que tu corriges les problèmes actuellement présents dans mon application. Il y a deux problèmes majeurs qui doivent être résolus : les erreurs de connexion à l'application et l'implémentation inachevée du système multilingue avec les slugs.
+AUDIT COMPLET ET CORRECTION DÉFINITIVE DU SYSTÈME MULTILINGUE, DES ROUTES ET DE L'AUTHENTIFICATION
 
-Ne te contente pas d'analyser ou de me proposer des solutions. Tu dois examiner le code, identifier les causes réelles et effectuer les corrections directement dans le projet.
+Je veux que tu interviennes directement sur mon projet pour résoudre définitivement plusieurs problèmes qui persistent malgré les corrections précédentes.
 
-1. Corriger le problème de connexion au serveur
+Je ne veux plus de corrections superficielles, de systèmes de traduction improvisés ni de modifications qui déplacent simplement le problème ailleurs.
 
-Actuellement, lorsque j'essaie de me connecter à l'application, j'obtiens une erreur indiquant que l'application ne parvient pas à contacter le serveur.
+Tu dois examiner le code existant, comprendre l'origine des dysfonctionnements, supprimer les mécanismes défectueux et mettre en place une architecture cohérente.
 
-Je veux que tu identifies précisément l'origine de cette erreur.
+1. PROBLÈME URGENT : LES CLÉS DE TRADUCTION S'AFFICHENT SUR LA PAGE D'ACCUEIL
 
-Examine notamment :
+Actuellement, lorsque j'ouvre la page d'accueil, au lieu d'afficher les vrais textes, le site affiche directement des clés techniques de traduction.
 
-Le système d'authentification.
+Exemples de ce qui apparaît :
 
-Les routes API de connexion et d'inscription.
+common.appName
 
-Les requêtes HTTP effectuées depuis le frontend.
+hero.badge
 
-Les URL des API.
+hero.title
 
-Les variables d'environnement.
+hero.titleHighlight
 
-Les configurations du backend.
+hero.subtitle
 
-Les éventuels middlewares.
+hero.ctaPrimary
 
-Les cookies et sessions.
+hero.ctaSecondary
 
-La gestion des tokens.
+hero.trust1
 
-Les redirections après connexion.
+features.tag
 
-Les erreurs de réseau, de configuration ou de serveur.
+features.title
 
-Les éventuels problèmes provoqués par les modifications récentes du système multilingue.
+features.subtitle
 
-Ne suppose pas que le serveur est indisponible sans vérifier le code et les configurations disponibles.
+features.items.account.title
 
-Identifie la cause réelle du problème et corrige-la.
+features.items.account.description
 
-La connexion doit fonctionner normalement, sans erreur de communication avec le serveur, et l'inscription doit également être vérifiée si elle utilise le même système.
+cta.statsTag
 
-Ne désactive pas les contrôles de sécurité pour faire fonctionner la connexion.
+testimonials.tag
 
-2. Finaliser complètement le système multilingue
+testimonials.title
 
-Le système multilingue n'est pas encore correctement terminé. Les dossiers FR, DE et ES existent déjà, mais l'implémentation n'est pas encore cohérente sur l'ensemble du site.
+footer.bannerTitle
 
-Je veux que tu vérifies l'intégralité de l'architecture actuelle et que tu finalises réellement le système.
+footer.legalText
 
-Les trois espaces doivent fonctionner indépendamment :
+footer.links.help
 
-/FR pour le français.
+footer.links.privacy
 
-/DE pour l'allemand.
+Et beaucoup d'autres clés apparaissent également.
 
-/ES pour l'espagnol.
+C'est un dysfonctionnement majeur. Je ne veux plus voir ces clés techniques sur aucune page.
 
-Il ne suffit pas de traduire la page d'accueil. Toutes les pages, tous les composants, tous les liens, les formulaires, les pages de connexion, d'inscription et le dashboard doivent être rattachés à leur espace linguistique respectif.
+Ce que tu dois faire :
 
-3. Les slugs doivent être respectés sur toutes les pages
+Identifier précisément le mécanisme qui provoque l'affichage de ces clés.
 
-Voici le comportement que je veux :
+Examiner les fichiers de traduction, les composants, les layouts, les fonctions de traduction, les imports et les éventuelles configurations de localisation.
 
-Version française :
+Identifier les fichiers qui génèrent ou permettent ce système défectueux.
+
+Supprimer l'architecture de traduction par clés qui provoque ces problèmes, notamment si elle repose sur des dictionnaires JSON, des fonctions de traduction dynamiques ou des configurations de remplacement de texte.
+
+Supprimer les fichiers devenus inutiles uniquement après avoir vérifié qu'ils ne sont plus utilisés.
+
+Ne pas laisser d'anciens mécanismes de traduction coexister avec la nouvelle architecture.
+
+Je ne veux plus de textes affichés sous forme de clés telles que hero.title, nav.login ou footer.legalText.
+
+2. NOUVELLE ARCHITECTURE : DES PAGES DISTINCTES PAR LANGUE
+
+Je veux que le système multilingue repose sur de véritables pages et fichiers distincts.
+
+Les dossiers FR, DE et ES ont déjà été créés. Vérifie leur état actuel et exploite-les correctement.
+
+Chaque espace doit contenir ses propres pages, composants et fichiers nécessaires.
+
+Par exemple :
+
+FR : version française.
+
+DE : version allemande.
+
+ES : version espagnole.
+
+Les contenus doivent être écrits directement dans les fichiers de chaque espace linguistique.
+
+Je ne veux plus d'un système centralisé dans lequel une page unique récupère ses textes à partir d'un dictionnaire de traductions.
+
+Je veux que les fichiers des pages soient réellement séparés.
+
+Important :
+
+Ne supprime pas les fichiers existants sans avoir vérifié leurs dépendances.
+
+Ne casse pas les fonctionnalités existantes.
+
+Ne réécris pas toute l'application inutilement.
+
+Conserve les fonctionnalités, le design, les composants, les styles et la logique métier qui sont déjà fonctionnels.
+
+3. LES ROUTES DOIVENT ÊTRE IDENTIQUES DANS LES TROIS LANGUES
+
+Je veux que les noms des pages et les slugs restent identiques dans les trois langues.
+
+La langue change uniquement le préfixe de l'URL et le contenu affiché, pas les noms des routes.
+
+Exemple :
+
+Français
+
+Allemand
+
+Espagnol
 
 /FR
 
-/FR/login
-
-/FR/register
-
-/FR/dashboard
-
-/FR/dashboard/settings
-
-Version allemande :
-
 /DE
-
-/DE/login
-
-/DE/register
-
-/DE/dashboard
-
-/DE/dashboard/settings
-
-Version espagnole :
 
 /ES
 
+/FR/login
+
+/DE/login
+
 /ES/login
+
+/FR/register
+
+/DE/register
 
 /ES/register
 
+/FR/dashboard
+
+/DE/dashboard
+
 /ES/dashboard
+
+/FR/dashboard/settings
+
+/DE/dashboard/settings
 
 /ES/dashboard/settings
 
-Chaque navigation doit conserver le préfixe linguistique actif.
+Le nom des routes doit être exactement le même dans les trois espaces.
 
-Si je suis dans l'espace allemand, toutes mes navigations doivent rester dans /DE.
+Je ne veux pas que DE ou ES utilisent des noms de pages différents de ceux de FR.
 
-Si je suis dans l'espace espagnol, toutes mes navigations doivent rester dans /ES.
+Par exemple, si la page d'inscription en français utilise /FR/register, alors l'allemand et l'espagnol doivent également utiliser /DE/register et /ES/register.
 
-Si je suis dans l'espace français, toutes mes navigations doivent rester dans /FR.
+Ne transforme pas /register en un autre slug dans les versions allemandes ou espagnoles.
 
-Il ne doit plus y avoir de redirections involontaires vers une autre langue.
+Même règle pour la connexion, le dashboard, les paramètres, les profils, les pages internes et toutes les autres routes.
 
-4. Corriger tous les liens et redirections
+4. LA LANGUE DOIT RESTER ACTIVE SUR TOUT LE PARCOURS
 
-Examine tous les liens du projet et toutes les navigations.
+Lorsque je sélectionne DE, je dois entrer dans l'espace allemand.
 
-Je veux que tu vérifies notamment :
+À partir de ce moment :
 
-Les boutons Se connecter.
+Tous les liens doivent pointer vers des routes /DE.
 
-Les boutons S'inscrire.
+Toutes les pages doivent utiliser les fichiers allemands.
 
-Les boutons de retour.
+Tous les boutons doivent respecter le préfixe /DE.
 
-Les menus de navigation.
+La connexion doit rester dans /DE.
 
-Les liens du footer.
+L'inscription doit rester dans /DE.
 
-Les liens du dashboard.
+Le dashboard doit rester dans /DE.
 
-Les liens de paramètres.
+Les paramètres doivent rester dans /DE.
 
-Les liens de profil.
+Les redirections doivent rester dans /DE.
+
+Les liens internes doivent rester dans /DE.
+
+Même fonctionnement pour ES et FR.
+
+La langue ne doit jamais changer involontairement au cours d'une navigation.
+
+Seule une action explicite dans le sélecteur de langue doit modifier le contexte linguistique.
+
+5. LES TEXTES DES PAGES DOIVENT ÊTRE FIDÈLES À LA VERSION FRANÇAISE
+
+La version FR doit servir de référence pour les pages et leurs structures.
+
+Je ne veux pas que les versions allemandes et espagnoles inventent de nouvelles pages, de nouveaux noms de routes, de nouvelles structures de navigation ou de nouveaux parcours.
+
+Les pages DE et ES doivent reprendre exactement les mêmes structures, les mêmes fonctionnalités, les mêmes boutons, les mêmes formulaires et les mêmes parcours que FR.
+
+Seul le contenu textuel visible doit être traduit littéralement dans la langue correspondante.
+
+Ne réécris pas les textes.
+
+Ne modifie pas la logique métier.
+
+Ne crée pas de nouveaux parcours de navigation spécifiques à une langue.
+
+Ne renomme pas les routes.
+
+Ne modifie pas les fonctionnalités.
+
+6. CORRIGER LE SÉLECTEUR DE LANGUE
+
+Le sélecteur de langue doit fonctionner réellement.
+
+Lorsque je suis sur /FR, je peux sélectionner DE et être redirigé vers /DE.
+
+Lorsque je suis sur /DE, je peux sélectionner ES et être redirigé vers /ES.
+
+Lorsque je suis sur /ES, je peux sélectionner FR et être redirigé vers /FR.
+
+Si je suis sur une page interne, le changement de langue doit me conduire à la page équivalente dans la langue sélectionnée, lorsque celle-ci existe.
+
+Exemples :
+
+/FR/login vers /DE/login.
+
+/FR/register vers /ES/register.
+
+/DE/dashboard vers /FR/dashboard.
+
+/ES/dashboard/settings vers /DE/dashboard/settings.
+
+Le sélecteur de langue ne doit pas simplement changer le texte de la page actuelle. Il doit naviguer vers la véritable route de l'espace linguistique choisi.
+
+7. PROBLÈME D'AUTHENTIFICATION : ERREUR DE CONNEXION AU SERVEUR
+
+Actuellement, lorsque j'essaie de me connecter, j'obtiens une erreur indiquant que l'application ne parvient pas à accéder au serveur.
+
+Je veux que tu traites ce problème comme une priorité.
+
+Ne te contente pas de supposer que le serveur est indisponible.
+
+Je veux que tu recherches précisément la cause.
+
+Examine :
+
+Les routes API d'authentification.
+
+Les endpoints de connexion et d'inscription.
+
+Les URL utilisées par le frontend.
+
+Les configurations backend.
+
+Les variables d'environnement.
+
+Les configurations de base de données.
+
+Les middlewares.
+
+Les cookies.
+
+Les sessions.
+
+Les JWT et leur validation.
 
 Les redirections après connexion.
 
 Les redirections après inscription.
 
-Les redirections après déconnexion.
+Les configurations CORS si elles sont pertinentes.
 
-Les liens des formulaires.
+Les erreurs HTTP.
 
-Les liens vers les pages internes.
+Les erreurs de réseau.
 
-Les éventuelles routes codées en dur.
+Les éventuels changements apportés au système multilingue.
 
-Les routes qui ne possèdent pas de préfixe linguistique.
+Les chemins API incorrectement configurés.
 
-Les routes qui renvoient systématiquement vers FR.
+Les appels qui pourraient être envoyés vers une mauvaise route.
 
-Chaque lien doit respecter le contexte linguistique actuel.
+Les éventuelles erreurs de compilation ou d'exécution.
 
-Par exemple, une connexion depuis /DE/login doit rediriger vers /DE/dashboard et non vers /FR/dashboard.
+Je veux que tu identifies la cause réelle de l'erreur et que tu corriges le code responsable.
 
-Une connexion depuis /ES/login doit rediriger vers /ES/dashboard et non vers /FR/dashboard.
+Ne fais surtout pas ceci :
 
-Ne définis pas de redirection globale qui écrase la langue actuelle.
+Ne désactive pas l'authentification.
 
-5. Le sélecteur de langue doit fonctionner partout où il est prévu
+Ne supprime pas les contrôles de sécurité.
 
-Le changement de langue doit être une action volontaire de l'utilisateur.
+Ne remplace pas le système de connexion par un faux système.
 
-Lorsque je change de langue, l'URL doit changer réellement.
+Ne simule pas une connexion réussie.
 
-Par exemple :
+Ne crée pas de données fictives pour masquer le problème.
 
-/FR vers /DE.
+Ne modifie pas arbitrairement les identifiants ou les secrets.
 
-/FR/login vers /DE/login.
+Ne prétends pas que le serveur fonctionne si tu ne l'as pas vérifié.
 
-/FR/dashboard vers /DE/dashboard lorsque la page équivalente existe.
+Si la cause dépend d'une variable d'environnement, d'une base de données, d'un service externe ou d'un accès que tu ne possèdes pas, indique-le clairement et précise ce qui doit être configuré.
 
-/DE vers /ES.
+8. L'AUTHENTIFICATION DOIT RESPECTER LA LANGUE
 
-/ES/dashboard vers /FR/dashboard lorsque je sélectionne le français.
+Une fois le système d'authentification corrigé :
 
-Le sélecteur doit fonctionner correctement depuis les pages concernées, sans perdre la langue sélectionnée lors des navigations suivantes.
+/FR/login doit utiliser la version française.
 
-Ne change pas automatiquement la langue lorsque l'utilisateur clique sur un bouton qui ne concerne pas le sélecteur de langue.
+/DE/login doit utiliser la version allemande.
 
-6. Traductions et fichiers
+/ES/login doit utiliser la version espagnole.
 
-Je ne veux pas d'un système centralisé de traduction basé sur des clés JSON telles que hero.title, nav.login ou features.subtitle.
+Même principe pour l'inscription.
 
-Les vrais textes doivent être présents directement dans les fichiers de chaque espace linguistique.
+Après connexion :
 
-Vérifie les dossiers FR, DE et ES existants.
+Une connexion depuis /FR/login doit conduire vers /FR/dashboard.
 
-Si les fichiers DE et ES sont incomplets, tu dois les compléter.
+Une connexion depuis /DE/login doit conduire vers /DE/dashboard.
 
-Traduis littéralement les contenus de chaque fichier, sans réécriture marketing ni modification de la logique fonctionnelle.
+Une connexion depuis /ES/login doit conduire vers /ES/dashboard.
 
-Aucun texte technique de traduction ne doit apparaître à l'écran, comme :
+Après inscription, le même principe doit être respecté.
 
-hero.title
+Après déconnexion, la redirection doit également conserver la langue active.
 
-hero.subtitle
+Examine tous les mécanismes de redirection afin qu'aucun ne renvoie systématiquement vers FR.
 
-nav.login
+9. AUDIT DU DASHBOARD
 
-features.items.account.title
+Vérifie l'intégralité du dashboard.
 
-footer.legalText
+Je veux que les espaces FR, DE et ES possèdent leurs pages et fichiers propres.
 
-Les pages doivent afficher les vrais textes dans la langue correspondante.
+Vérifie :
 
-7. Vérifier le dashboard et les fonctionnalités existantes
+Les menus.
 
-Le dashboard doit être pleinement fonctionnel dans les trois langues.
+Les liens.
 
-Vérifie les pages, composants, menus, formulaires, paramètres, boutons, actions, API et redirections.
+Les boutons.
 
-Ne crée pas uniquement des pages visuellement traduites. Vérifie que les fonctionnalités réelles restent opérationnelles.
+Les formulaires.
 
-Ne casse pas les fonctionnalités existantes et ne supprime aucune fonctionnalité pour simplifier l'implémentation.
+Les paramètres.
 
-8. Procéder avec méthode
+Les pages de profil.
 
-Avant de modifier le code :
+Les routes internes.
 
-Examine l'architecture réelle du projet.
+Les redirections.
 
-Identifie les problèmes de connexion.
+Les actions.
 
-Identifie les problèmes de routage.
+Les appels API.
 
-Examine les dossiers FR, DE et ES.
+Les fonctionnalités liées à l'utilisateur connecté.
 
-Examine les routes API.
+Tous les parcours doivent respecter la langue active.
 
-Examine les composants de navigation.
+Ne te contente pas de traduire visuellement le dashboard.
 
-Examine les middlewares.
+10. PROCÉDURE DE TRAVAIL
 
-Examine les systèmes d'authentification et de redirection.
+Je veux que tu travailles méthodiquement.
 
-Identifie les éventuels conflits entre les modifications récentes.
+Étape 1 : Audit
 
-Ensuite, effectue les corrections directement dans le projet.
+Examine l'ensemble de l'architecture du projet et identifie les causes des problèmes.
 
-Ne recrée pas inutilement l'application.
+Étape 2 : Identifier les mécanismes défectueux
 
-Ne supprime pas des fichiers simplement parce qu'ils compliquent la correction.
+Repère les fichiers, composants, configurations et routes qui provoquent :
 
-Ne remplace pas l'architecture existante sans raison technique valable.
+L'affichage des clés de traduction.
 
-9. Tests et vérifications
+Les incohérences entre FR, DE et ES.
 
-Après les corrections, effectue les tests que l'environnement permet réellement :
+Les routes incorrectes.
 
-Vérifier que le serveur démarre.
+Les redirections vers FR.
 
-Vérifier que les routes principales sont accessibles.
+Les erreurs de connexion au serveur.
 
-Vérifier que les API de connexion et d'inscription répondent correctement.
+Étape 3 : Corriger l'architecture
 
-Vérifier les parcours de connexion et d'inscription si l'environnement permet de les tester.
+Supprime les mécanismes de traduction défectueux lorsqu'ils sont responsables des problèmes.
 
-Vérifier les redirections après authentification.
+Finalise les dossiers FR, DE et ES.
 
-Vérifier que /FR, /DE et /ES fonctionnent.
+Corrige les routes, les liens, les redirections et l'authentification.
 
-Vérifier les pages de connexion et d'inscription dans les trois langues.
+Étape 4 : Vérification
 
-Vérifier les routes du dashboard.
+Teste les fonctionnalités que l'environnement permet réellement de tester.
 
-Vérifier les liens internes.
+Vérifie le serveur, les routes, les pages, l'authentification, les redirections et les changements de langue.
 
-Vérifier le changement de langue.
+Étape 5 : Compte rendu
 
-Vérifier que les slugs changent correctement.
+À la fin, indique :
 
-Vérifier qu'aucune navigation ne renvoie involontairement vers FR.
+Les problèmes identifiés.
 
-Vérifier qu'aucune clé de traduction ne s'affiche.
+Les causes réelles.
 
-Vérifier les éventuelles erreurs de compilation et de console accessibles.
+Les fichiers modifiés.
 
-Si un test nécessite des identifiants, une base de données, une API externe ou une variable d'environnement que tu ne possèdes pas, ne simule pas son résultat. Indique précisément ce qui n'a pas pu être vérifié.
+Les fichiers supprimés et la raison de leur suppression.
 
-Objectif final
+Les corrections apportées.
 
-Je veux que mon application soit stable et fonctionnelle.
+Les tests effectués.
 
-Le problème de communication avec le serveur lors de la connexion doit être corrigé.
+Les tests qui n'ont pas pu être exécutés.
 
-Le système multilingue doit être entièrement terminé, avec trois espaces distincts : /FR, /DE et /ES.
+Les éventuelles configurations manquantes.
 
-Les pages, les slugs, les liens, les redirections, l'authentification et le dashboard doivent respecter la langue active.
+Ne me donne pas uniquement un plan. Je veux que tu exécutes les corrections directement dans le projet.
 
-Je ne veux pas d'un simple rapport, d'une liste de suggestions ou de corrections partielles. Je veux que tu travailles directement sur le code, que tu corriges les problèmes, que tu vérifies ce qui peut l'être et que tu me présentes à la fin un compte rendu précis des modifications effectuées et des tests réellement exécutés.
+OBJECTIF FINAL
+
+Je veux une application stable, cohérente et fonctionnelle.
+
+Je veux que les clés techniques de traduction disparaissent définitivement de l'interface.
+
+Je veux trois espaces linguistiques réels, /FR, /DE et /ES, avec les mêmes routes, les mêmes fonctionnalités et les mêmes parcours.
+
+Je veux que le changement de langue modifie réellement l'URL et que toute navigation respecte l'espace linguistique actif.
+
+Je veux que la connexion et l'inscription fonctionnent correctement, sans erreur de communication avec le serveur.
+
+Je veux que tu vérifies ce que tu modifies et que tu ne me présentes pas des résultats de tests que tu n'as pas réellement exécutés.
+
+Commence par auditer le projet, puis effectue les corrections nécessaires directement dans le code.

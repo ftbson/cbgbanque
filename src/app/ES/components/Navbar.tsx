@@ -46,7 +46,7 @@ export default function Navbar() {
           <Link href="/ES" className="nav-link" onClick={() => setIsOpen(false)}>
             Compromisos
           </Link>
-          <Link href="/ES/ayuda" className="nav-link" onClick={() => setIsOpen(false)}>
+          <Link href="/ES/aide" className="nav-link" onClick={() => setIsOpen(false)}>
             Ayuda
           </Link>
           <Link href="/ES/download" className="nav-link mobile-only-download" onClick={() => setIsOpen(false)}>

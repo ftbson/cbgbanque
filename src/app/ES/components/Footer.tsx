@@ -82,7 +82,7 @@ export default function Footer() {
               <Link href="/ES/ayuda">Ayuda y FAQ</Link>
               <Link href="/ES/confidentialite">Privacidad</Link>
               <Link href="/ES/mentions-legales">Avisos legales</Link>
-              <Link href="/ES/termes-et-conditions">CGU</Link>
+              <Link href="/ES/cgu">CGU</Link>
               <Link href="/ES/rgpd">RGPD</Link>
               <Link href="/ES/cookies">Cookies</Link>
             </div>
