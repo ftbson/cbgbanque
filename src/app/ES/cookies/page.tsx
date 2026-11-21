@@ -120,10 +120,10 @@ export default function CookiesPage() {
               Puede configurar en cualquier momento su software de navegación para autorizar o rechazar el registro de cookies en su terminal:
             </p>
             <ul>
-              <li><strong>Google Chrome:</strong> Configuración > Privacidad y seguridad > Cookies y otros datos de sitios.</li>
-              <li><strong>Mozilla Firefox:</strong> Configuración > Privacidad y seguridad > Cookies y datos de sitios.</li>
-              <li><strong>Apple Safari:</strong> Preferencias > Privacidad > Bloquear todas las cookies.</li>
-              <li><strong>Microsoft Edge:</strong> Configuración > Privacidad, búsqueda y servicios > Cookies.</li>
+              <li><strong>Google Chrome:</strong> Configuración &gt; Privacidad y seguridad &gt; Cookies y otros datos de sitios.</li>
+              <li><strong>Mozilla Firefox:</strong> Configuración &gt; Privacidad y seguridad &gt; Cookies y datos de sitios.</li>
+              <li><strong>Apple Safari:</strong> Preferencias &gt; Privacidad &gt; Bloquear todas las cookies.</li>
+              <li><strong>Microsoft Edge:</strong> Configuración &gt; Privacidad, búsqueda y servicios &gt; Cookies.</li>
             </ul>
             <p>
               <em>Atención: El bloqueo total de las cookies esenciales puede volver imposible el acceso a su espacio de cliente seguro.</em>

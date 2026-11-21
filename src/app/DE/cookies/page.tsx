@@ -120,10 +120,10 @@ export default function CookiesPage() {
               Sie k&ouml;nnen Ihre Browsersoftware jederzeit so konfigurieren, dass die Ablage von Cookies auf Ihrem Endger&auml;t erlaubt oder verweigert wird:
             </p>
             <ul>
-              <li><strong>Google Chrome:</strong> Einstellungen > Datenschutz und Sicherheit > Cookies und andere Websitedaten.</li>
-              <li><strong>Mozilla Firefox:</strong> Einstellungen > Datenschutz & Sicherheit > Cookies und Websitedaten.</li>
-              <li><strong>Apple Safari:</strong> Einstellungen > Datenschutz > Alle Cookies blockieren.</li>
-              <li><strong>Microsoft Edge:</strong> Einstellungen > Datenschutz, Suche und Dienste > Cookies.</li>
+              <li><strong>Google Chrome:</strong> Einstellungen &gt; Datenschutz und Sicherheit &gt; Cookies und andere Websitedaten.</li>
+              <li><strong>Mozilla Firefox:</strong> Einstellungen &gt; Datenschutz &amp; Sicherheit &gt; Cookies und Websitedaten.</li>
+              <li><strong>Apple Safari:</strong> Einstellungen &gt; Datenschutz &gt; Alle Cookies blockieren.</li>
+              <li><strong>Microsoft Edge:</strong> Einstellungen &gt; Datenschutz, Suche und Dienste &gt; Cookies.</li>
             </ul>
             <p>
               <em>Achtung: Die vollst&auml;ndige Blockierung essenzieller Cookies kann den Zugriff auf Ihren sicheren Kundenbereich unm&ouml;glich machen.</em>
