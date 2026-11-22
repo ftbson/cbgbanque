@@ -1,9 +1,9 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import Link from "next/link";
 
-// Liste des pays de l'UE en priorité + Autres pays
+// Liste des pays de l'UE en prioritÃ© + Autres pays
 const euCountries = [
   { code: "FR", name: "France" },
   { code: "BE", name: "Belgique" },
@@ -21,7 +21,7 @@ const otherCountries = [
   { code: "CH", name: "Suisse" },
   { code: "CA", name: "Canada" },
   { code: "GB", name: "Royaume-Uni" },
-  { code: "US", name: "États-Unis" },
+  { code: "US", name: "Ã‰tats-Unis" },
 ];
 
 export default function RegisterPage() {
@@ -30,7 +30,7 @@ export default function RegisterPage() {
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [registrationComplete, setRegistrationComplete] = useState(false);
 
-  // État du formulaire
+  // Ã‰tat du formulaire
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -70,7 +70,7 @@ export default function RegisterPage() {
     reader.readAsDataURL(file);
   };
 
-  const totalSteps = 7; // Étapes actives (après l'écran 0 d'accueil)
+  const totalSteps = 7; // Ã‰tapes actives (aprÃ¨s l'Ã©cran 0 d'accueil)
 
   const handleNext = () => setStep((prev) => prev + 1);
   const handleBack = () => setStep((prev) => Math.max(0, prev - 1));
@@ -93,7 +93,7 @@ export default function RegisterPage() {
       });
       const data: { message?: string } = await response.json();
       if (!response.ok) {
-        setErrorMessage(data.message ?? "Impossible d'envoyer le code de vérification.");
+        setErrorMessage(data.message ?? "Impossible d'envoyer le code de vÃ©rification.");
         return;
       }
       setStep(2);
@@ -115,7 +115,7 @@ export default function RegisterPage() {
       });
       const data: { message?: string } = await response.json();
       if (!response.ok) {
-        setErrorMessage(data.message ?? "Code de vérification incorrect.");
+        setErrorMessage(data.message ?? "Code de vÃ©rification incorrect.");
         return;
       }
       setStep(3);
@@ -139,13 +139,13 @@ export default function RegisterPage() {
     }
   };
 
-  // Fonction de soumission finale vers la base de données
+  // Fonction de soumission finale vers la base de donnÃ©es
   const handleSubmitRegistration = async () => {
     setLoading(true);
     setErrorMessage("");
 
     try {
-      // Envoyer les données textuelles à une API ou Server Action
+      // Envoyer les donnÃ©es textuelles Ã  une API ou Server Action
       const response = await fetch("/api/register", {
         method: "POST",
         headers: {
@@ -193,12 +193,12 @@ export default function RegisterPage() {
       <div className="onboarding-container">
         <div className="onboarding-wrapper">
           <div className="step-card step-welcome">
-            <h1 className="step-title-hero">Inscription enregistrée</h1>
+            <h1 className="step-title-hero">Inscription enregistrÃ©e</h1>
             <p className="step-subtitle-hero">
-              Votre compte est en attente de validation par l&apos;administrateur. Vous pourrez vous connecter dès son approbation.
+              Votre compte est en attente de validation par l&apos;administrateur. Vous pourrez vous connecter dÃ¨s son approbation.
             </p>
-            <Link href="/login" className="btn-step-primary">
-              Aller à la connexion
+            <Link href="/FR/login" className="btn-step-primary">
+              Aller Ã  la connexion
             </Link>
           </div>
         </div>
@@ -212,7 +212,7 @@ export default function RegisterPage() {
 
       <div className="onboarding-wrapper">
         
-        {/* En-tête avec bouton Retour & Barre de progression */}
+        {/* En-tÃªte avec bouton Retour & Barre de progression */}
         {step > 0 && (
           <div className="onboarding-header">
             <button onClick={handleBack} className="btn-back-round" aria-label="Retour">
@@ -235,7 +235,7 @@ export default function RegisterPage() {
           </div>
         )}
 
-        {/* ================= ÉTAPE 0 : ACCUEIL ================= */}
+        {/* ================= Ã‰TAPE 0 : ACCUEIL ================= */}
         {step === 0 && (
           <div className="step-card step-welcome">
             <div className="welcome-logo">
@@ -254,28 +254,28 @@ export default function RegisterPage() {
             </div>
             <h1 className="step-title-hero">Bienvenue chez CBG Banque</h1>
             <p className="step-subtitle-hero">
-              Ouvrez votre compte en quelques minutes, depuis votre téléphone ou votre ordinateur.
+              Ouvrez votre compte en quelques minutes, depuis votre tÃ©lÃ©phone ou votre ordinateur.
             </p>
             <div className="welcome-actions">
               <button onClick={handleNext} className="btn-step-primary">
                 S&apos;inscrire
               </button>
-              <Link href="/login" className="btn-step-secondary">
+              <Link href="/FR/login" className="btn-step-secondary">
                 Se connecter
               </Link>
-              <Link href="/" className="btn-step-secondary">
-                <i className="fa-solid fa-arrow-left"></i> Aller à l&apos;accueil
+              <Link href="/FR" className="btn-step-secondary">
+                <i className="fa-solid fa-arrow-left"></i> Aller Ã  l&apos;accueil
               </Link>
               
             </div>
           </div>
         )}
 
-        {/* ================= ÉTAPE 1 : ADRESSE EMAIL ================= */}
+        {/* ================= Ã‰TAPE 1 : ADRESSE EMAIL ================= */}
         {step === 1 && (
           <div className="step-card">
             <h2 className="step-title">Quelle est votre adresse e-mail ?</h2>
-            <p className="step-subtitle">Nous vous enverrons un code pour la vérifier.</p>
+            <p className="step-subtitle">Nous vous enverrons un code pour la vÃ©rifier.</p>
 
             <div className="form-group">
               <input
@@ -290,7 +290,7 @@ export default function RegisterPage() {
             <div className="form-group">
               <input
                 type="password"
-                placeholder="Mot de passe (8 caractères minimum)"
+                placeholder="Mot de passe (8 caractÃ¨res minimum)"
                 value={formData.password}
                 onChange={(e) => updateForm("password", e.target.value)}
                 className="step-input"
@@ -307,17 +307,17 @@ export default function RegisterPage() {
               {loading ? "Envoi..." : "Envoyer le code"}
             </button>
             <p className="step-helper-text">
-              Vous recevrez un code à 6 chiffres. Pensez à regarder dans vos spams.
+              Vous recevrez un code Ã  6 chiffres. Pensez Ã  regarder dans vos spams.
             </p>
           </div>
         )}
 
-        {/* ================= ÉTAPE 2 : CODE DE VÉRIFICATION OTP ================= */}
+        {/* ================= Ã‰TAPE 2 : CODE DE VÃ‰RIFICATION OTP ================= */}
         {step === 2 && (
           <div className="step-card">
             <h2 className="step-title">Saisissez le code</h2>
             <p className="step-subtitle">
-              Envoyé à <strong>{formData.email || "votre adresse e-mail"}</strong>
+              EnvoyÃ© Ã  <strong>{formData.email || "votre adresse e-mail"}</strong>
             </p>
 
             <div className="otp-inputs-grid">
@@ -335,7 +335,7 @@ export default function RegisterPage() {
             </div>
 
             <p className="step-helper-text">
-              Pas reçu ? Regardez dans vos courriers indésirables (spams). Le code est valable 30 minutes.
+              Pas reÃ§u ? Regardez dans vos courriers indÃ©sirables (spams). Le code est valable 30 minutes.
             </p>
             <button type="button" onClick={requestOtp} disabled={loading} className="btn-step-secondary">
               {loading ? "Envoi..." : "Renvoyer le code"}
@@ -349,16 +349,16 @@ export default function RegisterPage() {
               disabled={loading || formData.otpCode.some((digit) => !digit)}
               className="btn-step-primary margin-top-1"
             >
-              {loading ? "Vérification..." : "Valider le code"}
+              {loading ? "VÃ©rification..." : "Valider le code"}
             </button>
           </div>
         )}
 
-        {/* ================= ÉTAPE 3 : NOM & NOM DE FAMILLE & TEL ================= */}
+        {/* ================= Ã‰TAPE 3 : NOM & NOM DE FAMILLE & TEL ================= */}
         {step === 3 && (
           <div className="step-card">
             <h2 className="step-title">Comment vous appelez-vous ?</h2>
-            <p className="step-subtitle">Indiquez votre nom tel qu&apos;il figure sur votre pièce d&apos;identité.</p>
+            <p className="step-subtitle">Indiquez votre nom tel qu&apos;il figure sur votre piÃ¨ce d&apos;identitÃ©.</p>
 
             <div className="civility-selector">
               {["Monsieur", "Madame", "Mx"].map((c) => (
@@ -376,7 +376,7 @@ export default function RegisterPage() {
             <div className="form-group-stack">
               <input
                 type="text"
-                placeholder="Prénom"
+                placeholder="PrÃ©nom"
                 value={formData.firstName}
                 onChange={(e) => updateForm("firstName", e.target.value)}
                 className="step-input"
@@ -390,7 +390,7 @@ export default function RegisterPage() {
               />
               <input
                 type="tel"
-                placeholder="Numéro de téléphone (+33 / +32...)"
+                placeholder="NumÃ©ro de tÃ©lÃ©phone (+33 / +32...)"
                 value={formData.phone}
                 onChange={(e) => updateForm("phone", e.target.value)}
                 className="step-input"
@@ -403,10 +403,10 @@ export default function RegisterPage() {
           </div>
         )}
 
-        {/* ================= ÉTAPE 4 : NAISSANCE & NATIONALITÉ ================= */}
+        {/* ================= Ã‰TAPE 4 : NAISSANCE & NATIONALITÃ‰ ================= */}
         {step === 4 && (
           <div className="step-card">
-            <h2 className="step-title">Quand êtes-vous né(e) ?</h2>
+            <h2 className="step-title">Quand Ãªtes-vous nÃ©(e) ?</h2>
             <p className="step-subtitle">Vous devez avoir au moins 18 ans pour ouvrir un compte.</p>
 
             <div className="form-group-stack">
@@ -426,13 +426,13 @@ export default function RegisterPage() {
               />
 
               <div className="select-wrapper">
-                <label className="select-label">Nationalité</label>
+                <label className="select-label">NationalitÃ©</label>
                 <select
                   value={formData.nationality}
                   onChange={(e) => updateForm("nationality", e.target.value)}
                   className="step-select"
                 >
-                  <optgroup label="Union Européenne">
+                  <optgroup label="Union EuropÃ©enne">
                     {euCountries.map((c) => (
                       <option key={c.code} value={c.code}>
                         {c.name}
@@ -456,21 +456,21 @@ export default function RegisterPage() {
           </div>
         )}
 
-        {/* ================= ÉTAPE 5 : ADRESSE & DEVISE ================= */}
+        {/* ================= Ã‰TAPE 5 : ADRESSE & DEVISE ================= */}
         {step === 5 && (
           <div className="step-card">
-            <h2 className="step-title">Où habitez-vous ?</h2>
-            <p className="step-subtitle">Votre adresse de résidence principale.</p>
+            <h2 className="step-title">OÃ¹ habitez-vous ?</h2>
+            <p className="step-subtitle">Votre adresse de rÃ©sidence principale.</p>
 
             <div className="form-group-stack">
               <div className="select-wrapper">
-                <label className="select-label">Pays de résidence</label>
+                <label className="select-label">Pays de rÃ©sidence</label>
                 <select
                   value={formData.residenceCountry}
                   onChange={(e) => updateForm("residenceCountry", e.target.value)}
                   className="step-select"
                 >
-                  <optgroup label="Union Européenne">
+                  <optgroup label="Union EuropÃ©enne">
                     {euCountries.map((c) => (
                       <option key={c.code} value={c.code}>
                         {c.name}
@@ -494,9 +494,9 @@ export default function RegisterPage() {
                   onChange={(e) => updateForm("currency", e.target.value)}
                   className="step-select"
                 >
-                  <option value="EUR">€ EUR — Euro</option>
-                  <option value="CHF">CHF — Franc Suisse</option>
-                  <option value="USD">$ USD — Dollar Américain</option>
+                  <option value="EUR">â‚¬ EUR â€” Euro</option>
+                  <option value="CHF">CHF â€” Franc Suisse</option>
+                  <option value="USD">$ USD â€” Dollar AmÃ©ricain</option>
                 </select>
               </div>
 
@@ -532,20 +532,20 @@ export default function RegisterPage() {
           </div>
         )}
 
-        {/* ================= ÉTAPE 6 : SITUATION PROFESSIONNELLE & SALAIRE ================= */}
+        {/* ================= Ã‰TAPE 6 : SITUATION PROFESSIONNELLE & SALAIRE ================= */}
         {step === 6 && (
           <div className="step-card">
             <h2 className="step-title">Quelle est votre situation professionnelle ?</h2>
-            <p className="step-subtitle">Renseignez votre activité et vos revenus mensuels nets.</p>
+            <p className="step-subtitle">Renseignez votre activitÃ© et vos revenus mensuels nets.</p>
 
             <div className="radio-options-list">
               {[
-                "Salarié(e)",
-                "Indépendant(e)",
+                "SalariÃ©(e)",
+                "IndÃ©pendant(e)",
                 "Chef d'entreprise",
                 "Fonctionnaire",
-                "Étudiant(e)",
-                "Retraité(e)",
+                "Ã‰tudiant(e)",
+                "RetraitÃ©(e)",
                 "Sans emploi",
               ].map((job) => (
                 <label
@@ -566,7 +566,7 @@ export default function RegisterPage() {
 
             <div style={{ marginTop: "1.5rem" }}>
               <label className="select-label" style={{ display: "block", marginBottom: "0.5rem", fontWeight: 600, color: "#e2e8f0" }}>
-                Revenu mensuel net estimé (salaire en €)
+                Revenu mensuel net estimÃ© (salaire en â‚¬)
               </label>
               <div style={{ position: "relative" }}>
                 <input
@@ -579,7 +579,7 @@ export default function RegisterPage() {
                   style={{ paddingRight: "3rem" }}
                 />
                 <span style={{ position: "absolute", right: "1rem", top: "50%", transform: "translateY(-50%)", color: "#94a3b8", fontWeight: 600 }}>
-                  € / mois
+                  â‚¬ / mois
                 </span>
               </div>
               <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginTop: "0.5rem" }}>
@@ -598,7 +598,7 @@ export default function RegisterPage() {
                       cursor: "pointer",
                     }}
                   >
-                    {val} €
+                    {val} â‚¬
                   </button>
                 ))}
               </div>
@@ -614,19 +614,19 @@ export default function RegisterPage() {
           </div>
         )}
 
-        {/* ================= ÉTAPE 7 : UPLOAD DE PIÈCE D'IDENTITÉ ================= */}
+        {/* ================= Ã‰TAPE 7 : UPLOAD DE PIÃˆCE D'IDENTITÃ‰ ================= */}
         {step === 7 && (
           <div className="step-card">
-            <h2 className="step-title">Photographiez votre pièce</h2>
-            <p className="step-subtitle">Recto et verso, bien cadrés, sans reflet ni flou.</p>
+            <h2 className="step-title">Photographiez votre piÃ¨ce</h2>
+            <p className="step-subtitle">Recto et verso, bien cadrÃ©s, sans reflet ni flou.</p>
 
             {/* Choix du document */}
             <div className="document-type-selector">
               {[
-                { id: "id_card", label: "Carte d'identité", sub: "Recto et verso", icon: "fa-id-card" },
+                { id: "id_card", label: "Carte d'identitÃ©", sub: "Recto et verso", icon: "fa-id-card" },
                 { id: "passport", label: "Passeport", sub: "Page photo uniquement", icon: "fa-passport" },
                 { id: "driver", label: "Permis de conduire", sub: "Recto et verso", icon: "fa-id-badge" },
-                { id: "residence", label: "Titre de séjour", sub: "Recto et verso", icon: "fa-address-card" },
+                { id: "residence", label: "Titre de sÃ©jour", sub: "Recto et verso", icon: "fa-address-card" },
               ].map((doc) => (
                 <div
                   key={doc.id}
@@ -650,20 +650,20 @@ export default function RegisterPage() {
               {/* RECTO */}
               <div className="upload-box">
                 <div className="upload-box-header">
-                  <span>Recto de la pièce d&apos;identité</span>
+                  <span>Recto de la piÃ¨ce d&apos;identitÃ©</span>
                   <span className="badge-required" style={{ background: formData.docFrontBase64 ? "rgba(34,197,94,0.2)" : undefined, color: formData.docFrontBase64 ? "#22c55e" : undefined }}>
-                    {formData.docFrontBase64 ? "✓ Chargé" : "Requis"}
+                    {formData.docFrontBase64 ? "âœ“ ChargÃ©" : "Requis"}
                   </span>
                 </div>
                 <div className="upload-frame">
                   {formData.docFrontBase64 ? (
                     <div style={{ position: "relative", width: "100%", maxHeight: "120px", overflow: "hidden", borderRadius: "8px", margin: "0.5rem 0" }}>
-                      <img src={formData.docFrontBase64} alt="Recto aperçu" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                      <img src={formData.docFrontBase64} alt="Recto aperÃ§u" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                     </div>
                   ) : (
                     <>
                       <i className="fa-solid fa-id-card frame-icon"></i>
-                      <span className="frame-text">Prise de vue ou téléversement</span>
+                      <span className="frame-text">Prise de vue ou tÃ©lÃ©versement</span>
                     </>
                   )}
                   <input
@@ -683,20 +683,20 @@ export default function RegisterPage() {
               {formData.documentType !== "passport" && (
                 <div className="upload-box">
                   <div className="upload-box-header">
-                    <span>Verso de la pièce d&apos;identité</span>
+                    <span>Verso de la piÃ¨ce d&apos;identitÃ©</span>
                     <span className="badge-required" style={{ background: formData.docBackBase64 ? "rgba(34,197,94,0.2)" : undefined, color: formData.docBackBase64 ? "#22c55e" : undefined }}>
-                      {formData.docBackBase64 ? "✓ Chargé" : "Requis"}
+                      {formData.docBackBase64 ? "âœ“ ChargÃ©" : "Requis"}
                     </span>
                   </div>
                   <div className="upload-frame">
                     {formData.docBackBase64 ? (
                       <div style={{ position: "relative", width: "100%", maxHeight: "120px", overflow: "hidden", borderRadius: "8px", margin: "0.5rem 0" }}>
-                        <img src={formData.docBackBase64} alt="Verso aperçu" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                        <img src={formData.docBackBase64} alt="Verso aperÃ§u" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                       </div>
                     ) : (
                       <>
                         <i className="fa-solid fa-id-card frame-icon"></i>
-                        <span className="frame-text">Prise de vue ou téléversement</span>
+                        <span className="frame-text">Prise de vue ou tÃ©lÃ©versement</span>
                       </>
                     )}
                     <input
@@ -719,7 +719,7 @@ export default function RegisterPage() {
               disabled={loading}
               className="btn-step-primary margin-top-1"
             >
-              {loading ? "Création du compte en cours..." : "Terminer mon inscription"}
+              {loading ? "CrÃ©ation du compte en cours..." : "Terminer mon inscription"}
             </button>
           </div>
         )}

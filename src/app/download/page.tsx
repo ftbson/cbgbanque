@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import Link from "next/link";
@@ -26,15 +26,15 @@ export default function DownloadPage() {
           Toute votre banque, <span className="gradient-text">au creux de votre main</span>
         </h1>
         <p className="download-hero-sub">
-          Installez l&apos;application CBG Banque instantanément sans passer par les magasins d&apos;applications. Profitez d&apos;un accès rapide, fluide et hautement sécurisé depuis votre écran d&apos;accueil.
+          Installez l&apos;application CBG Banque instantanÃ©ment sans passer par les magasins d&apos;applications. Profitez d&apos;un accÃ¨s rapide, fluide et hautement sÃ©curisÃ© depuis votre Ã©cran d&apos;accueil.
         </p>
 
         <div className="download-hero-actions">
           <button onClick={handleInstall} className="btn-hero-install">
             <i className="fa-solid fa-download"></i>
-            <span>{isInstalled ? "Application déjà installée" : "Installer l'application"}</span>
+            <span>{isInstalled ? "Application dÃ©jÃ  installÃ©e" : "Installer l'application"}</span>
           </button>
-          <Link href="/register" className="btn-hero-account">
+          <Link href="/FR/register" className="btn-hero-account">
             Ouvrir un compte gratuit
           </Link>
         </div>
@@ -49,9 +49,9 @@ export default function DownloadPage() {
               <i className="fa-brands fa-android"></i>
               <h3>Android & Chrome</h3>
             </div>
-            <p>1. Cliquez sur « Installer l&apos;application » ci-dessus.</p>
+            <p>1. Cliquez sur Â« Installer l&apos;application Â» ci-dessus.</p>
             <p>2. Confirmez l&apos;installation dans la notification du navigateur.</p>
-            <p>3. L&apos;icône CBG Banque apparaît directement sur votre écran d&apos;accueil.</p>
+            <p>3. L&apos;icÃ´ne CBG Banque apparaÃ®t directement sur votre Ã©cran d&apos;accueil.</p>
           </div>
 
           <div className="guide-card">
@@ -60,8 +60,8 @@ export default function DownloadPage() {
               <h3>iPhone & iPad (Safari)</h3>
             </div>
             <p>1. Ouvrez ce site dans le navigateur Safari.</p>
-            <p>2. Touchez l&apos;icône de partage <i className="fa-solid fa-arrow-up-from-bracket"></i> en bas de l&apos;écran.</p>
-            <p>3. Faites défiler vers le bas et sélectionnez <strong>« Sur l&apos;écran d&apos;accueil »</strong> <i className="fa-regular fa-square-plus"></i>.</p>
+            <p>2. Touchez l&apos;icÃ´ne de partage <i className="fa-solid fa-arrow-up-from-bracket"></i> en bas de l&apos;Ã©cran.</p>
+            <p>3. Faites dÃ©filer vers le bas et sÃ©lectionnez <strong>Â« Sur l&apos;Ã©cran d&apos;accueil Â»</strong> <i className="fa-regular fa-square-plus"></i>.</p>
           </div>
 
           <div className="guide-card">
@@ -70,8 +70,8 @@ export default function DownloadPage() {
               <h3>Ordinateur (PC & Mac)</h3>
             </div>
             <p>1. Ouvrez le site sous Chrome, Edge ou Brave.</p>
-            <p>2. Cliquez sur l&apos;icône d&apos;installation dans la barre d&apos;adresse à droite.</p>
-            <p>3. CBG Banque s&apos;ouvre dans sa propre fenêtre indépendante et ultra rapide.</p>
+            <p>2. Cliquez sur l&apos;icÃ´ne d&apos;installation dans la barre d&apos;adresse Ã  droite.</p>
+            <p>3. CBG Banque s&apos;ouvre dans sa propre fenÃªtre indÃ©pendante et ultra rapide.</p>
           </div>
         </div>
 
@@ -79,23 +79,23 @@ export default function DownloadPage() {
         <div className="download-features-grid">
           <div className="d-feat-box">
             <div className="d-feat-icon"><i className="fa-solid fa-bolt"></i></div>
-            <h4>Ultra légère</h4>
-            <p>Moins de 2 Mo, aucune mise à jour lourde requise, se lance instantanément.</p>
+            <h4>Ultra lÃ©gÃ¨re</h4>
+            <p>Moins de 2 Mo, aucune mise Ã  jour lourde requise, se lance instantanÃ©ment.</p>
           </div>
           <div className="d-feat-box">
             <div className="d-feat-icon"><i className="fa-solid fa-shield-halved"></i></div>
-            <h4>Sécurité biométrique</h4>
+            <h4>SÃ©curitÃ© biomÃ©trique</h4>
             <p>Compatible Face ID, Touch ID et empreinte digitale pour vos connexions et virements.</p>
           </div>
           <div className="d-feat-box">
             <div className="d-feat-icon"><i className="fa-solid fa-credit-card"></i></div>
             <h4>Cartes virtuelles</h4>
-            <p>Créez, gelez et gérez vos cartes Visa en un glissement de doigt.</p>
+            <p>CrÃ©ez, gelez et gÃ©rez vos cartes Visa en un glissement de doigt.</p>
           </div>
           <div className="d-feat-box">
             <div className="d-feat-icon"><i className="fa-solid fa-hand-holding-dollar"></i></div>
-            <h4>Prêts & Crédits</h4>
-            <p>Simulez et suivez vos demandes de prêt en direct depuis votre téléphone.</p>
+            <h4>PrÃªts & CrÃ©dits</h4>
+            <p>Simulez et suivez vos demandes de prÃªt en direct depuis votre tÃ©lÃ©phone.</p>
           </div>
         </div>
 
@@ -105,3 +105,4 @@ export default function DownloadPage() {
     </div>
   );
 }
+

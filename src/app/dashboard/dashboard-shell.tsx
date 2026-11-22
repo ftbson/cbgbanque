@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
@@ -31,10 +31,10 @@ export default function DashboardShell({
   const handleLogout = async () => {
     const response = await fetch("/api/auth/logout", { method: "POST" });
     if (!response.ok) {
-      console.error("La déconnexion n'a pas abouti.");
+      console.error("La dÃ©connexion n'a pas abouti.");
       return;
     }
-    router.push("/login");
+    router.push("/FR/login");
     router.refresh();
   };
 
@@ -49,11 +49,11 @@ export default function DashboardShell({
     <div className="dashboard-layout">
       {/* ================= REPRODUCED TOPBAR (SCREENSHOT 1) ================= */}
       <header className="dashboard-topbar">
-        {/* User Avatar Circle (CH) linking to Paramètres */}
+        {/* User Avatar Circle (CH) linking to ParamÃ¨tres */}
         <Link
-          href="/dashboard/parametres"
+          href="/FR/dashboard/settings"
           className="topbar-avatar-round"
-          title={`${identity?.user.firstName || ""} ${identity?.user.lastName || ""} - Ouvrir les paramètres`}
+          title={`${identity?.user.firstName || ""} ${identity?.user.lastName || ""} - Ouvrir les paramÃ¨tres`}
           style={{ textDecoration: "none" }}
         >
           {getInitials()}
@@ -61,7 +61,7 @@ export default function DashboardShell({
 
         <div className="topbar-actions">
           <Link
-            href="/dashboard/analyse"
+            href="/FR/dashboard/analyse"
             className="topbar-icon-round"
             title="Analyses & Statistiques"
           >
@@ -69,7 +69,7 @@ export default function DashboardShell({
           </Link>
 
           <Link
-            href="/dashboard/carte"
+            href="/FR/dashboard/carte"
             className="topbar-icon-round card-icon-wrap"
             title="Mes Cartes"
           >
@@ -77,19 +77,19 @@ export default function DashboardShell({
           </Link>
 
           <Link
-            href="/dashboard/parametres"
+            href="/FR/dashboard/settings"
             className="topbar-icon-round topbar-settings-link"
-            title="Paramètres du compte"
+            title="ParamÃ¨tres du compte"
           >
             <i className="fa-solid fa-gear"></i>
-            <span>Paramètres</span>
+            <span>ParamÃ¨tres</span>
           </Link>
 
           <button
             type="button"
             className="topbar-icon-round"
             onClick={handleLogout}
-            title="Se déconnecter"
+            title="Se dÃ©connecter"
           >
             <i className="fa-solid fa-arrow-right-from-bracket"></i>
           </button>
@@ -101,48 +101,49 @@ export default function DashboardShell({
       {/* ================= REPRODUCED BOTTOM NAVIGATION (SCREENSHOT 1 & 7) ================= */}
       <nav className="dashboard-bottom-nav">
         <Link
-          href="/dashboard"
-          className={`nav-item-bottom ${pathname === "/dashboard" ? "active" : ""}`}
+          href="/FR/dashboard"
+          className={`nav-item-bottom ${pathname === "/FR/dashboard" ? "active" : ""}`}
         >
           <i className="fa-solid fa-house"></i>
           <span>Accueil</span>
         </Link>
         <Link
-          href="/dashboard/pret"
-          className={`nav-item-bottom ${pathname === "/dashboard/pret" ? "active" : ""}`}
+          href="/FR/dashboard/pret"
+          className={`nav-item-bottom ${pathname === "/FR/dashboard/pret" ? "active" : ""}`}
         >
           <i className="fa-solid fa-arrow-trend-up"></i>
-          <span>Prêts</span>
+          <span>PrÃªts</span>
         </Link>
         <Link
-          href="/dashboard/envoyer"
-          className={`nav-item-bottom ${pathname === "/dashboard/envoyer" ? "active" : ""}`}
+          href="/FR/dashboard/envoyer"
+          className={`nav-item-bottom ${pathname === "/FR/dashboard/envoyer" ? "active" : ""}`}
         >
           <i className="fa-solid fa-arrow-right-arrow-left"></i>
           <span>Virements</span>
         </Link>
         <Link
-          href="/dashboard/carte"
-          className={`nav-item-bottom ${pathname === "/dashboard/carte" ? "active" : ""}`}
+          href="/FR/dashboard/carte"
+          className={`nav-item-bottom ${pathname === "/FR/dashboard/carte" ? "active" : ""}`}
         >
           <i className="fa-regular fa-credit-card"></i>
           <span>Cartes</span>
         </Link>
         <Link
-          href="/dashboard/epargne"
-          className={`nav-item-bottom ${pathname === "/dashboard/epargne" ? "active" : ""}`}
+          href="/FR/dashboard/epargne"
+          className={`nav-item-bottom ${pathname === "/FR/dashboard/epargne" ? "active" : ""}`}
         >
           <i className="fa-solid fa-piggy-bank"></i>
-          <span>Épargne</span>
+          <span>Ã‰pargne</span>
         </Link>
         <Link
-          href="/dashboard/parametres"
-          className={`nav-item-bottom ${pathname === "/dashboard/parametres" ? "active" : ""}`}
+          href="/FR/dashboard/settings"
+          className={`nav-item-bottom ${pathname === "/FR/dashboard/settings" ? "active" : ""}`}
         >
           <i className="fa-solid fa-gear"></i>
-          <span>Paramètres</span>
+          <span>ParamÃ¨tres</span>
         </Link>
       </nav>
     </div>
   );
 }
+

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 
@@ -40,7 +40,7 @@ export default function AnalysePage() {
       <div className="analyse-container">
         <div className="analyse-header">
           <div className="analyse-title-group">
-            <h1 className="analyse-main-title">Activité des coffres</h1>
+            <h1 className="analyse-main-title">ActivitÃ© des coffres</h1>
             <span className="analyse-top-sub">Mouvements issus de votre compte</span>
           </div>
         </div>
@@ -48,13 +48,13 @@ export default function AnalysePage() {
         <div className="analyse-pills-row">
           {(["7days", "month", "year"] as const).map((value) => (
             <button key={value} className={`pill-period ${period === value ? "active" : ""}`} onClick={() => setPeriod(value)}>
-              {value === "7days" ? "7 jours" : value === "month" ? "Ce mois" : "Cette année"}
+              {value === "7days" ? "7 jours" : value === "month" ? "Ce mois" : "Cette annÃ©e"}
             </button>
           ))}
         </div>
 
         {error && <p role="alert">{error}</p>}
-        {!data ? <p>Chargement…</p> : (
+        {!data ? <p>Chargementâ€¦</p> : (
           <>
             <div className="analyse-stats-grid">
               <div className="stat-box-card">
@@ -69,7 +69,7 @@ export default function AnalysePage() {
             <section className="analyse-card-block">
               <h2 className="block-inner-title">Demandes de retrait en attente</h2>
               <p>{formatMoney(data.pendingWithdrawalsCents, data.currency)}</p>
-              <p role="note">Les demandes en attente ne sont pas des virements exécutés.</p>
+              <p role="note">Les demandes en attente ne sont pas des virements exÃ©cutÃ©s.</p>
             </section>
           </>
         )}
@@ -77,3 +77,4 @@ export default function AnalysePage() {
     </div>
   );
 }
+

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import Link from "next/link";
@@ -30,7 +30,7 @@ export default function LoginPage() {
         return;
       }
 
-      router.push("/dashboard");
+      router.push("/FR/dashboard");
       router.refresh();
     } catch {
       setErrorMessage("Erreur de connexion au serveur.");
@@ -42,21 +42,21 @@ export default function LoginPage() {
   return (
     <div className="auth-section">
       <div className="auth-container">
-        
+
         {/* Top navigation actions */}
         <div className="auth-top-action" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%", maxWidth: "460px", margin: "0 auto 1.5rem auto" }}>
-          <Link href="/" className="btn-auth-switch">
+          <Link href="/FR" className="btn-auth-switch">
             <i className="fa-solid fa-arrow-left" style={{ marginRight: "0.5rem" }}></i> Accueil
           </Link>
-          <Link href="/register" className="btn-auth-switch">
-            S&apos;inscrire
+          <Link href="/FR/register" className="btn-auth-switch">
+            S'inscrire
           </Link>
         </div>
 
         <div className="auth-card">
           <div className="auth-header">
             <h1 className="auth-title">Bon retour sur CBG Banque</h1>
-            <p className="auth-subtitle">Connectez-vous à votre espace sécurisé</p>
+            <p className="auth-subtitle">Connectez-vous Ã  votre espace sÃ©curisÃ©</p>
           </div>
 
           {errorMessage && (
@@ -90,7 +90,7 @@ export default function LoginPage() {
                   type={showPassword ? "text" : "password"}
                   id="password"
                   required
-                  placeholder="••••••••"
+                  placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="form-input"
@@ -111,8 +111,8 @@ export default function LoginPage() {
                 <input type="checkbox" defaultChecked />
                 <span>Se souvenir de moi</span>
               </label>
-              <Link href="/forgot-password" className="forgot-link">
-                Mot de passe oublié ?
+              <Link href="/FR/mot-de-passe-oublie" className="forgot-link">
+                Mot de passe oubliÃ© ?
               </Link>
             </div>
 
@@ -122,9 +122,9 @@ export default function LoginPage() {
           </form>
 
           <div className="auth-footer-link">
-            <span>Vous n&apos;avez pas de compte ?</span>{" "}
-            <Link href="/register" className="auth-link-bold">
-              S&apos;inscrire
+            <span>Vous n'avez pas de compte ?</span>{" "}
+            <Link href="/FR/register" className="auth-link-bold">
+              S'inscrire
             </Link>
           </div>
         </div>

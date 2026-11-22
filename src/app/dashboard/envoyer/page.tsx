@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -87,10 +87,10 @@ export default function EnvoyerPage() {
       try {
         const res = await fetch("/api/dashboard/transactions");
         const data: AccountData = await res.json();
-        if (!res.ok) throw new Error(data.message ?? "Erreur de mise à jour des virements.");
+        if (!res.ok) throw new Error(data.message ?? "Erreur de mise Ã  jour des virements.");
         if (active) setAccount(data);
       } catch (refreshError) {
-        console.error("Erreur d’actualisation des demandes de virement :", refreshError);
+        console.error("Erreur dâ€™actualisation des demandes de virement :", refreshError);
       }
     };
 
@@ -120,7 +120,7 @@ export default function EnvoyerPage() {
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message ?? "Erreur lors de la préparation du virement.");
+      if (!res.ok) throw new Error(data.message ?? "Erreur lors de la prÃ©paration du virement.");
 
       setRequestId(data.requestId);
       setTrackingTransferId(data.requestId);
@@ -142,7 +142,7 @@ export default function EnvoyerPage() {
       {/* Top Header */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.75rem" }}>
         <Link
-          href="/dashboard"
+          href="/FR/dashboard"
           style={{
             width: "38px",
             height: "38px",
@@ -182,7 +182,7 @@ export default function EnvoyerPage() {
             SOLDE DISPONIBLE
           </span>
           <div style={{ fontSize: "1.75rem", fontWeight: 800, color: "#fff" }}>
-            {account ? formatMoney(account.availableBalanceCents, account.currency) : "…"}
+            {account ? formatMoney(account.availableBalanceCents, account.currency) : "â€¦"}
           </div>
         </div>
         <div style={{ width: "42px", height: "42px", borderRadius: "12px", background: "rgba(59, 130, 246, 0.15)", display: "flex", alignItems: "center", justifyContent: "center", color: "#60a5fa", fontSize: "1.2rem" }}>
@@ -197,7 +197,7 @@ export default function EnvoyerPage() {
           <div>
             <strong>Virements suspendus :</strong>
             <p style={{ margin: "0.2rem 0 0", color: "#fef9c3", fontSize: "0.85rem" }}>
-              Les opérations de virement sont actuellement restreintes sur votre compte par l&apos;administration. Veuillez contacter votre conseiller CBG Finance.
+              Les opÃ©rations de virement sont actuellement restreintes sur votre compte par l&apos;administration. Veuillez contacter votre conseiller CBG Finance.
             </p>
           </div>
         </div>
@@ -215,7 +215,7 @@ export default function EnvoyerPage() {
           }}
         >
           <h2 id="recent-transfers-title" style={{ fontSize: "1rem", margin: "0 0 0.75rem" }}>
-            Demandes de virement récentes
+            Demandes de virement rÃ©centes
           </h2>
           <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
             {account.recentTransfers.map((transfer) => {
@@ -269,18 +269,18 @@ export default function EnvoyerPage() {
                         </button>
                       ) : (
                         <span style={{ color: isBlocked ? "#f87171" : "#34d399", fontSize: "0.8rem", fontWeight: 700 }}>
-                          {isBlocked ? "Bloqué" : "Traité"}
+                          {isBlocked ? "BloquÃ©" : "TraitÃ©"}
                         </span>
                       )}
                     </div>
                   </div>
                   {isExpanded && (
                     <div style={{ padding: "0.5rem 0 0.25rem", color: "rgba(255,255,255,0.75)", fontSize: "0.85rem", lineHeight: 1.6 }}>
-                      <div><strong>Bénéficiaire :</strong> {transfer.recipientName}</div>
+                      <div><strong>BÃ©nÃ©ficiaire :</strong> {transfer.recipientName}</div>
                       <div><strong>IBAN :</strong> {transfer.iban}</div>
                       {transfer.bic && <div><strong>BIC :</strong> {transfer.bic}</div>}
                       {transfer.description && <div><strong>Motif :</strong> {transfer.description}</div>}
-                      <div><strong>Référence :</strong> {transfer.id}</div>
+                      <div><strong>RÃ©fÃ©rence :</strong> {transfer.id}</div>
                       {isPending && (
                         <div
                           role="status"
@@ -288,7 +288,7 @@ export default function EnvoyerPage() {
                           style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginTop: "0.75rem", color: "#fbbf24" }}
                         >
                           <i className="fa-solid fa-circle-notch fa-spin" aria-hidden="true"></i>
-                          <span>En attente d’examen par l’administration. Aucun virement n’a encore été exécuté.</span>
+                          <span>En attente dâ€™examen par lâ€™administration. Aucun virement nâ€™a encore Ã©tÃ© exÃ©cutÃ©.</span>
                         </div>
                       )}
                     </div>
@@ -312,7 +312,7 @@ export default function EnvoyerPage() {
         <form onSubmit={handleInitiateTransfer} style={{ display: "flex", flexDirection: "column", gap: "1.1rem" }}>
           <div>
             <label style={{ display: "block", fontSize: "0.85rem", color: "rgba(255,255,255,0.75)", marginBottom: "0.35rem", fontWeight: 600 }}>
-              Nom et prénom du bénéficiaire
+              Nom et prÃ©nom du bÃ©nÃ©ficiaire
             </label>
             <input
               type="text"
@@ -383,7 +383,7 @@ export default function EnvoyerPage() {
 
             <div>
               <label style={{ display: "block", fontSize: "0.85rem", color: "rgba(255,255,255,0.75)", marginBottom: "0.35rem", fontWeight: 600 }}>
-                Montant (€)
+                Montant (â‚¬)
               </label>
               <input
                 type="number"
@@ -448,7 +448,7 @@ export default function EnvoyerPage() {
                 boxShadow: "0 8px 25px rgba(67, 97, 238, 0.4)",
               }}
             >
-              {loading ? "Enregistrement en cours…" : "Envoyer la demande"}
+              {loading ? "Enregistrement en coursâ€¦" : "Envoyer la demande"}
             </button>
           </div>
         </form>
@@ -471,16 +471,16 @@ export default function EnvoyerPage() {
             Demande en attente de validation
           </h2>
           <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.75)", lineHeight: 1.6, margin: "0 0 1.25rem" }}>
-            {errorDetails || "Votre demande a été enregistrée. Aucun virement n'a encore été exécuté."}
+            {errorDetails || "Votre demande a Ã©tÃ© enregistrÃ©e. Aucun virement n'a encore Ã©tÃ© exÃ©cutÃ©."}
           </p>
           <div style={{ textAlign: "left", margin: "0 auto 1.5rem", maxWidth: "360px", fontSize: "0.9rem" }}>
-            <div style={{ marginBottom: "0.5rem" }}><strong>Bénéficiaire :</strong> {recipientName}</div>
-            <div style={{ marginBottom: "0.5rem" }}><strong>Montant :</strong> {amount} €</div>
-            <div><strong>Référence :</strong> {requestId}</div>
+            <div style={{ marginBottom: "0.5rem" }}><strong>BÃ©nÃ©ficiaire :</strong> {recipientName}</div>
+            <div style={{ marginBottom: "0.5rem" }}><strong>Montant :</strong> {amount} â‚¬</div>
+            <div><strong>RÃ©fÃ©rence :</strong> {requestId}</div>
           </div>
           <div style={{ display: "flex", justifyContent: "center", gap: "0.75rem", flexWrap: "wrap" }}>
             <Link
-              href="/dashboard"
+              href="/FR/dashboard"
               style={{
                 display: "inline-block",
                 padding: "0.85rem 1.25rem",
@@ -534,3 +534,4 @@ export default function EnvoyerPage() {
     </div>
   );
 }
+

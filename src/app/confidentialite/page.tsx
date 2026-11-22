@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 
 export default function ConfidentialitePage() {
   return (
@@ -6,11 +6,11 @@ export default function ConfidentialitePage() {
       <div className="legal-hero-banner">
         <div className="legal-hero-glow" />
         <span className="legal-pill-badge">
-          <i className="fa-solid fa-lock"></i> Confidentialité & Protection des données
+          <i className="fa-solid fa-lock"></i> ConfidentialitÃ© & Protection des donnÃ©es
         </span>
-        <h1 className="legal-main-heading">Politique de Confidentialité</h1>
+        <h1 className="legal-main-heading">Politique de ConfidentialitÃ©</h1>
         <p className="legal-lead-text">
-          Dernière mise à jour : Février 2026. Découvrez les engagements stricts de CBG Banque Finance SA quant à la collecte, le traitement et la sécurité de vos données financières et personnelles.
+          DerniÃ¨re mise Ã  jour : FÃ©vrier 2026. DÃ©couvrez les engagements stricts de CBG Banque Finance SA quant Ã  la collecte, le traitement et la sÃ©curitÃ© de vos donnÃ©es financiÃ¨res et personnelles.
         </p>
       </div>
 
@@ -20,61 +20,61 @@ export default function ConfidentialitePage() {
           <section className="legal-block">
             <h3>1. Introduction et Responsable de Traitement</h3>
             <p>
-              La présente Politique de Confidentialité s&apos;applique à l&apos;ensemble des services fournis par <strong>CBG Banque Finance SA</strong> (société anonyme de droit européen, sise Avenue Louise 542, 1050 Bruxelles, Belgique). En qualité d&apos;établissement financier et responsable de traitement au sens du Règlement Général sur la Protection des Données (RGPD 2016/679), nous accordons une importance primordiale à la confidentialité de vos informations privées.
+              La prÃ©sente Politique de ConfidentialitÃ© s&apos;applique Ã  l&apos;ensemble des services fournis par <strong>CBG Banque Finance SA</strong> (sociÃ©tÃ© anonyme de droit europÃ©en, sise Avenue Louise 542, 1050 Bruxelles, Belgique). En qualitÃ© d&apos;Ã©tablissement financier et responsable de traitement au sens du RÃ¨glement GÃ©nÃ©ral sur la Protection des DonnÃ©es (RGPD 2016/679), nous accordons une importance primordiale Ã  la confidentialitÃ© de vos informations privÃ©es.
             </p>
           </section>
 
           <section className="legal-block">
-            <h3>2. Quelles données personnelles collectons-nous ?</h3>
+            <h3>2. Quelles donnÃ©es personnelles collectons-nous ?</h3>
             <p>Dans le cadre de l&apos;ouverture et de la tenue de compte bancaire, nous collectons les informations suivantes :</p>
             <ul>
-              <li><strong>Données d&apos;identification (KYC) :</strong> Civilité, nom, prénom, date et lieu de naissance, nationalité, adresse postale, numéro de téléphone et adresse e-mail.</li>
-              <li><strong>Pièces justificatives d&apos;identité :</strong> Copie recto et verso de votre carte nationale d&apos;identité, passeport ou titre de séjour, conservées dans un espace de stockage chiffré haute sécurité.</li>
-              <li><strong>Situation professionnelle et financière :</strong> Profession déclarée, tranche de salaire / revenus nets mensuels, informations nécessaires à l&apos;instruction des demandes de prêt.</li>
-              <li><strong>Données de transactions & cartes :</strong> Numéro de compte IBAN, virements, création et utilisation de cartes virtuelles ou physiques, historique des mouvements.</li>
-              <li><strong>Données techniques de connexion :</strong> Horodatage de connexion sécurisée, adresse IP masquée, logs d&apos;audit pour la prévention contre la fraude bancaire.</li>
+              <li><strong>DonnÃ©es d&apos;identification (KYC) :</strong> CivilitÃ©, nom, prÃ©nom, date et lieu de naissance, nationalitÃ©, adresse postale, numÃ©ro de tÃ©lÃ©phone et adresse e-mail.</li>
+              <li><strong>PiÃ¨ces justificatives d&apos;identitÃ© :</strong> Copie recto et verso de votre carte nationale d&apos;identitÃ©, passeport ou titre de sÃ©jour, conservÃ©es dans un espace de stockage chiffrÃ© haute sÃ©curitÃ©.</li>
+              <li><strong>Situation professionnelle et financiÃ¨re :</strong> Profession dÃ©clarÃ©e, tranche de salaire / revenus nets mensuels, informations nÃ©cessaires Ã  l&apos;instruction des demandes de prÃªt.</li>
+              <li><strong>DonnÃ©es de transactions & cartes :</strong> NumÃ©ro de compte IBAN, virements, crÃ©ation et utilisation de cartes virtuelles ou physiques, historique des mouvements.</li>
+              <li><strong>DonnÃ©es techniques de connexion :</strong> Horodatage de connexion sÃ©curisÃ©e, adresse IP masquÃ©e, logs d&apos;audit pour la prÃ©vention contre la fraude bancaire.</li>
             </ul>
           </section>
 
           <section className="legal-block">
-            <h3>3. Finalités et bases légales du traitement</h3>
-            <p>Vos données sont traitées pour des objectifs précis et licites :</p>
+            <h3>3. FinalitÃ©s et bases lÃ©gales du traitement</h3>
+            <p>Vos donnÃ©es sont traitÃ©es pour des objectifs prÃ©cis et licites :</p>
             <ul>
-              <li><strong>Exécution contractuelle :</strong> Création de votre compte, délivrance de cartes de paiement, traitement des virements, simulation et octroi de crédits.</li>
-              <li><strong>Obligations légales et réglementaires bancaires :</strong> Lutte contre le blanchiment d&apos;argent et le financement du terrorisme (LCB-FT), vérification d&apos;identité KYC (Know Your Customer) obligatoire avant toute activation de compte par nos administrateurs.</li>
-              <li><strong>Sécurité et prévention de la fraude :</strong> Protection de votre espace client contre les accès non autorisés et alertes de sécurité en temps réel.</li>
+              <li><strong>ExÃ©cution contractuelle :</strong> CrÃ©ation de votre compte, dÃ©livrance de cartes de paiement, traitement des virements, simulation et octroi de crÃ©dits.</li>
+              <li><strong>Obligations lÃ©gales et rÃ©glementaires bancaires :</strong> Lutte contre le blanchiment d&apos;argent et le financement du terrorisme (LCB-FT), vÃ©rification d&apos;identitÃ© KYC (Know Your Customer) obligatoire avant toute activation de compte par nos administrateurs.</li>
+              <li><strong>SÃ©curitÃ© et prÃ©vention de la fraude :</strong> Protection de votre espace client contre les accÃ¨s non autorisÃ©s et alertes de sÃ©curitÃ© en temps rÃ©el.</li>
               <li><strong>Consentement :</strong> Pour l&apos;envoi d&apos;e-mails d&apos;information ou l&apos;activation des cookies analytiques optionnels.</li>
             </ul>
           </section>
 
           <section className="legal-block">
-            <h3>4. Durée de conservation des données</h3>
+            <h3>4. DurÃ©e de conservation des donnÃ©es</h3>
             <p>
-              Conformément à la réglementation monétaire et financière européenne, les documents relatifs à votre identité et l&apos;historique de vos opérations sont archivés pendant une durée de 5 ans après la clôture de la relation bancaire, après quoi ils font l&apos;objet d&apos;une purge sécurisée irréversible.
+              ConformÃ©ment Ã  la rÃ©glementation monÃ©taire et financiÃ¨re europÃ©enne, les documents relatifs Ã  votre identitÃ© et l&apos;historique de vos opÃ©rations sont archivÃ©s pendant une durÃ©e de 5 ans aprÃ¨s la clÃ´ture de la relation bancaire, aprÃ¨s quoi ils font l&apos;objet d&apos;une purge sÃ©curisÃ©e irrÃ©versible.
             </p>
           </section>
 
           <section className="legal-block">
-            <h3>5. Sécurité et Chiffrement des informations</h3>
+            <h3>5. SÃ©curitÃ© et Chiffrement des informations</h3>
             <p>
-              Toutes les données en transit sont protégées par le protocole TLS 1.3 avec chiffrement 256 bits. Vos mots de passe sont hachés cryptographiquement via des algorithmes à clé forte (Argon2 / Scrypt) et ne sont jamais stockés en clair. Les copies de pièces d&apos;identité sont uniquement accessibles par le personnel habilité du service Conformité pour vérification réglementaire.
+              Toutes les donnÃ©es en transit sont protÃ©gÃ©es par le protocole TLS 1.3 avec chiffrement 256 bits. Vos mots de passe sont hachÃ©s cryptographiquement via des algorithmes Ã  clÃ© forte (Argon2 / Scrypt) et ne sont jamais stockÃ©s en clair. Les copies de piÃ¨ces d&apos;identitÃ© sont uniquement accessibles par le personnel habilitÃ© du service ConformitÃ© pour vÃ©rification rÃ©glementaire.
             </p>
           </section>
 
           <section className="legal-block">
             <h3>6. Vos droits selon le RGPD</h3>
             <p>
-              Vous disposez à tout moment du droit d&apos;accès, de rectification, de portabilité, de limitation et d&apos;effacement de vos données personnelles (sous réserve de nos obligations légales bancaires de conservation). Pour exercer vos droits, contactez notre Délégué à la Protection des Données (DPO) :
+              Vous disposez Ã  tout moment du droit d&apos;accÃ¨s, de rectification, de portabilitÃ©, de limitation et d&apos;effacement de vos donnÃ©es personnelles (sous rÃ©serve de nos obligations lÃ©gales bancaires de conservation). Pour exercer vos droits, contactez notre DÃ©lÃ©guÃ© Ã  la Protection des DonnÃ©es (DPO) :
             </p>
             <div className="legal-contact-highlight">
               <i className="fa-solid fa-shield-halved"></i>
               <div>
-                <strong>Délégué à la Protection des Données (DPO)</strong>
-                <p>Email : <a href="mailto:dpo@cbgbanque.com">dpo@cbgbanque.com</a> · Adresse : CBG Banque Finance SA, DPO Office, Avenue Louise 542, 1050 Bruxelles</p>
+                <strong>DÃ©lÃ©guÃ© Ã  la Protection des DonnÃ©es (DPO)</strong>
+                <p>Email : <a href="mailto:dpo@cbgbanque.com">dpo@cbgbanque.com</a> Â· Adresse : CBG Banque Finance SA, DPO Office, Avenue Louise 542, 1050 Bruxelles</p>
               </div>
             </div>
             <p style={{ marginTop: "1rem" }}>
-              Pour plus de détails, consultez également notre page dédiée au <Link href="/rgpd" className="text-link">Règlement Général sur la Protection des Données (RGPD)</Link>.
+              Pour plus de dÃ©tails, consultez Ã©galement notre page dÃ©diÃ©e au <Link href="/rgpd" className="text-link">RÃ¨glement GÃ©nÃ©ral sur la Protection des DonnÃ©es (RGPD)</Link>.
             </p>
           </section>
 
@@ -83,3 +83,4 @@ export default function ConfidentialitePage() {
     </div>
   );
 }
+
