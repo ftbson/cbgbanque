@@ -88,7 +88,7 @@ export default function SiteFrame({ children }: SiteFrameProps) {
       {!hideSiteNavFooter && <Navbar />}
       <main className="main-content">{children}</main>
       {!hideSiteNavFooter && <Footer />}
-      <CookieBanner />
+      <CookieBanner locale={locale} />
     </div>
   );
 }
