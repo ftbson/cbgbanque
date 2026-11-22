@@ -1,7 +1,7 @@
-import { redirect } from "next/navigation";
+﻿import { notFound } from "next/navigation";
 
-export default function Home() {
-  // Fallback redirect in case middleware doesn't run
-  // Middleware at src/middleware.ts handles language detection and redirect
-  redirect("/FR");
+// The Next.js proxy handles every request to / with an HTTP locale redirect.
+// This page is only a defensive fallback and never renders a homepage at /.
+export default function RootPage(): never {
+  notFound();
 }
