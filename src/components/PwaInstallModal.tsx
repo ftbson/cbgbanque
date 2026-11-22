@@ -1,6 +1,7 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
+import { getMessages } from "@/lib/messages";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -48,68 +49,55 @@ export function usePwa() {
 export default function PwaInstallModal({
   isOpen,
   onClose,
+  locale = "fr",
 }: {
   isOpen: boolean;
   onClose: () => void;
+  locale?: import("@/lib/messages").Locale;
 }) {
   const { triggerInstall } = usePwa();
   const [copied, setCopied] = useState(false);
+  const t = getMessages(locale).pwaInstall;
 
   if (!isOpen) return null;
 
   const handleInstallClick = async () => {
     const installed = await triggerInstall();
-    if (installed) {
-      onClose();
-    }
+    if (installed) onClose();
   };
 
   const copyUrl = () => {
-    if (typeof window !== "undefined") {
-      navigator.clipboard.writeText(window.location.origin);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }
+    navigator.clipboard.writeText(window.location.origin);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
     <div className="pwa-modal-backdrop" onClick={onClose}>
       <div className="pwa-modal-card" onClick={(e) => e.stopPropagation()}>
-        <button className="pwa-modal-close" onClick={onClose} aria-label="Fermer">
+        <button className="pwa-modal-close" onClick={onClose} aria-label={t.close}>
           <i className="fa-solid fa-xmark"></i>
         </button>
-
         <div className="pwa-modal-icon-container">
-          <div className="pwa-app-icon">
-            <span>CBG</span>
-          </div>
+          <div className="pwa-app-icon"><span>CBG</span></div>
         </div>
-
-        <h3 className="pwa-modal-title">Installer l&apos;application CBG</h3>
-
+        <h3 className="pwa-modal-title">{t.title}</h3>
         <div className="pwa-instructions-box">
           <div className="pwa-step">
             <span className="pwa-step-num">1</span>
-            <div>
-              <strong>Sur Android ou Ordinateur (Chrome / Edge) :</strong>
-              <p>Cliquez ci-dessous sur &quot;Installer maintenant&quot; ou dans la barre d&apos;adresse du navigateur sur l&apos;icône d&apos;installation.</p>
-            </div>
+            <div><strong>{t.androidHeading}</strong><p>{t.androidInstructions}</p></div>
           </div>
           <div className="pwa-step">
             <span className="pwa-step-num">2</span>
-            <div>
-              <strong>Sur iPhone / iPad (Safari) :</strong>
-              <p>Appuyez sur le bouton Partager <i className="fa-solid fa-arrow-up-from-bracket"></i> en bas, puis choisissez &quot;Sur l&apos;écran d&apos;accueil&quot; <i className="fa-regular fa-square-plus"></i>.</p>
-            </div>
+            <div><strong>{t.iosHeading}</strong><p>{t.iosInstructions}</p></div>
           </div>
         </div>
-
         <div className="pwa-modal-actions">
           <button onClick={handleInstallClick} className="btn-pwa-primary">
-            <i className="fa-solid fa-download"></i> Installer maintenant
+            <i className="fa-solid fa-download"></i> {t.install}
           </button>
           <button onClick={copyUrl} className="btn-pwa-secondary">
-            <i className="fa-solid fa-copy"></i> {copied ? "Lien copié !" : "Copier le lien web"}
+            <i className="fa-solid fa-copy"></i> {copied ? t.copied : t.copyLink}
           </button>
         </div>
       </div>

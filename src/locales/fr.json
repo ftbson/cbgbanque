@@ -1,0 +1,37 @@
+{
+  "cookieBanner": {
+    "dialogLabel": "Gestion des cookies",
+    "title": "Gestion de vos données et cookies",
+    "complianceBadge": "Conformité RGPD",
+    "description": "Nous utilisons des cookies essentiels pour assurer le bon fonctionnement et la sécurité de vos services bancaires en ligne. Avec votre accord, nous utilisons également des cookies afin de mesurer l’audience et d’améliorer votre expérience.",
+    "acceptAll": "Tout accepter",
+    "refuseAll": "Refuser",
+    "customize": "Personnaliser",
+    "learnMore": "Pour en savoir plus, consultez notre",
+    "cookiePolicy": "Politique des cookies",
+    "and": "et notre",
+    "privacyPolicy": "Charte de confidentialité",
+    "preferencesTitle": "Préférences des cookies",
+    "close": "Fermer",
+    "essentialTitle": "Cookies essentiels (sécurité et session)",
+    "essentialDescription": "Indispensables à la navigation, à l’authentification et à la sécurité bancaire.",
+    "alwaysActive": "Toujours actif",
+    "analyticsTitle": "Mesure d’audience et performances",
+    "analyticsDescription": "Permet d’analyser anonymement l’usage pour optimiser la plateforme.",
+    "marketingTitle": "Personnalisation et alertes",
+    "marketingDescription": "Affichage d’actualités et d’offres adaptées à vos besoins.",
+    "save": "Enregistrer mes choix",
+    "back": "Retour"
+  },
+  "pwaInstall": {
+    "close": "Fermer",
+    "title": "Installer l’application CBG",
+    "androidHeading": "Sur Android ou ordinateur (Chrome / Edge) :",
+    "androidInstructions": "Choisissez Installer maintenant ci-dessous ou l’icône d’installation dans la barre d’adresse.",
+    "iosHeading": "Sur iPhone ou iPad (Safari) :",
+    "iosInstructions": "Appuyez sur Partager en bas, puis choisissez Sur l’écran d’accueil.",
+    "install": "Installer maintenant",
+    "copyLink": "Copier le lien web",
+    "copied": "Lien copié !"
+  }
+}

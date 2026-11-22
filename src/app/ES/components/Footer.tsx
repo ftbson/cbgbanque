@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import Link from "next/link";
@@ -25,14 +25,14 @@ export default function Footer() {
           <div className="footer-banner">
             <div className="banner-left">
               <div className="banner-texts">
-                <h4 className="banner-title">La aplicación CBG Banco</h4>
+                <h4 className="banner-title">La aplicaciÃ³n CBG Banco</h4>
                 <p className="banner-subtitle">
-                  Gratuita · se instala en 1 gesto · acceso directo en tu pantalla
+                  Gratuita Â· se instala en 1 gesto Â· acceso directo en tu pantalla
                 </p>
               </div>
             </div>
             <button onClick={handleDownloadClick} className="btn-banner-download">
-              <i className="fa-solid fa-download"></i> Descargar la aplicación
+              <i className="fa-solid fa-download"></i> Descargar la aplicaciÃ³n
             </button>
           </div>
 
@@ -45,7 +45,7 @@ export default function Footer() {
               </div>
               <p className="footer-legal-text">
                 Establecimiento bancario y financiero de referencia europea.<br />
-                Capital social liberado: 50.000.000 €<br />
+                Capital social liberado: 50.000.000 â‚¬<br />
                 Sede social: Avenue Louise 542, 1050 Ixelles, Bruselas<br />
                 BCE: 0789.456.123 - IVA: BE 0789.456.123 - LEI: 549300C23BQ2026B7<br />
                 BIC / SWIFT : C23QBEBB
@@ -53,14 +53,14 @@ export default function Footer() {
             </div>
 
             <div className="footer-col contact-info">
-              <h5 className="footer-subtitle-heading">Contacto y Mediación</h5>
+              <h5 className="footer-subtitle-heading">Contacto y MediaciÃ³n</h5>
               <p className="footer-legal-text">
                 <strong>Email :</strong>{" "}
                 <a href="mailto:serviciocliente@cbgbanco.com" className="footer-link-inline">
                   serviciocliente@cbgbanco.com
                 </a>
                 <br />
-                <strong>Soporte telefónico :</strong> +33 (0) 1 89 71 42 00 (Lun - Sáb: 8h - 20h)
+                <strong>Soporte telefÃ³nico :</strong> +33 (0) 1 89 71 42 00 (Lun - SÃ¡b: 8h - 20h)
                 <br />
                 <strong>Mediador acreditado :</strong> Ombudsfin (
                 <a
@@ -87,11 +87,11 @@ export default function Footer() {
               <Link href="/ES/cookies">Cookies</Link>
             </div>
             <div className="footer-copyright">
-              © {new Date().getFullYear()} CBG Banco Finance SA. Todos los derechos reservados.
+              Â© {new Date().getFullYear()} CBG Banco Finance SA. Todos los derechos reservados.
             </div>
           </div>
 
-          {/* Grand Nom Animé de la Banque en Pied de Page */}
+          {/* Grand Nom AnimÃ© de la Banque en Pied de Page */}
           <div className="footer-giant-watermark" aria-hidden="true">
             <span className="giant-watermark-text">CBG BANCO</span>
           </div>
@@ -99,7 +99,7 @@ export default function Footer() {
         </div>
       </footer>
 
-      <PwaInstallModal isOpen={showPwaModal} onClose={() => setShowPwaModal(false)} />
+      <PwaInstallModal locale="es" isOpen={showPwaModal} onClose={() => setShowPwaModal(false)} />
     </>
   );
 }

@@ -25,10 +25,19 @@ function getPreferredLocale(acceptLanguage: string | null): "FR" | "DE" | "ES" {
 }
 
 export function proxy(request: NextRequest) {
-  if (request.nextUrl.pathname !== "/") return NextResponse.next();
+  const pathname = request.nextUrl.pathname;
 
-  const locale = getPreferredLocale(request.headers.get("accept-language"));
-  return NextResponse.redirect(new URL(`/${locale}`, request.url), 307);
+  if (pathname === "/") {
+    const locale = getPreferredLocale(request.headers.get("accept-language"));
+    return NextResponse.redirect(new URL(`/${locale}`, request.url), 307);
+  }
+
+  const locale = pathname.startsWith("/DE") ? "de" : pathname.startsWith("/ES") ? "es" : "fr";
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-cbg-locale", locale);
+  return NextResponse.next({ request: { headers: requestHeaders } });
 }
 
-export const config = { matcher: ["/"] };
+export const config = {
+  matcher: ["/", "/FR/:path*", "/DE/:path*", "/ES/:path*"],
+};

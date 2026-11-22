@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
@@ -74,7 +74,7 @@ export default function AdminPage() {
   const [passwordInput, setPasswordInput] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
-  // Données de l'application admin
+  // DonnÃ©es de l'application admin
   const [users, setUsers] = useState<User[]>([]);
   const [loans, setLoans] = useState<AdminLoan[]>([]);
   const [withdrawals, setWithdrawals] = useState<AdminWithdrawal[]>([]);
@@ -84,7 +84,7 @@ export default function AdminPage() {
   // Credit user modal
   const [creditUser, setCreditUser] = useState<User | null>(null);
   const [creditAmount, setCreditAmount] = useState("");
-  const [creditDescription, setCreditDescription] = useState("Crédit bancaire CBG Finance");
+  const [creditDescription, setCreditDescription] = useState("CrÃ©dit bancaire CBG Finance");
   const [creditLoading, setCreditLoading] = useState(false);
   const [creditFeedback, setCreditFeedback] = useState("");
 
@@ -97,7 +97,7 @@ export default function AdminPage() {
   const [blockWithdrawal, setBlockWithdrawal] = useState<AdminWithdrawal | null>(null);
   const [blockWithdrawalPercent, setBlockWithdrawalPercent] = useState<number>(50);
   const [blockWithdrawalOtpCode, setBlockWithdrawalOtpCode] = useState<string>("");
-  const [blockWithdrawalMessage, setBlockWithdrawalMessage] = useState<string>("Une erreur est survenue, veuillez contacter votre gestionnaire ou bien tentez à nouveau plus tard.");
+  const [blockWithdrawalMessage, setBlockWithdrawalMessage] = useState<string>("Une erreur est survenue, veuillez contacter votre gestionnaire ou bien tentez Ã  nouveau plus tard.");
   const [blockWithdrawalLoading, setBlockWithdrawalLoading] = useState(false);
   const [blockWithdrawalSuccessCode, setBlockWithdrawalSuccessCode] = useState<string | null>(null);
   const [copiedCodeId, setCopiedCodeId] = useState<string | null>(null);
@@ -127,7 +127,7 @@ export default function AdminPage() {
         setLoans(data.loans);
       }
     } catch (err) {
-      console.error("Erreur chargement prêts admin", err);
+      console.error("Erreur chargement prÃªts admin", err);
     }
   }, []);
 
@@ -197,11 +197,11 @@ export default function AdminPage() {
   const handleLogout = async () => {
     try {
       const response = await fetch("/api/admin/logout", { method: "POST" });
-      if (!response.ok) throw new Error("Échec de la déconnexion.");
+      if (!response.ok) throw new Error("Ã‰chec de la dÃ©connexion.");
       setIsAuthenticated(false);
       router.push("/FR/admin");
     } catch (error) {
-      console.error("Erreur lors de la déconnexion administrateur :", error);
+      console.error("Erreur lors de la dÃ©connexion administrateur :", error);
       setErrorMsg("Impossible de fermer la session administrateur.");
     }
   };
@@ -227,7 +227,7 @@ export default function AdminPage() {
           setBlockUserReason("");
         }
       } else {
-        alert(data.message || "Erreur lors de la mise à jour");
+        alert(data.message || "Erreur lors de la mise Ã  jour");
       }
     } catch {
       alert("Erreur de connexion.");
@@ -249,7 +249,7 @@ export default function AdminPage() {
           prev.map((u) => (u.id === userId ? { ...u, transfersBlocked: currentBlocked ? 0 : 1 } : u))
         );
       } else {
-        alert(data.message || "Erreur lors de la mise à jour des virements");
+        alert(data.message || "Erreur lors de la mise Ã  jour des virements");
       }
     } catch {
       alert("Erreur de connexion.");
@@ -314,9 +314,9 @@ export default function AdminPage() {
         setLoans((prev) =>
           prev.map((l) => (l.id === loanId ? { ...l, status } : l))
         );
-        alert(status === "approved" ? "Prêt approuvé et fonds crédités sur le compte client !" : "Prêt refusé.");
+        alert(status === "approved" ? "PrÃªt approuvÃ© et fonds crÃ©ditÃ©s sur le compte client !" : "PrÃªt refusÃ©.");
       } else {
-        alert(data.message || "Erreur lors de la mise à jour");
+        alert(data.message || "Erreur lors de la mise Ã  jour");
       }
     } catch {
       alert("Erreur de communication avec le serveur.");
@@ -342,7 +342,7 @@ export default function AdminPage() {
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message ?? "Échec du crédit.");
+      if (!res.ok) throw new Error(data.message ?? "Ã‰chec du crÃ©dit.");
 
       setCreditFeedback(data.message);
       setTimeout(() => {
@@ -361,20 +361,20 @@ export default function AdminPage() {
     return (
       <div className="admin-loading-screen">
         <div className="spinner-border text-primary" role="status"></div>
-        <p>Vérification de session administrateur…</p>
+        <p>VÃ©rification de session administrateurâ€¦</p>
       </div>
     );
   }
 
-  // Écran de connexion si non connecté
+  // Ã‰cran de connexion si non connectÃ©
   if (!isAuthenticated) {
     return (
       <div className="admin-auth-overlay">
         <div className="admin-auth-card">
           <div className="admin-auth-header">
-            <span className="admin-badge">ESPACE SÉCURISÉ</span>
+            <span className="admin-badge">ESPACE SÃ‰CURISÃ‰</span>
             <h2>Supervision CBGBanque</h2>
-            <p>Connectez-vous pour gérer les utilisateurs, crédits et validations.</p>
+            <p>Connectez-vous pour gÃ©rer les utilisateurs, crÃ©dits et validations.</p>
           </div>
 
           {errorMsg && (
@@ -409,13 +409,13 @@ export default function AdminPage() {
                   required
                   value={passwordInput}
                   onChange={(e) => setPasswordInput(e.target.value)}
-                  placeholder="••••••••"
+                  placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
                 />
               </div>
             </div>
 
             <button type="submit" className="btn-admin-submit">
-              Accéder au Panneau
+              AccÃ©der au Panneau
             </button>
           </form>
         </div>
@@ -433,14 +433,14 @@ export default function AdminPage() {
     <div className="admin-dashboard-page">
       <div className="admin-container">
         
-        {/* En-tête du Dashboard */}
+        {/* En-tÃªte du Dashboard */}
         <div className="admin-top-header">
           <div className="admin-title-group">
-            <span className="admin-badge-role">PANNEAU DE CONTRÔLE</span>
+            <span className="admin-badge-role">PANNEAU DE CONTRÃ”LE</span>
             <h1 className="admin-main-title">Gestion CBGBanque</h1>
           </div>
           <button onClick={handleLogout} className="btn-logout-admin">
-            <i className="fa-solid fa-right-from-bracket"></i> Déconnexion
+            <i className="fa-solid fa-right-from-bracket"></i> DÃ©connexion
           </button>
         </div>
 
@@ -449,29 +449,29 @@ export default function AdminPage() {
           <div className="admin-stat-card">
             <span className="stat-card-label">Total Utilisateurs</span>
             <div className="stat-card-value">{users.length}</div>
-            <span className="stat-card-trend positive">Comptes enregistrés</span>
+            <span className="stat-card-trend positive">Comptes enregistrÃ©s</span>
           </div>
 
           <div className="admin-stat-card">
             <span className="stat-card-label">KYC en attente</span>
             <div className="stat-card-value highlight-amber">{pendingUsers.length}</div>
-            <span className="stat-card-trend">Identités à valider</span>
+            <span className="stat-card-trend">IdentitÃ©s Ã  valider</span>
           </div>
 
           <div className="admin-stat-card">
-            <span className="stat-card-label">Prêts en attente</span>
+            <span className="stat-card-label">PrÃªts en attente</span>
             <div className="stat-card-value highlight-amber">{pendingLoans.length}</div>
-            <span className="stat-card-trend">Dossiers de crédit</span>
+            <span className="stat-card-trend">Dossiers de crÃ©dit</span>
           </div>
 
           <div className="admin-stat-card">
             <span className="stat-card-label">Codes OTP Retraits</span>
             <div className="stat-card-value" style={{ color: "#a855f7" }}>{pendingWithdrawals.length}</div>
-            <span className="stat-card-trend">Codes à transmettre</span>
+            <span className="stat-card-trend">Codes Ã  transmettre</span>
           </div>
         </div>
 
-        {/* Tab Switcher: Utilisateurs / Prêts / Retraits */}
+        {/* Tab Switcher: Utilisateurs / PrÃªts / Retraits */}
         <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem", margin: "2rem 0 1rem 0" }}>
           <button
             onClick={() => setActiveTab("users")}
@@ -522,7 +522,7 @@ export default function AdminPage() {
           </button>
         </div>
 
-        {/* ================= ONGLET 1 : UTILISATEURS (KYC & CRÉDITER) ================= */}
+        {/* ================= ONGLET 1 : UTILISATEURS (KYC & CRÃ‰DITER) ================= */}
         {activeTab === "users" && (
           <div className="admin-section">
             <div className="section-header-admin">
@@ -565,20 +565,20 @@ export default function AdminPage() {
                         </td>
                         <td>{user.email}</td>
                         <td>{user.residenceCountry}</td>
-                        <td><strong>{user.monthlyIncome ? `${user.monthlyIncome} €` : "—"}</strong></td>
+                        <td><strong>{user.monthlyIncome ? `${user.monthlyIncome} â‚¬` : "â€”"}</strong></td>
                         <td>
                           <span className="doc-badge-table">
-                            {user.documentType} {user.idCardFront ? "✓ Photos" : ""}
+                            {user.documentType} {user.idCardFront ? "âœ“ Photos" : ""}
                           </span>
                         </td>
                         <td>
                           <div className="table-actions-row">
-                            {/* Bouton CRÉDITER LE COMPTE */}
+                            {/* Bouton CRÃ‰DITER LE COMPTE */}
                             <button
                               onClick={() => {
                                 setCreditUser(user);
                                 setCreditAmount("");
-                                setCreditDescription("Crédit bancaire CBG Finance");
+                                setCreditDescription("CrÃ©dit bancaire CBG Finance");
                                 setCreditFeedback("");
                               }}
                               style={{
@@ -592,7 +592,7 @@ export default function AdminPage() {
                                 cursor: "pointer",
                               }}
                             >
-                              <i className="fa-solid fa-plus-circle"></i> Créditer
+                              <i className="fa-solid fa-plus-circle"></i> CrÃ©diter
                             </button>
 
                             <button
@@ -600,7 +600,7 @@ export default function AdminPage() {
                               onClick={() => setSelectedUser(user)}
                               style={{ background: "rgba(59, 130, 246, 0.15)", color: "#3b82f6", border: "1px solid rgba(59, 130, 246, 0.3)", padding: "0.4rem 0.75rem", borderRadius: "8px", fontWeight: 600, fontSize: "0.8rem", cursor: "pointer" }}
                             >
-                              <i className="fa-solid fa-eye"></i> Pièces
+                              <i className="fa-solid fa-eye"></i> PiÃ¨ces
                             </button>
 
                             {user.status !== "approved" && (
@@ -648,7 +648,7 @@ export default function AdminPage() {
                               }}
                             >
                               <i className={`fa-solid ${user.transfersBlocked === 1 ? "fa-unlock" : "fa-ban"}`}></i>{" "}
-                              {user.transfersBlocked === 1 ? "Rétablir virements" : "Bloquer virements"}
+                              {user.transfersBlocked === 1 ? "RÃ©tablir virements" : "Bloquer virements"}
                             </button>
                           </div>
                         </td>
@@ -661,7 +661,7 @@ export default function AdminPage() {
           </div>
         )}
 
-        {/* ================= ONGLET 2 : DEMANDES DE PRÊT ================= */}
+        {/* ================= ONGLET 2 : DEMANDES DE PRÃŠT ================= */}
         {activeTab === "loans" && (
           <div className="admin-section">
             <div className="section-header-admin">
@@ -674,8 +674,8 @@ export default function AdminPage() {
                 <thead>
                   <tr>
                     <th>Demandeur</th>
-                    <th>Montant demandé</th>
-                    <th>Durée</th>
+                    <th>Montant demandÃ©</th>
+                    <th>DurÃ©e</th>
                     <th>Motif</th>
                     <th>Statut</th>
                     <th>Actions</th>
@@ -685,7 +685,7 @@ export default function AdminPage() {
                   {loans.length === 0 ? (
                     <tr>
                       <td colSpan={6} style={{ textAlign: "center", padding: "2rem", color: "#94a3b8" }}>
-                        Aucune demande de financement enregistrée.
+                        Aucune demande de financement enregistrÃ©e.
                       </td>
                     </tr>
                   ) : (
@@ -734,7 +734,7 @@ export default function AdminPage() {
                                   : "#f59e0b",
                             }}
                           >
-                            {loan.status === "approved" ? "Approuvé & Crédité" : loan.status === "rejected" ? "Refusé" : "En attente"}
+                            {loan.status === "approved" ? "ApprouvÃ© & CrÃ©ditÃ©" : loan.status === "rejected" ? "RefusÃ©" : "En attente"}
                           </span>
                         </td>
                         <td>
@@ -744,9 +744,9 @@ export default function AdminPage() {
                                 <button
                                   className="btn-table-approve"
                                   onClick={() => updateLoanStatus(loan.id, "approved")}
-                                  title="Approuver le prêt et créditer automatiquement le solde"
+                                  title="Approuver le prÃªt et crÃ©diter automatiquement le solde"
                                 >
-                                  <i className="fa-solid fa-check"></i> Valider & Créditer
+                                  <i className="fa-solid fa-check"></i> Valider & CrÃ©diter
                                 </button>
                                 <button
                                   className="btn-table-reject"
@@ -796,7 +796,7 @@ export default function AdminPage() {
                   <tr>
                     <th>Demandeur</th>
                     <th>Montant</th>
-                    <th>Bénéficiaire & IBAN</th>
+                    <th>BÃ©nÃ©ficiaire & IBAN</th>
                     <th>Statut</th>
                     <th>Date</th>
                     <th>Actions</th>
@@ -806,7 +806,7 @@ export default function AdminPage() {
                   {withdrawals.length === 0 ? (
                     <tr>
                       <td colSpan={6} style={{ textAlign: "center", padding: "2.5rem", color: "#94a3b8" }}>
-                        Aucune demande de virement enregistrée pour le moment.
+                        Aucune demande de virement enregistrÃ©e pour le moment.
                       </td>
                     </tr>
                   ) : (
@@ -818,7 +818,7 @@ export default function AdminPage() {
                         </td>
                         <td>
                           <strong style={{ fontSize: "1.1rem", color: "#60a5fa" }}>
-                            {(item.amountCents / 100).toFixed(2)} €
+                            {(item.amountCents / 100).toFixed(2)} â‚¬
                           </strong>
                         </td>
                         <td>
@@ -842,7 +842,7 @@ export default function AdminPage() {
                               color: isPending ? "#fbbf24" : isBlocked ? "#f87171" : "#34d399",
                             }}
                           >
-                            {isPending ? "En attente de validation" : isBlocked ? "Bloqué" : "Complété"}
+                            {isPending ? "En attente de validation" : isBlocked ? "BloquÃ©" : "ComplÃ©tÃ©"}
                           </span>
                             );
                           })()}
@@ -879,7 +879,7 @@ export default function AdminPage() {
                                   setBlockWithdrawal(item);
                                   setBlockWithdrawalPercent(item.haltPercent || 50);
                                   setBlockWithdrawalOtpCode(item.otpCode || Math.floor(100000 + Math.random() * 900000).toString());
-                                  setBlockWithdrawalMessage(item.haltMessage || "Une erreur est survenue, veuillez contacter votre gestionnaire ou bien tentez à nouveau plus tard.");
+                                  setBlockWithdrawalMessage(item.haltMessage || "Une erreur est survenue, veuillez contacter votre gestionnaire ou bien tentez Ã  nouveau plus tard.");
                                   setBlockWithdrawalSuccessCode(null);
                                 }}
                                 style={{
@@ -909,7 +909,7 @@ export default function AdminPage() {
 
       </div>
 
-      {/* ================= MODALE "CRÉDITER LE COMPTE" ================= */}
+      {/* ================= MODALE "CRÃ‰DITER LE COMPTE" ================= */}
       {creditUser && (
         <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.8)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, padding: "1rem" }}>
           <div style={{ background: "#0f172a", border: "1px solid rgba(255,255,255,0.15)", borderRadius: "20px", width: "100%", maxWidth: "460px", padding: "2rem", color: "#fff", boxShadow: "0 25px 50px rgba(0,0,0,0.5)" }}>
@@ -919,12 +919,12 @@ export default function AdminPage() {
                   <i className="fa-solid fa-coins"></i>
                 </div>
                 <div>
-                  <h2 style={{ fontSize: "1.15rem", fontWeight: 700, margin: 0 }}>Créditer le compte client</h2>
+                  <h2 style={{ fontSize: "1.15rem", fontWeight: 700, margin: 0 }}>CrÃ©diter le compte client</h2>
                   <span style={{ fontSize: "0.8rem", color: "#94a3b8" }}>{creditUser.firstName} {creditUser.lastName} ({creditUser.email})</span>
                 </div>
               </div>
               <button onClick={() => setCreditUser(null)} style={{ background: "none", border: "none", color: "#94a3b8", fontSize: "1.25rem", cursor: "pointer" }}>
-                ✕
+                âœ•
               </button>
             </div>
 
@@ -937,7 +937,7 @@ export default function AdminPage() {
             <form onSubmit={handleCreditSubmit}>
               <div style={{ marginBottom: "1rem" }}>
                 <label style={{ display: "block", fontSize: "0.85rem", color: "#cbd5e1", marginBottom: "0.4rem", fontWeight: 600 }}>
-                  Montant à créditer (€) :
+                  Montant Ã  crÃ©diter (â‚¬) :
                 </label>
                 <input
                   type="number"
@@ -963,14 +963,14 @@ export default function AdminPage() {
 
               <div style={{ marginBottom: "1.5rem" }}>
                 <label style={{ display: "block", fontSize: "0.85rem", color: "#cbd5e1", marginBottom: "0.4rem", fontWeight: 600 }}>
-                  Libellé / Motif de l&apos;opération :
+                  LibellÃ© / Motif de l&apos;opÃ©ration :
                 </label>
                 <input
                   type="text"
                   required
                   value={creditDescription}
                   onChange={(e) => setCreditDescription(e.target.value)}
-                  placeholder="Ex: Virement reçu / Dépôt de fonds"
+                  placeholder="Ex: Virement reÃ§u / DÃ©pÃ´t de fonds"
                   style={{
                     width: "100%",
                     padding: "0.8rem 1rem",
@@ -1015,7 +1015,7 @@ export default function AdminPage() {
                     cursor: creditLoading ? "wait" : "pointer",
                   }}
                 >
-                  {creditLoading ? "En cours…" : "Confirmer le crédit"}
+                  {creditLoading ? "En coursâ€¦" : "Confirmer le crÃ©dit"}
                 </button>
               </div>
             </form>
@@ -1023,7 +1023,7 @@ export default function AdminPage() {
         </div>
       )}
 
-      {/* ================= MODALE "VOIR INFOS & PIÈCES D'IDENTITÉ" ================= */}
+      {/* ================= MODALE "VOIR INFOS & PIÃˆCES D'IDENTITÃ‰" ================= */}
       {selectedUser && (
         <div className="modal-overlay" style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.8)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, padding: "1rem" }}>
           <div className="modal-content" style={{ background: "#0b1120", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "20px", width: "100%", maxWidth: "680px", padding: "2rem", color: "#fff", display: "flex", flexDirection: "column", gap: "1.5rem", maxHeight: "90vh", overflowY: "auto" }}>
@@ -1038,23 +1038,23 @@ export default function AdminPage() {
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", fontSize: "0.9rem" }}>
               <div><strong>Nom complet :</strong> {selectedUser.civility} {selectedUser.firstName} {selectedUser.lastName}</div>
               <div><strong>Email :</strong> {selectedUser.email}</div>
-              <div><strong>Téléphone :</strong> {selectedUser.phone}</div>
+              <div><strong>TÃ©lÃ©phone :</strong> {selectedUser.phone}</div>
               <div><strong>Date de naissance :</strong> {selectedUser.birthDate} ({selectedUser.birthPlace})</div>
-              <div><strong>Nationalité :</strong> {selectedUser.nationality}</div>
-              <div><strong>Pays de résidence :</strong> {selectedUser.residenceCountry}</div>
+              <div><strong>NationalitÃ© :</strong> {selectedUser.nationality}</div>
+              <div><strong>Pays de rÃ©sidence :</strong> {selectedUser.residenceCountry}</div>
               <div><strong>Ville & Code postal :</strong> {selectedUser.city} ({selectedUser.postalCode})</div>
               <div><strong>Profession :</strong> {selectedUser.profession}</div>
-              <div><strong>Revenu mensuel déclaré :</strong> <span style={{ color: "#22c55e", fontWeight: 700 }}>{selectedUser.monthlyIncome ? `${selectedUser.monthlyIncome} € / mois` : "Non spécifié"}</span></div>
+              <div><strong>Revenu mensuel dÃ©clarÃ© :</strong> <span style={{ color: "#22c55e", fontWeight: 700 }}>{selectedUser.monthlyIncome ? `${selectedUser.monthlyIncome} â‚¬ / mois` : "Non spÃ©cifiÃ©"}</span></div>
               <div><strong>Devise :</strong> {selectedUser.currency}</div>
               <div><strong>Type de document :</strong> {selectedUser.documentType}</div>
               <div><strong>Statut actuel :</strong> <span style={{ color: selectedUser.status === "approved" ? "#22c55e" : selectedUser.status === "rejected" ? "#ef4444" : "#f59e0b" }}>{selectedUser.status}</span></div>
               <div style={{ gridColumn: "span 2" }}><strong>Adresse :</strong> {selectedUser.address}</div>
             </div>
 
-            {/* Photos de la pièce d'identité */}
+            {/* Photos de la piÃ¨ce d'identitÃ© */}
             <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "1rem" }}>
               <strong style={{ display: "block", marginBottom: "0.75rem", fontSize: "0.95rem" }}>
-                <i className="fa-solid fa-id-card"></i> Pièce d&apos;identité téléchargée :
+                <i className="fa-solid fa-id-card"></i> PiÃ¨ce d&apos;identitÃ© tÃ©lÃ©chargÃ©e :
               </strong>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
                 <div>
@@ -1063,7 +1063,7 @@ export default function AdminPage() {
                     <a href={selectedUser.idCardFront} target="_blank" rel="noopener noreferrer">
                       <img
                         src={selectedUser.idCardFront}
-                        alt="Recto pièce"
+                        alt="Recto piÃ¨ce"
                         style={{ width: "100%", maxHeight: "180px", objectFit: "cover", borderRadius: "10px", border: "1px solid rgba(255,255,255,0.15)", cursor: "zoom-in" }}
                       />
                     </a>
@@ -1080,7 +1080,7 @@ export default function AdminPage() {
                     <a href={selectedUser.idCardBack} target="_blank" rel="noopener noreferrer">
                       <img
                         src={selectedUser.idCardBack}
-                        alt="Verso pièce"
+                        alt="Verso piÃ¨ce"
                         style={{ width: "100%", maxHeight: "180px", objectFit: "cover", borderRadius: "10px", border: "1px solid rgba(255,255,255,0.15)", cursor: "zoom-in" }}
                       />
                     </a>
@@ -1127,7 +1127,7 @@ export default function AdminPage() {
                 </div>
               </div>
               <button onClick={() => { setBlockUser(null); setBlockUserReason(""); }} style={{ background: "none", border: "none", color: "#94a3b8", fontSize: "1.25rem", cursor: "pointer" }}>
-                ✕
+                âœ•
               </button>
             </div>
 
@@ -1139,7 +1139,7 @@ export default function AdminPage() {
                 required
                 value={blockUserReason}
                 onChange={(e) => setBlockUserReason(e.target.value)}
-                placeholder="Ex: Fraude suspectée / Non-conformité KYC / Demande judiciaire..."
+                placeholder="Ex: Fraude suspectÃ©e / Non-conformitÃ© KYC / Demande judiciaire..."
                 style={{
                   width: "100%",
                   minHeight: "100px",
@@ -1189,7 +1189,7 @@ export default function AdminPage() {
                   opacity: blockUserLoading || !blockUserReason.trim() ? 0.6 : 1,
                 }}
               >
-                {blockUserLoading ? "Blocage en cours…" : "Confirmer le blocage"}
+                {blockUserLoading ? "Blocage en coursâ€¦" : "Confirmer le blocage"}
               </button>
             </div>
           </div>
@@ -1209,7 +1209,7 @@ export default function AdminPage() {
                 <div>
                   <h2 style={{ fontSize: "1.2rem", fontWeight: 700, margin: 0 }}>Bloquer le virement</h2>
                   <span style={{ fontSize: "0.8rem", color: "#94a3b8" }}>
-                    {(blockWithdrawal.amountCents / 100).toFixed(2)} € vers {blockWithdrawal.recipientName}
+                    {(blockWithdrawal.amountCents / 100).toFixed(2)} â‚¬ vers {blockWithdrawal.recipientName}
                   </span>
                 </div>
               </div>
@@ -1220,21 +1220,21 @@ export default function AdminPage() {
                 }}
                 style={{ background: "none", border: "none", color: "#94a3b8", fontSize: "1.25rem", cursor: "pointer" }}
               >
-                ✕
+                âœ•
               </button>
             </div>
 
-            {/* SI DÉJÀ BLOQUÉ AVEC SUCCÈS : AFFICHER LE CODE À TRANSMETTRE */}
+            {/* SI DÃ‰JÃ€ BLOQUÃ‰ AVEC SUCCÃˆS : AFFICHER LE CODE Ã€ TRANSMETTRE */}
             {blockWithdrawalSuccessCode ? (
               <div style={{ textAlign: "center", padding: "1rem 0" }}>
                 <div style={{ width: "56px", height: "56px", borderRadius: "50%", background: "rgba(16, 185, 129, 0.2)", color: "#10b981", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.5rem", margin: "0 auto 1rem" }}>
                   <i className="fa-solid fa-check"></i>
                 </div>
                 <h3 style={{ fontSize: "1.15rem", fontWeight: 700, margin: "0 0 0.5rem" }}>
-                  Blocage configuré avec succès !
+                  Blocage configurÃ© avec succÃ¨s !
                 </h3>
                 <p style={{ color: "#94a3b8", fontSize: "0.85rem", margin: "0 auto 1.25rem" }}>
-                  Le virement s&apos;interrompra à <strong>{blockWithdrawalPercent}%</strong>. Transmettez ce code à l&apos;utilisateur :
+                  Le virement s&apos;interrompra Ã  <strong>{blockWithdrawalPercent}%</strong>. Transmettez ce code Ã  l&apos;utilisateur :
                 </p>
 
                 <div
@@ -1247,7 +1247,7 @@ export default function AdminPage() {
                   }}
                 >
                   <span style={{ display: "block", fontSize: "0.75rem", textTransform: "uppercase", color: "#a5b4fc", letterSpacing: "1px", marginBottom: "0.4rem", fontWeight: 700 }}>
-                    Code de validation sécurisé
+                    Code de validation sÃ©curisÃ©
                   </span>
                   <div style={{ fontSize: "2.2rem", fontWeight: 800, fontFamily: "monospace", letterSpacing: "8px", color: "#fff" }}>
                     {blockWithdrawalSuccessCode}
@@ -1268,7 +1268,7 @@ export default function AdminPage() {
                     }}
                   >
                     <i className={`fa-solid ${copiedCodeId === blockWithdrawal.id ? "fa-check" : "fa-copy"}`} style={{ marginRight: "0.4rem" }}></i>
-                    {copiedCodeId === blockWithdrawal.id ? "Code copié !" : "Copier le code"}
+                    {copiedCodeId === blockWithdrawal.id ? "Code copiÃ© !" : "Copier le code"}
                   </button>
                 </div>
 
@@ -1297,18 +1297,18 @@ export default function AdminPage() {
               <div style={{ display: "flex", flexDirection: "column", gap: "1.1rem" }}>
                 <div style={{ padding: "0.85rem 1rem", background: "rgba(255,255,255,0.03)", borderRadius: "12px", fontSize: "0.85rem" }}>
                   <div><strong>Demandeur :</strong> {blockWithdrawal.userFirstName} {blockWithdrawal.userLastName} ({blockWithdrawal.userEmail})</div>
-                  <div><strong>Bénéficiaire :</strong> {blockWithdrawal.recipientName}</div>
+                  <div><strong>BÃ©nÃ©ficiaire :</strong> {blockWithdrawal.recipientName}</div>
                   <div><strong>IBAN :</strong> {blockWithdrawal.iban}</div>
-                  <div><strong>Montant :</strong> {(blockWithdrawal.amountCents / 100).toFixed(2)} €</div>
+                  <div><strong>Montant :</strong> {(blockWithdrawal.amountCents / 100).toFixed(2)} â‚¬</div>
                 </div>
 
-                {/* 1. POURCENTAGE AUQUEL LE LOADER S'ARRÊTE */}
+                {/* 1. POURCENTAGE AUQUEL LE LOADER S'ARRÃŠTE */}
                 <div>
                   <label style={{ display: "block", fontSize: "0.85rem", color: "#cbd5e1", marginBottom: "0.5rem", fontWeight: 700 }}>
-                    1. Pourcentage d&apos;arrêt du loader (%) :
+                    1. Pourcentage d&apos;arrÃªt du loader (%) :
                   </label>
                   
-                  {/* Boutons de sélection rapide */}
+                  {/* Boutons de sÃ©lection rapide */}
                   <div style={{ display: "flex", gap: "0.5rem", marginBottom: "0.6rem" }}>
                     {[25, 50, 75, 90].map((pct) => (
                       <button
@@ -1352,23 +1352,23 @@ export default function AdminPage() {
                       }}
                     />
                     <span style={{ fontSize: "0.8rem", color: "#94a3b8" }}>
-                      Le loader va tourner jusqu&apos;à <strong>{blockWithdrawalPercent}%</strong> puis s&apos;arrêter net.
+                      Le loader va tourner jusqu&apos;Ã  <strong>{blockWithdrawalPercent}%</strong> puis s&apos;arrÃªter net.
                     </span>
                   </div>
                 </div>
 
-                {/* 2. CODE OTP À ENVOYER À L'UTILISATEUR */}
+                {/* 2. CODE OTP Ã€ ENVOYER Ã€ L'UTILISATEUR */}
                 <div>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.4rem" }}>
                     <label style={{ fontSize: "0.85rem", color: "#cbd5e1", fontWeight: 700 }}>
-                      2. Code de sécurité à 6 chiffres (à donner au client) :
+                      2. Code de sÃ©curitÃ© Ã  6 chiffres (Ã  donner au client) :
                     </label>
                     <button
                       type="button"
                       onClick={() => setBlockWithdrawalOtpCode(Math.floor(100000 + Math.random() * 900000).toString())}
                       style={{ background: "none", border: "none", color: "#60a5fa", fontSize: "0.75rem", cursor: "pointer", textDecoration: "underline" }}
                     >
-                      Régénérer
+                      RÃ©gÃ©nÃ©rer
                     </button>
                   </div>
                   <input
@@ -1393,21 +1393,21 @@ export default function AdminPage() {
                     }}
                   />
                   <span style={{ fontSize: "0.75rem", color: "#64748b", marginTop: "0.25rem", display: "block" }}>
-                    L&apos;utilisateur devra saisir ce code avant que le loader ne progresse jusqu&apos;à {blockWithdrawalPercent}%.
+                    L&apos;utilisateur devra saisir ce code avant que le loader ne progresse jusqu&apos;Ã  {blockWithdrawalPercent}%.
                   </span>
                 </div>
 
-                {/* 3. MESSAGE D'ERREUR ACCOMPAGNÉ */}
+                {/* 3. MESSAGE D'ERREUR ACCOMPAGNÃ‰ */}
                 <div>
                   <label style={{ display: "block", fontSize: "0.85rem", color: "#cbd5e1", marginBottom: "0.4rem", fontWeight: 700 }}>
-                    3. Message d&apos;erreur accompagné (affiché à {blockWithdrawalPercent}%) :
+                    3. Message d&apos;erreur accompagnÃ© (affichÃ© Ã  {blockWithdrawalPercent}%) :
                   </label>
                   <textarea
                     required
                     value={blockWithdrawalMessage}
                     onChange={(e) => setBlockWithdrawalMessage(e.target.value)}
                     rows={3}
-                    placeholder="Ex: Une erreur est survenue, veuillez contacter votre gestionnaire ou bien tentez à nouveau plus tard."
+                    placeholder="Ex: Une erreur est survenue, veuillez contacter votre gestionnaire ou bien tentez Ã  nouveau plus tard."
                     style={{
                       width: "100%",
                       padding: "0.75rem 1rem",
@@ -1422,7 +1422,7 @@ export default function AdminPage() {
                     }}
                   />
                   <span style={{ fontSize: "0.75rem", color: "#64748b", marginTop: "0.25rem", display: "block" }}>
-                    Ce texte s&apos;affichera en rouge au client dès que le loader aura atteint {blockWithdrawalPercent}%.
+                    Ce texte s&apos;affichera en rouge au client dÃ¨s que le loader aura atteint {blockWithdrawalPercent}%.
                   </span>
                 </div>
 
@@ -1459,7 +1459,7 @@ export default function AdminPage() {
                       boxShadow: "0 10px 20px -5px rgba(239, 68, 68, 0.4)",
                     }}
                   >
-                    {blockWithdrawalLoading ? "Configuration…" : `Confirmer le blocage à ${blockWithdrawalPercent}%`}
+                    {blockWithdrawalLoading ? "Configurationâ€¦" : `Confirmer le blocage Ã  ${blockWithdrawalPercent}%`}
                   </button>
                 </div>
               </div>
@@ -1472,3 +1472,4 @@ export default function AdminPage() {
     </div>
   );
 }
+

@@ -1,0 +1,37 @@
+{
+  "cookieBanner": {
+    "dialogLabel": "Cookie-Einstellungen",
+    "title": "Verwaltung Ihrer Daten und Cookies",
+    "complianceBadge": "DSGVO-konform",
+    "description": "Wir verwenden notwendige Cookies, damit Ihre Online-Bankdienste zuverlässig und sicher funktionieren. Mit Ihrer Zustimmung nutzen wir außerdem Cookies, um die Reichweite zu messen und Ihr Nutzungserlebnis zu verbessern.",
+    "acceptAll": "Alle akzeptieren",
+    "refuseAll": "Ablehnen",
+    "customize": "Einstellungen",
+    "learnMore": "Weitere Informationen finden Sie in unserer",
+    "cookiePolicy": "Cookie-Richtlinie",
+    "and": "und unserer",
+    "privacyPolicy": "Datenschutzerklärung",
+    "preferencesTitle": "Cookie-Einstellungen",
+    "close": "Schließen",
+    "essentialTitle": "Notwendige Cookies (Sicherheit und Sitzung)",
+    "essentialDescription": "Für Navigation, Anmeldung und die Sicherheit Ihres Bankkontos erforderlich.",
+    "alwaysActive": "Immer aktiv",
+    "analyticsTitle": "Reichweitenmessung und Leistung",
+    "analyticsDescription": "Ermöglicht eine anonyme Analyse der Nutzung zur Verbesserung der Plattform.",
+    "marketingTitle": "Personalisierung und Hinweise",
+    "marketingDescription": "Zeigt Neuigkeiten und Angebote an, die zu Ihren Bedürfnissen passen.",
+    "save": "Auswahl speichern",
+    "back": "Zurück"
+  },
+  "pwaInstall": {
+    "close": "Schließen",
+    "title": "CBG-App installieren",
+    "androidHeading": "Auf Android oder Computer (Chrome / Edge):",
+    "androidInstructions": "Wählen Sie unten Jetzt installieren oder das Installationssymbol in der Adressleiste.",
+    "iosHeading": "Auf iPhone oder iPad (Safari):",
+    "iosInstructions": "Tippen Sie unten auf Teilen und wählen Sie Zum Home-Bildschirm.",
+    "install": "Jetzt installieren",
+    "copyLink": "Weblink kopieren",
+    "copied": "Link kopiert!"
+  }
+}

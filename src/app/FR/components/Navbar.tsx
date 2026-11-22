@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -41,7 +41,7 @@ export default function Navbar() {
         {/* Center navigation links (Desktop + Animated Mobile Drawer) */}
         <div className={`nav-links ${isOpen ? "open" : ""}`}>
           <Link href="/FR" className="nav-link" onClick={() => setIsOpen(false)}>
-            Fonctionnalités
+            FonctionnalitÃ©s
           </Link>
           <Link href="/FR" className="nav-link" onClick={() => setIsOpen(false)}>
             Engagements
@@ -50,7 +50,7 @@ export default function Navbar() {
             Aide
           </Link>
           <Link href="/FR/download" className="nav-link mobile-only-download" onClick={() => setIsOpen(false)}>
-            <i className="fa-solid fa-download"></i> Télécharger l'app
+            <i className="fa-solid fa-download"></i> TÃ©lÃ©charger l'app
           </Link>
           {/* Bouton visible uniquement dans le menu mobile ouvert */}
           <Link href="/FR/register" className="btn-primary mobile-only-cta" onClick={() => setIsOpen(false)}>
@@ -70,7 +70,7 @@ export default function Navbar() {
               aria-haspopup="true"
             >
               <i className="fa-solid fa-globe"></i>
-              <span className="lang-flag" aria-hidden="true">🇫🇷</span>
+              <span className="lang-flag" aria-hidden="true">ðŸ‡«ðŸ‡·</span>
               <span className="lang-code">FR</span>
               <i className={`fa-solid fa-chevron-down ${showLangMenu ? "rotate" : ""}`}></i>
             </button>
@@ -82,8 +82,8 @@ export default function Navbar() {
                   role="menuitem"
                   aria-selected={true}
                 >
-                  <span className="lang-flag" aria-hidden="true">🇫🇷</span>
-                  <span className="lang-native-name">Français</span>
+                  <span className="lang-flag" aria-hidden="true">ðŸ‡«ðŸ‡·</span>
+                  <span className="lang-native-name">FranÃ§ais</span>
                   <i className="fa-solid fa-check"></i>
                 </button>
                 <button
@@ -92,7 +92,7 @@ export default function Navbar() {
                   role="menuitem"
                   aria-selected={false}
                 >
-                  <span className="lang-flag" aria-hidden="true">🇩🇪</span>
+                  <span className="lang-flag" aria-hidden="true">ðŸ‡©ðŸ‡ª</span>
                   <span className="lang-native-name">Deutsch</span>
                 </button>
                 <button
@@ -101,8 +101,8 @@ export default function Navbar() {
                   role="menuitem"
                   aria-selected={false}
                 >
-                  <span className="lang-flag" aria-hidden="true">🇪🇸</span>
-                  <span className="lang-native-name">Español</span>
+                  <span className="lang-flag" aria-hidden="true">ðŸ‡ªðŸ‡¸</span>
+                  <span className="lang-native-name">EspaÃ±ol</span>
                 </button>
               </div>
             )}

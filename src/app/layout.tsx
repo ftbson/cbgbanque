@@ -1,11 +1,12 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
+import { headers } from "next/headers";
 import "./globals.css";
 import "./layout.css";
 
 export const metadata: Metadata = {
   title: "CBGBanque - Votre banque en ligne et services financiers",
   description:
-    "Découvrez les services bancaires en ligne de CBGBanque. Gestion de compte, solutions de paiement et accompagnement sur mesure.",
+    "DÃ©couvrez les services bancaires en ligne de CBGBanque. Gestion de compte, solutions de paiement et accompagnement sur mesure.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
@@ -14,13 +15,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const locale = (await headers()).get("x-cbg-locale") ?? "fr";
   return (
-    <html suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
@@ -55,3 +57,4 @@ href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12.
     </html>
   );
 }
+

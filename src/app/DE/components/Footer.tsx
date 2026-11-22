@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import Link from "next/link";
@@ -27,7 +27,7 @@ export default function Footer() {
               <div className="banner-texts">
                 <h4 className="banner-title">Die CBG Bank App</h4>
                 <p className="banner-subtitle">
-                  Kostenlos · Installation in 1 Schritt · direkter Shortcut auf Ihrem Bildschirm
+                  Kostenlos Â· Installation in 1 Schritt Â· direkter Shortcut auf Ihrem Bildschirm
                 </p>
               </div>
             </div>
@@ -44,9 +44,9 @@ export default function Footer() {
                 <span className="footer-brand-title">CBG Bank Finance AG</span>
               </div>
               <p className="footer-legal-text">
-                Europäisches Referenz-Kreditinstitut.<br />
-                Freigesetztes Grundkapital: 50.000.000 €<br />
-                Sitz: Avenue Louise 542, 1050 Ixelles, Brüssel<br />
+                EuropÃ¤isches Referenz-Kreditinstitut.<br />
+                Freigesetztes Grundkapital: 50.000.000 â‚¬<br />
+                Sitz: Avenue Louise 542, 1050 Ixelles, BrÃ¼ssel<br />
                 BCE: 0789.456.123 - USt-IdNr.: BE 0789.456.123 - LEI: 549300C23BQ2026B7<br />
                 BIC / SWIFT : C23QBEBB
               </p>
@@ -87,11 +87,11 @@ export default function Footer() {
               <Link href="/DE/cookies">Cookies</Link>
             </div>
             <div className="footer-copyright">
-              © {new Date().getFullYear()} CBG Bank Finance AG. Alle Rechte vorbehalten.
+              Â© {new Date().getFullYear()} CBG Bank Finance AG. Alle Rechte vorbehalten.
             </div>
           </div>
 
-          {/* Grand Nom Animé de la Banque en Pied de Page */}
+          {/* Grand Nom AnimÃ© de la Banque en Pied de Page */}
           <div className="footer-giant-watermark" aria-hidden="true">
             <span className="giant-watermark-text">CBG BANK</span>
           </div>
@@ -99,7 +99,7 @@ export default function Footer() {
         </div>
       </footer>
 
-      <PwaInstallModal isOpen={showPwaModal} onClose={() => setShowPwaModal(false)} />
+      <PwaInstallModal locale="de" isOpen={showPwaModal} onClose={() => setShowPwaModal(false)} />
     </>
   );
 }
