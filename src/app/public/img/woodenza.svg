@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 72" role="img" aria-labelledby="title">
+  <title id="title">Woodenza</title>
+  <g fill="none" stroke="#6b5842" stroke-linecap="round" stroke-linejoin="round" stroke-width="4">
+    <path d="M35 8 13 38h15L15 57h40L42 38h15L35 8Z"/>
+    <path d="M35 57v9"/>
+  </g>
+  <text x="76" y="53" fill="#173f35" font-family="Arial, sans-serif" font-size="46" font-weight="700" letter-spacing="1">Woodenza</text>
+</svg>
