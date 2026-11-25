@@ -2,7 +2,12 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import dynamic from "next/dynamic";
+import NavbarFR from "@/app/FR/components/Navbar";
+import NavbarDE from "@/app/DE/components/Navbar";
+import NavbarES from "@/app/ES/components/Navbar";
+import FooterFR from "@/app/FR/components/Footer";
+import FooterDE from "@/app/DE/components/Footer";
+import FooterES from "@/app/ES/components/Footer";
 import CookieBanner from "@/components/CookieBanner";
 
 interface SiteFrameProps {
@@ -20,26 +25,6 @@ function getLocaleForDocument(locale: "fr" | "de" | "es"): string {
 }
 
 // Dynamically import locale-specific Navbar and Footer
-const NavbarFR = dynamic(() => import("@/app/FR/components/Navbar"), {
-  ssr: false,
-});
-const NavbarDE = dynamic(() => import("@/app/DE/components/Navbar"), {
-  ssr: false,
-});
-const NavbarES = dynamic(() => import("@/app/ES/components/Navbar"), {
-  ssr: false,
-});
-
-const FooterFR = dynamic(() => import("@/app/FR/components/Footer"), {
-  ssr: false,
-});
-const FooterDE = dynamic(() => import("@/app/DE/components/Footer"), {
-  ssr: false,
-});
-const FooterES = dynamic(() => import("@/app/ES/components/Footer"), {
-  ssr: false,
-});
-
 function getNavbar(locale: "fr" | "de" | "es") {
   if (locale === "de") return NavbarDE;
   if (locale === "es") return NavbarES;

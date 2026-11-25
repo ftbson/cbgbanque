@@ -5,7 +5,7 @@ import { useState } from "react";
 import Link from "next/link";
 
 function getLocalizedPath(pathname: string, targetLocale: string): string {
-  // Remove current locale prefix if present
+  // Supprime le préfixe de langue actuel s'il est présent
   const localePrefixes = ["/FR", "/DE", "/ES"];
   let pathWithoutLocale = pathname;
   for (const prefix of localePrefixes) {
@@ -14,11 +14,11 @@ function getLocalizedPath(pathname: string, targetLocale: string): string {
       break;
     }
   }
-  // If path is empty or just "/", use "/"
+  // Si le chemin est vide ou juste "/", utilise "/"
   if (!pathWithoutLocale || pathWithoutLocale === "/") {
     return `/${targetLocale}`;
   }
-  // Ensure path starts with /
+  // S'assure que le chemin commence par /
   if (!pathWithoutLocale.startsWith("/")) {
     pathWithoutLocale = "/" + pathWithoutLocale;
   }
@@ -33,15 +33,15 @@ export default function Navbar() {
   return (
     <header className="navbar-container">
       <nav className="navbar">
-        {/* Brand / Logo */}
+        {/* Marque / Logo */}
         <Link href="/FR" className="nav-brand">
           <span className="brand-name">CBG Banque</span>
         </Link>
 
-        {/* Center navigation links (Desktop + Animated Mobile Drawer) */}
+        {/* Liens de navigation centraux (Bureau + Menu mobile animé) */}
         <div className={`nav-links ${isOpen ? "open" : ""}`}>
           <Link href="/FR" className="nav-link" onClick={() => setIsOpen(false)}>
-            FonctionnalitÃ©s
+            Fonctionnalités
           </Link>
           <Link href="/FR" className="nav-link" onClick={() => setIsOpen(false)}>
             Engagements
@@ -50,7 +50,7 @@ export default function Navbar() {
             Aide
           </Link>
           <Link href="/FR/download" className="nav-link mobile-only-download" onClick={() => setIsOpen(false)}>
-            <i className="fa-solid fa-download"></i> TÃ©lÃ©charger l'app
+            <i className="fa-solid fa-download"></i> Télécharger l&apos;application
           </Link>
           {/* Bouton visible uniquement dans le menu mobile ouvert */}
           <Link href="/FR/register" className="btn-primary mobile-only-cta" onClick={() => setIsOpen(false)}>
@@ -58,9 +58,9 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* Action buttons (Right) */}
+        {/* Boutons d'action (Droite) */}
         <div className="nav-actions">
-          {/* Language Selector */}
+          {/* Sélecteur de langue */}
           <div className="lang-selector">
             <button
               className="lang-btn"
@@ -70,7 +70,7 @@ export default function Navbar() {
               aria-haspopup="true"
             >
               <i className="fa-solid fa-globe"></i>
-              <span className="lang-flag" aria-hidden="true">ðŸ‡«ðŸ‡·</span>
+              <span className="lang-flag" aria-hidden="true">🇫🇷</span>
               <span className="lang-code">FR</span>
               <i className={`fa-solid fa-chevron-down ${showLangMenu ? "rotate" : ""}`}></i>
             </button>
@@ -82,8 +82,8 @@ export default function Navbar() {
                   role="menuitem"
                   aria-selected={true}
                 >
-                  <span className="lang-flag" aria-hidden="true">ðŸ‡«ðŸ‡·</span>
-                  <span className="lang-native-name">FranÃ§ais</span>
+                  <span className="lang-flag" aria-hidden="true">🇫🇷</span>
+                  <span className="lang-native-name">Français</span>
                   <i className="fa-solid fa-check"></i>
                 </button>
                 <button
@@ -92,8 +92,8 @@ export default function Navbar() {
                   role="menuitem"
                   aria-selected={false}
                 >
-                  <span className="lang-flag" aria-hidden="true">ðŸ‡©ðŸ‡ª</span>
-                  <span className="lang-native-name">Deutsch</span>
+                  <span className="lang-flag" aria-hidden="true">🇩🇪</span>
+                  <span className="lang-native-name">Allemand</span>
                 </button>
                 <button
                   className="lang-option"
@@ -101,19 +101,19 @@ export default function Navbar() {
                   role="menuitem"
                   aria-selected={false}
                 >
-                  <span className="lang-flag" aria-hidden="true">ðŸ‡ªðŸ‡¸</span>
-                  <span className="lang-native-name">EspaÃ±ol</span>
+                  <span className="lang-flag" aria-hidden="true">🇪🇸</span>
+                  <span className="lang-native-name">Espagnol</span>
                 </button>
               </div>
             )}
           </div>
 
-          {/* Desktop primary CTA (Unique sur PC) */}
+          {/* Bouton d'action principal sur ordinateur */}
           <Link href="/FR/register" className="btn-primary desktop-cta">
             Ouvrir un compte
           </Link>
 
-          {/* Mobile Hamburger Toggle */}
+          {/* Bouton menu hamburger mobile */}
           <button
             className={`hamburger ${isOpen ? "active" : ""}`}
             onClick={() => setIsOpen(!isOpen)}

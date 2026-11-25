@@ -13,6 +13,7 @@ export const usersTable = sqliteTable("users", {
   birthPlace: text("birth_place").notNull(),
   nationality: text("nationality").notNull(),
   residenceCountry: text("residence_country").notNull(),
+  signupLocale: text("signup_locale", { enum: ["FR", "ES", "DE"] }).default("FR").notNull(),
   currency: text("currency").default("EUR").notNull(),
   address: text("address").notNull(),
   city: text("city").notNull(),

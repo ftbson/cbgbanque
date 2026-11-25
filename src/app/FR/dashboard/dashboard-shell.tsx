@@ -31,7 +31,7 @@ export default function DashboardShell({
   const handleLogout = async () => {
     const response = await fetch("/api/auth/logout", { method: "POST" });
     if (!response.ok) {
-      console.error("La dÃ©connexion n'a pas abouti.");
+      console.error("La déconnexion n'a pas abouti.");
       return;
     }
     router.push("/FR/login");
@@ -49,11 +49,11 @@ export default function DashboardShell({
     <div className="dashboard-layout">
       {/* ================= REPRODUCED TOPBAR (SCREENSHOT 1) ================= */}
       <header className="dashboard-topbar">
-        {/* User Avatar Circle (CH) linking to ParamÃ¨tres */}
+        {/* User Avatar Circle (CH) linking to Paramètres */}
         <Link
           href="/FR/dashboard/settings"
           className="topbar-avatar-round"
-          title={`${identity?.user.firstName || ""} ${identity?.user.lastName || ""} - Ouvrir les paramÃ¨tres`}
+          title={`${identity?.user.firstName || ""} ${identity?.user.lastName || ""} - Ouvrir les paramètres`}
           style={{ textDecoration: "none" }}
         >
           {getInitials()}
@@ -79,17 +79,17 @@ export default function DashboardShell({
           <Link
             href="/FR/dashboard/settings"
             className="topbar-icon-round topbar-settings-link"
-            title="ParamÃ¨tres du compte"
+            title="Paramètres du compte"
           >
             <i className="fa-solid fa-gear"></i>
-            <span>ParamÃ¨tres</span>
+            <span>Paramètres</span>
           </Link>
 
           <button
             type="button"
             className="topbar-icon-round"
             onClick={handleLogout}
-            title="Se dÃ©connecter"
+            title="Se déconnecter"
           >
             <i className="fa-solid fa-arrow-right-from-bracket"></i>
           </button>
@@ -112,7 +112,7 @@ export default function DashboardShell({
           className={`nav-item-bottom ${pathname === "/FR/dashboard/pret" ? "active" : ""}`}
         >
           <i className="fa-solid fa-arrow-trend-up"></i>
-          <span>PrÃªts</span>
+          <span>Prêts</span>
         </Link>
         <Link
           href="/FR/dashboard/envoyer"
@@ -133,14 +133,14 @@ export default function DashboardShell({
           className={`nav-item-bottom ${pathname === "/FR/dashboard/epargne" ? "active" : ""}`}
         >
           <i className="fa-solid fa-piggy-bank"></i>
-          <span>Ã‰pargne</span>
+          <span>Épargne</span>
         </Link>
         <Link
           href="/FR/dashboard/settings"
           className={`nav-item-bottom ${pathname === "/FR/dashboard/settings" ? "active" : ""}`}
         >
           <i className="fa-solid fa-gear"></i>
-          <span>ParamÃ¨tres</span>
+          <span>Paramètres</span>
         </Link>
       </nav>
     </div>

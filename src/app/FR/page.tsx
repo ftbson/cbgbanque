@@ -20,7 +20,7 @@ export default function Home() {
       {/* 1. Hero Section */}
       <Hero />
 
-      {/* 2. Features / Ã‰cosystÃ¨me de la banque */}
+      {/* 2. Features / Écosystème de la banque */}
       <Features />
 
        <CtaSection />

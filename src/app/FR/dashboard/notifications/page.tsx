@@ -48,10 +48,10 @@ export default function NotificationsPage() {
         body: JSON.stringify(notificationId ? { notificationId } : { markAll: true }),
       });
       const data: { message?: string } = await response.json();
-      if (!response.ok) throw new Error(data.message ?? "Impossible de mettre Ã  jour les notifications.");
+      if (!response.ok) throw new Error(data.message ?? "Impossible de mettre à jour les notifications.");
       await loadNotifications();
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Erreur de mise Ã  jour.");
+      setError(cause instanceof Error ? cause.message : "Erreur de mise à jour.");
     }
   };
 
@@ -75,7 +75,7 @@ export default function NotificationsPage() {
         </div>
 
         {error && <p role="alert">{error}</p>}
-        {loading ? <p>Chargementâ€¦</p> : notifications.length === 0 ? (
+        {loading ? <p>Chargement…</p> : notifications.length === 0 ? (
           <div className="history-empty-card">
             <p className="empty-state-text">Aucune notification.</p>
           </div>

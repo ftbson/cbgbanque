@@ -66,10 +66,10 @@ export default function CartePage() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message ?? "Impossible de commander la carte.");
-      setMessage("Votre carte Visa C23 a Ã©tÃ© Ã©mise et activÃ©e avec succÃ¨s !");
+      setMessage("Votre carte Visa C23 a été émise et activée avec succès !");
       await loadData();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Ã‰chec de commande de carte.");
+      setError(err instanceof Error ? err.message : "Échec de commande de carte.");
     } finally {
       setActionLoading(false);
     }
@@ -88,7 +88,7 @@ export default function CartePage() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message ?? "Erreur lors du gel de la carte.");
-      setMessage(data.message ?? "Statut mis Ã  jour.");
+      setMessage(data.message ?? "Statut mis à jour.");
       await loadData();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Action impossible.");
@@ -115,7 +115,7 @@ export default function CartePage() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message ?? "Impossible de modifier le code PIN.");
-      setMessage("Code PIN modifiÃ© avec succÃ¨s !");
+      setMessage("Code PIN modifié avec succès !");
       setShowPinModal(false);
       setNewPin("");
       await loadData();
@@ -128,7 +128,7 @@ export default function CartePage() {
 
   const handleDeleteCard = async () => {
     if (!activeCard) return;
-    if (!confirm("ÃŠtes-vous sÃ»r de vouloir supprimer dÃ©finitivement cette carte ?")) return;
+    if (!confirm("Êtes-vous sûr de vouloir supprimer définitivement cette carte ?")) return;
     setActionLoading(true);
     setError("");
     setMessage("");
@@ -140,7 +140,7 @@ export default function CartePage() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message ?? "Impossible de supprimer la carte.");
-      setMessage("Carte supprimÃ©e avec succÃ¨s.");
+      setMessage("Carte supprimée avec succès.");
       await loadData();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erreur.");
@@ -160,14 +160,14 @@ export default function CartePage() {
   const maskedCardNumber = activeCard?.cardNumber
     ? showNumbers
       ? activeCard.cardNumber
-      : `â€¢â€¢â€¢â€¢ â€¢â€¢â€¢â€¢ â€¢â€¢â€¢â€¢ ${activeCard.cardNumber.slice(-4)}`
-    : "â€¢â€¢â€¢â€¢ â€¢â€¢â€¢â€¢ â€¢â€¢â€¢â€¢ â€¢â€¢â€¢â€¢";
+      : `•••• •••• •••• ${activeCard.cardNumber.slice(-4)}`
+    : "•••• •••• •••• ••••";
 
   const maskedCvv = activeCard?.cvv
     ? showNumbers
       ? activeCard.cvv
-    : "â€¢â€¢â€¢"
-    : "â€¢â€¢â€¢";
+    : "•••"
+    : "•••";
 
   return (
     <div style={{ maxWidth: "480px", margin: "0 auto", padding: "1.5rem 1rem 6rem", color: "#fff" }}>
@@ -209,7 +209,7 @@ export default function CartePage() {
       {loading ? (
         <div style={{ textAlign: "center", padding: "4rem 1rem", color: "rgba(255,255,255,0.5)" }}>
           <i className="fa-solid fa-circle-notch fa-spin" style={{ fontSize: "1.5rem" }}></i>
-          <p style={{ marginTop: "0.5rem" }}>Chargement de vos informationsâ€¦</p>
+          <p style={{ marginTop: "0.5rem" }}>Chargement de vos informations…</p>
         </div>
       ) : !activeCard ? (
         /* SCREEN 1: Commande de carte Visa (matching user's uploaded screenshot) */
@@ -295,7 +295,7 @@ export default function CartePage() {
               Commandez votre carte Visa
             </h2>
             <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.65)", margin: 0 }}>
-              Votre carte physique C23, livrÃ©e chez vous en 5 Ã  7 jours ouvrÃ©s.
+              Votre carte physique C23, livrée chez vous en 5 à 7 jours ouvrés.
             </p>
           </div>
 
@@ -317,7 +317,7 @@ export default function CartePage() {
                 <i className="fa-solid fa-check"></i>
               </div>
               <span style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.9)", fontWeight: 500 }}>
-                Paiements sans contact, en ligne et Ã  l&apos;Ã©tranger
+                Paiements sans contact, en ligne et à l&apos;étranger
               </span>
             </div>
 
@@ -335,7 +335,7 @@ export default function CartePage() {
                 <i className="fa-solid fa-check"></i>
               </div>
               <span style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.9)", fontWeight: 500 }}>
-                Gel, plafonds et code PIN gÃ©rÃ©s depuis l&apos;app
+                Gel, plafonds et code PIN gérés depuis l&apos;app
               </span>
             </div>
           </div>
@@ -364,10 +364,10 @@ export default function CartePage() {
           >
             {actionLoading ? (
               <>
-                <i className="fa-solid fa-circle-notch fa-spin"></i> Activation en coursâ€¦
+                <i className="fa-solid fa-circle-notch fa-spin"></i> Activation en cours…
               </>
             ) : (
-              "Commander ma carte Â· 6,99 â‚¬"
+              "Commander ma carte · 6,99 €"
             )}
           </button>
         </div>
@@ -407,7 +407,7 @@ export default function CartePage() {
                 </span>
                 {activeCard.status === "frozen" && (
                   <span style={{ background: "rgba(239, 68, 68, 0.3)", color: "#fca5a5", fontSize: "0.65rem", padding: "0.2rem 0.5rem", borderRadius: "100px", fontWeight: 700, border: "1px solid rgba(239, 68, 68, 0.5)" }}>
-                    GELÃ‰E
+                    GELÉE
                   </span>
                 )}
               </div>
@@ -509,7 +509,7 @@ export default function CartePage() {
               }}
             >
               <i className={`fa-solid ${activeCard.status === "frozen" ? "fa-snowflake" : "fa-lock"}`} style={{ fontSize: "1.1rem", color: activeCard.status === "frozen" ? "#f87171" : "#fbbf24" }}></i>
-              <span>{activeCard.status === "frozen" ? "DÃ©geler" : "Geler"}</span>
+              <span>{activeCard.status === "frozen" ? "Dégeler" : "Geler"}</span>
             </button>
 
             {/* PIN Code */}
@@ -558,7 +558,7 @@ export default function CartePage() {
               }}
             >
               <i className="fa-solid fa-copy"></i>
-              {copied ? "NumÃ©ro de carte copiÃ© !" : "Copier le numÃ©ro de carte"}
+              {copied ? "Numéro de carte copié !" : "Copier le numéro de carte"}
             </button>
           </div>
 
@@ -578,7 +578,7 @@ export default function CartePage() {
                   <strong style={{ fontSize: "0.95rem", display: "block" }}>Plafond de paiement</strong>
                   <span style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.5)" }}>Sur 30 jours glissants</span>
                 </div>
-                <span style={{ fontSize: "0.95rem", fontWeight: 700, color: "#fff" }}>2 500,00 â‚¬</span>
+                <span style={{ fontSize: "0.95rem", fontWeight: 700, color: "#fff" }}>2 500,00 €</span>
               </div>
 
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "1rem 1.25rem", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
@@ -586,23 +586,23 @@ export default function CartePage() {
                   <strong style={{ fontSize: "0.95rem", display: "block" }}>Plafond de retrait</strong>
                   <span style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.5)" }}>Sur 7 jours glissants</span>
                 </div>
-                <span style={{ fontSize: "0.95rem", fontWeight: 700, color: "#fff" }}>500,00 â‚¬</span>
+                <span style={{ fontSize: "0.95rem", fontWeight: 700, color: "#fff" }}>500,00 €</span>
               </div>
 
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "1rem 1.25rem", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
                 <div>
                   <strong style={{ fontSize: "0.95rem", display: "block" }}>Paiements sans contact</strong>
-                  <span style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.5)" }}>Jusqu&apos;Ã  50 â‚¬ sans code</span>
+                  <span style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.5)" }}>Jusqu&apos;à 50 € sans code</span>
                 </div>
-                <span style={{ fontSize: "0.85rem", fontWeight: 600, color: "#10b981" }}>ActivÃ©</span>
+                <span style={{ fontSize: "0.85rem", fontWeight: 600, color: "#10b981" }}>Activé</span>
               </div>
 
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "1rem 1.25rem" }}>
                 <div>
                   <strong style={{ fontSize: "0.95rem", display: "block" }}>Paiements sur Internet</strong>
-                  <span style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.5)" }}>SÃ©curisÃ©s par 3D Secure</span>
+                  <span style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.5)" }}>Sécurisés par 3D Secure</span>
                 </div>
-                <span style={{ fontSize: "0.85rem", fontWeight: 600, color: "#10b981" }}>ActivÃ©</span>
+                <span style={{ fontSize: "0.85rem", fontWeight: 600, color: "#10b981" }}>Activé</span>
               </div>
             </div>
           </div>
@@ -692,7 +692,7 @@ export default function CartePage() {
                   maxLength={4}
                   value={newPin}
                   onChange={(e) => setNewPin(e.target.value.replace(/\D/g, ""))}
-                  placeholder="â€¢â€¢â€¢â€¢"
+                  placeholder="••••"
                   style={{
                     flex: 1,
                     padding: "0.6rem 0.85rem",

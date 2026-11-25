@@ -50,7 +50,7 @@ export default function ParametresPage() {
       .then(async (res) => {
         const data = await res.json();
         if (!res.ok || !data.success || !data.user) {
-          throw new Error(data.message || "Impossible de charger les paramÃ¨tres.");
+          throw new Error(data.message || "Impossible de charger les paramètres.");
         }
         setProfile(data.user);
         setPhone(data.user.phone || "");
@@ -60,7 +60,7 @@ export default function ParametresPage() {
         setProfession(data.user.profession || "");
         setMonthlyIncome(data.user.monthlyIncome || "");
       })
-      .catch((cause: unknown) => setErrorMsg(cause instanceof Error ? cause.message : "Impossible de charger les paramÃ¨tres."))
+      .catch((cause: unknown) => setErrorMsg(cause instanceof Error ? cause.message : "Impossible de charger les paramètres."))
       .finally(() => setLoading(false));
   }, []);
 
@@ -77,7 +77,7 @@ export default function ParametresPage() {
         return;
       }
       if (newPassword.length < 8) {
-        setErrorMsg("Le nouveau mot de passe doit comporter au moins 8 caractÃ¨res.");
+        setErrorMsg("Le nouveau mot de passe doit comporter au moins 8 caractères.");
         setSaving(false);
         return;
       }
@@ -120,10 +120,10 @@ export default function ParametresPage() {
 
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.message || "Erreur de mise Ã  jour");
+        throw new Error(data.message || "Erreur de mise à jour");
       }
 
-      setSuccessMsg("Vos informations ont Ã©tÃ© enregistrÃ©es avec succÃ¨s en base de donnÃ©es !");
+      setSuccessMsg("Vos informations ont été enregistrées avec succès en base de données !");
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
@@ -136,7 +136,7 @@ export default function ParametresPage() {
   };
 
   if (loading) {
-    return <div className="pret-page-container"><p style={{ color: "#94a3b8", textAlign: "center", marginTop: "2rem" }}>Chargement de vos paramÃ¨tresâ€¦</p></div>;
+    return <div className="pret-page-container"><p style={{ color: "#94a3b8", textAlign: "center", marginTop: "2rem" }}>Chargement de vos paramètres…</p></div>;
   }
 
   if (!profile) {
@@ -146,10 +146,10 @@ export default function ParametresPage() {
           <Link href="/FR/dashboard" className="btn-back-circle" aria-label="Retour au dashboard">
             <i className="fa-solid fa-chevron-left"></i>
           </Link>
-          <h1 className="screen-title-center">ParamÃ¨tres du compte</h1>
+          <h1 className="screen-title-center">Paramètres du compte</h1>
           <div style={{ width: "38px" }}></div>
         </div>
-        <p role="alert">{errorMsg || "Impossible de charger les paramÃ¨tres."}</p>
+        <p role="alert">{errorMsg || "Impossible de charger les paramètres."}</p>
       </div>
     );
   }
@@ -161,7 +161,7 @@ export default function ParametresPage() {
         <Link href="/FR/dashboard" className="btn-back-circle" aria-label="Retour au dashboard">
           <i className="fa-solid fa-chevron-left"></i>
         </Link>
-        <h1 className="screen-title-center">ParamÃ¨tres du compte</h1>
+        <h1 className="screen-title-center">Paramètres du compte</h1>
         <div style={{ width: "38px" }}></div>
       </div>
 
@@ -182,18 +182,18 @@ export default function ParametresPage() {
           <span style={{ fontSize: "0.8rem", color: "#60a5fa" }}>{profile?.email}</span>
         </div>
         <span style={{ background: profile?.status === "approved" ? "rgba(34,197,94,0.15)" : "rgba(245,158,11,0.15)", color: profile?.status === "approved" ? "#22c55e" : "#f59e0b", border: `1px solid ${profile?.status === "approved" ? "rgba(34,197,94,0.3)" : "rgba(245,158,11,0.3)"}`, padding: "0.35rem 0.75rem", borderRadius: "999px", fontSize: "0.8rem", fontWeight: 700 }}>
-          {profile?.status === "approved" ? "âœ“ Compte VÃ©rifiÃ©" : "â³ En cours de validation"}
+          {profile?.status === "approved" ? "✓ Compte Vérifié" : "⏳ En cours de validation"}
         </span>
       </div>
 
       <form onSubmit={handleSaveProfile} className="pret-form-card">
         <h3 style={{ fontSize: "1.15rem", fontWeight: 700, color: "#ffffff", marginBottom: "1.25rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-          <i className="fa-solid fa-user-pen" style={{ color: "#3b82f6" }}></i> Mes CoordonnÃ©es
+          <i className="fa-solid fa-user-pen" style={{ color: "#3b82f6" }}></i> Mes Coordonnées
         </h3>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
           <div>
-            <label className="sheet-input-label">NumÃ©ro de tÃ©lÃ©phone</label>
+            <label className="sheet-input-label">Numéro de téléphone</label>
             <input
               type="tel"
               value={phone}
@@ -249,7 +249,7 @@ export default function ParametresPage() {
           </div>
 
           <div>
-            <label className="sheet-input-label">Revenu mensuel net dÃ©clarÃ© (â‚¬)</label>
+            <label className="sheet-input-label">Revenu mensuel net déclaré (€)</label>
             <div style={{ position: "relative" }}>
               <input
                 type="number"
@@ -259,7 +259,7 @@ export default function ParametresPage() {
                 style={{ paddingRight: "3rem" }}
               />
               <span style={{ position: "absolute", right: "1rem", top: "50%", transform: "translateY(-50%)", color: "#94a3b8" }}>
-                â‚¬ / mois
+                € / mois
               </span>
             </div>
           </div>
@@ -285,7 +285,7 @@ export default function ParametresPage() {
                   value={currentPassword}
                   onChange={(e) => setCurrentPassword(e.target.value)}
                   className="sheet-text-input"
-                  placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                  placeholder="••••••••"
                 />
               </div>
               <div>
@@ -295,7 +295,7 @@ export default function ParametresPage() {
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   className="sheet-text-input"
-                  placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                  placeholder="••••••••"
                 />
               </div>
               <div>
@@ -305,7 +305,7 @@ export default function ParametresPage() {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   className="sheet-text-input"
-                  placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                  placeholder="••••••••"
                 />
               </div>
             </div>
@@ -322,12 +322,12 @@ export default function ParametresPage() {
         </div>
       </form>
 
-      {/* Informations lÃ©gales d'identification protÃ©gÃ©es */}
+      {/* Informations légales d'identification protégées */}
       <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: "16px", padding: "1.25rem", color: "#94a3b8", fontSize: "0.82rem", lineHeight: "1.6" }}>
         <strong style={{ color: "#ffffff", display: "block", marginBottom: "0.35rem" }}>
-          <i className="fa-solid fa-shield-halved"></i> DonnÃ©es d&apos;identitÃ© sÃ©curisÃ©es
+          <i className="fa-solid fa-shield-halved"></i> Données d&apos;identité sécurisées
         </strong>
-        ConformÃ©ment aux normes bancaires europÃ©ennes, vos nom, prÃ©nom, nationalitÃ© et date de naissance ne peuvent Ãªtre modifiÃ©s qu&apos;en contactant le support de conformitÃ© avec un justificatif officiel Ã  <a href="mailto:conformite@cbgbanque.com" style={{ color: "#60a5fa" }}>conformite@cbgbanque.com</a>.
+        Conformément aux normes bancaires européennes, vos nom, prénom, nationalité et date de naissance ne peuvent être modifiés qu&apos;en contactant le support de conformité avec un justificatif officiel à <a href="mailto:conformite@cbgbanque.com" style={{ color: "#60a5fa" }}>conformite@cbgbanque.com</a>.
       </div>
     </div>
   );

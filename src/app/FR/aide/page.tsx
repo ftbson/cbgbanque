@@ -13,42 +13,42 @@ const faqs: FaqItem[] = [
   {
     category: "compte",
     q: "Comment ouvrir un compte chez CBG Banque ?",
-    a: "L'ouverture se fait entiÃ¨rement en ligne en moins de 5 minutes. Remplissez le formulaire, tÃ©lÃ©versez le recto et le verso de votre piÃ¨ce d'identitÃ© en cours de validitÃ©, puis notre Ã©quipe de conformitÃ© valide votre dossier dans un dÃ©lai de 24h ouvrÃ©es. Vous recevez un e-mail de confirmation dÃ¨s que votre compte est actif.",
+    a: "L'ouverture se fait entièrement en ligne en moins de 5 minutes. Remplissez le formulaire, téléversez le recto et le verso de votre pièce d'identité en cours de validité, puis notre équipe de conformité valide votre dossier dans un délai de 24h ouvrées. Vous recevez un e-mail de confirmation dès que votre compte est actif.",
   },
   {
     category: "compte",
-    q: "Quels sont les documents acceptÃ©s pour l'inscription ?",
-    a: "Nous acceptons la Carte Nationale d'IdentitÃ© europÃ©enne (recto et verso), le Passeport international en cours de validitÃ©, le Permis de conduire au format carte bancaire ou le Titre de sÃ©jour europÃ©en.",
+    q: "Quels sont les documents acceptés pour l'inscription ?",
+    a: "Nous acceptons la Carte Nationale d'Identité européenne (recto et verso), le Passeport international en cours de validité, le Permis de conduire au format carte bancaire ou le Titre de séjour européen.",
   },
   {
     category: "cartes",
-    q: "Comment commander ou crÃ©er une carte bancaire ?",
-    a: "Depuis votre Dashboard, accÃ©dez Ã  la section Â« Mes cartes Â». Vous pouvez instantanÃ©ment gÃ©nÃ©rer une carte virtuelle sÃ©curisÃ©e pour vos achats en ligne ou commander une carte physique Visa Classic livrÃ©e sous 5 Ã  7 jours ouvrÃ©s chez vous.",
+    q: "Comment commander ou créer une carte bancaire ?",
+    a: "Depuis votre Dashboard, accédez à la section « Mes cartes ». Vous pouvez instantanément générer une carte virtuelle sécurisée pour vos achats en ligne ou commander une carte physique Visa Classic livrée sous 5 à 7 jours ouvrés chez vous.",
   },
   {
     category: "cartes",
-    q: "Puis-je geler temporairement ma carte ou masquer mes numÃ©ros ?",
-    a: "Oui ! En un clic depuis votre espace Cartes, vous pouvez masquer/afficher le numÃ©ro Ã  16 chiffres et le cryptogramme CVV, ou verrouiller/dÃ©verrouiller instantanÃ©ment votre carte en cas de doute.",
+    q: "Puis-je geler temporairement ma carte ou masquer mes numéros ?",
+    a: "Oui ! En un clic depuis votre espace Cartes, vous pouvez masquer/afficher le numéro à 16 chiffres et le cryptogramme CVV, ou verrouiller/déverrouiller instantanément votre carte en cas de doute.",
   },
   {
     category: "prets",
-    q: "Comment fonctionne la demande de prÃªt en ligne ?",
-    a: "Rendez-vous dans votre espace client, rubrique Â« Demande de prÃªt Â». Utilisez le simulateur interactif pour choisir votre montant et la durÃ©e dÃ©sirÃ©e. Le taux d'intÃ©rÃªt, les mensualitÃ©s et les frais de dossier sont calculÃ©s instantanÃ©ment en toute transparence avant soumission.",
+    q: "Comment fonctionne la demande de prêt en ligne ?",
+    a: "Rendez-vous dans votre espace client, rubrique « Demande de prêt ». Utilisez le simulateur interactif pour choisir votre montant et la durée désirée. Le taux d'intérêt, les mensualités et les frais de dossier sont calculés instantanément en toute transparence avant soumission.",
   },
   {
     category: "prets",
-    q: "Quel est le dÃ©lai de rÃ©ponse pour une demande de crÃ©dit ?",
-    a: "Une fois votre simulation soumise, l'Ã©quipe d'analyse examine votre profil sous 24 Ã  48 heures. La dÃ©cision est notifiÃ©e directement dans votre Dashboard et par e-mail.",
+    q: "Quel est le délai de réponse pour une demande de crédit ?",
+    a: "Une fois votre simulation soumise, l'équipe d'analyse examine votre profil sous 24 à 48 heures. La décision est notifiée directement dans votre Dashboard et par e-mail.",
   },
   {
     category: "securite",
-    q: "Mes fonds et donnÃ©es personnelles sont-ils protÃ©gÃ©s ?",
-    a: "Absolument. CBG Banque applique les protocoles de chiffrement bancaire TLS 1.3 / AES-256 et respecte scrupuleusement la rÃ©glementation europÃ©enne RGPD. Vos dÃ©pÃ´ts bÃ©nÃ©ficient des mÃ©canismes de garantie des dÃ©pÃ´ts en vigueur.",
+    q: "Mes fonds et données personnelles sont-ils protégés ?",
+    a: "Absolument. CBG Banque applique les protocoles de chiffrement bancaire TLS 1.3 / AES-256 et respecte scrupuleusement la réglementation européenne RGPD. Vos dépôts bénéficient des mécanismes de garantie des dépôts en vigueur.",
   },
   {
     category: "app",
-    q: "Comment installer l'application CBG sur mon tÃ©lÃ©phone ?",
-    a: "Notre application est une Progressive Web App (PWA). Cliquez sur le bouton Â« TÃ©lÃ©charger l'application Â» en bas de page ou en haut du site. Sur iPhone, utilisez le menu Partager > Â« Sur l'Ã©cran d'accueil Â». Sur Android et ordinateur, cliquez simplement sur Â« Installer Â».",
+    q: "Comment installer l'application CBG sur mon téléphone ?",
+    a: "Notre application est une Progressive Web App (PWA). Cliquez sur le bouton « Télécharger l'application » en bas de page ou en haut du site. Sur iPhone, utilisez le menu Partager > « Sur l'écran d'accueil ». Sur Android et ordinateur, cliquez simplement sur « Installer ».",
   },
 ];
 
@@ -74,7 +74,7 @@ export default function AidePage() {
         </span>
         <h1 className="legal-main-heading">Centre d&apos;aide & Assistance</h1>
         <p className="legal-lead-text">
-          Trouvez des rÃ©ponses claires Ã  vos questions ou contactez notre Ã©quipe de conseillers bancaires dÃ©diÃ©e.
+          Trouvez des réponses claires à vos questions ou contactez notre équipe de conseillers bancaires dédiée.
         </p>
 
         {/* Search input */}
@@ -82,7 +82,7 @@ export default function AidePage() {
           <i className="fa-solid fa-magnifying-glass search-icon"></i>
           <input
             type="text"
-            placeholder="Rechercher une question (ex: prÃªt, carte virtuelle, inscription...)"
+            placeholder="Rechercher une question (ex: prêt, carte virtuelle, inscription...)"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="help-search-input"
@@ -102,8 +102,8 @@ export default function AidePage() {
             { id: "all", label: "Toutes les questions", icon: "fa-list" },
             { id: "compte", label: "Compte & Inscription", icon: "fa-user" },
             { id: "cartes", label: "Cartes Visa", icon: "fa-credit-card" },
-            { id: "prets", label: "PrÃªts & CrÃ©dit", icon: "fa-hand-holding-dollar" },
-            { id: "securite", label: "SÃ©curitÃ© & RGPD", icon: "fa-shield-halved" },
+            { id: "prets", label: "Prêts & Crédit", icon: "fa-hand-holding-dollar" },
+            { id: "securite", label: "Sécurité & RGPD", icon: "fa-shield-halved" },
             { id: "app", label: "Application & PWA", icon: "fa-mobile-screen" },
           ].map((cat) => (
             <button
@@ -121,9 +121,9 @@ export default function AidePage() {
           {filteredFaqs.length === 0 ? (
             <div className="faq-empty-state">
               <i className="fa-solid fa-circle-question"></i>
-              <p>Aucune rÃ©ponse trouvÃ©e pour votre recherche.</p>
+              <p>Aucune réponse trouvée pour votre recherche.</p>
               <button onClick={() => { setSearch(""); setActiveCategory("all"); }} className="btn-table-details">
-                RÃ©initialiser la recherche
+                Réinitialiser la recherche
               </button>
             </div>
           ) : (
@@ -157,7 +157,7 @@ export default function AidePage() {
               <i className="fa-solid fa-envelope"></i>
             </div>
             <h4>Par e-mail</h4>
-            <p>Notre Ã©quipe rÃ©pond Ã  vos messages sous 24h ouvrÃ©es.</p>
+            <p>Notre équipe répond à vos messages sous 24h ouvrées.</p>
             <a href="mailto:serviceclient@cbgbanque.com" className="contact-card-link">
               serviceclient@cbgbanque.com
             </a>
@@ -167,8 +167,8 @@ export default function AidePage() {
             <div className="contact-card-icon green">
               <i className="fa-solid fa-phone"></i>
             </div>
-            <h4>Par tÃ©lÃ©phone</h4>
-            <p>Conseillers disponibles du lundi au samedi de 8h Ã  20h.</p>
+            <h4>Par téléphone</h4>
+            <p>Conseillers disponibles du lundi au samedi de 8h à 20h.</p>
             <a href="tel:+33189714200" className="contact-card-link">
               +33 (0) 1 89 71 42 00
             </a>
@@ -179,7 +179,7 @@ export default function AidePage() {
               <i className="fa-solid fa-comments"></i>
             </div>
             <h4>Espace Client</h4>
-            <p>AccÃ©dez Ã  votre messagerie sÃ©curisÃ©e et Ã  vos demandes de prÃªt.</p>
+            <p>Accédez à votre messagerie sécurisée et à vos demandes de prêt.</p>
             <Link href="/FR/dashboard" className="contact-card-link">
               Ouvrir mon dashboard <i className="fa-solid fa-arrow-right"></i>
             </Link>

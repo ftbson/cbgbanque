@@ -37,6 +37,10 @@ export async function POST(request: Request) {
     }
 
     const payload = body as Record<string, unknown>;
+    const signupLocale = payload.signupLocale;
+    if (signupLocale !== "FR" && signupLocale !== "ES" && signupLocale !== "DE") {
+      return NextResponse.json({ success: false, message: "Locale d'inscription invalide." }, { status: 400 });
+    }
     const email = body.email.trim().toLowerCase();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || body.password.length < 8) {
       return NextResponse.json(
@@ -99,6 +103,7 @@ export async function POST(request: Request) {
       email,
       passwordHash: await hashPassword(body.password),
       ...profile,
+      signupLocale,
       monthlyIncome,
       idCardFront,
       idCardBack,

@@ -72,14 +72,14 @@ export default function EpargnePage() {
         body: JSON.stringify({ name, target }),
       });
       const data: { message?: string } = await response.json();
-      if (!response.ok) throw new Error(data.message ?? "Impossible de crÃ©er le coffre.");
+      if (!response.ok) throw new Error(data.message ?? "Impossible de créer le coffre.");
       setName("");
       setTarget("");
       setShowCreateModal(false);
-      setMessage(data.message ?? "Coffre crÃ©Ã© avec succÃ¨s.");
+      setMessage(data.message ?? "Coffre créé avec succès.");
       await loadVaults();
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Erreur lors de la crÃ©ation.");
+      setError(cause instanceof Error ? cause.message : "Erreur lors de la création.");
     } finally {
       setSaving(false);
     }
@@ -101,7 +101,7 @@ export default function EpargnePage() {
       if (!response.ok) throw new Error(data.message ?? "Mouvement impossible.");
       setAmount("");
       setSelectedVault(null);
-      setMessage(actionType === "deposit" ? "Versement effectuÃ© avec succÃ¨s." : "Retrait du coffre effectuÃ© avec succÃ¨s.");
+      setMessage(actionType === "deposit" ? "Versement effectué avec succès." : "Retrait du coffre effectué avec succès.");
       await loadVaults();
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Erreur lors du mouvement.");
@@ -134,9 +134,9 @@ export default function EpargnePage() {
             <i className="fa-solid fa-chevron-left"></i>
           </Link>
           <div>
-            <h1 style={{ fontSize: "1.5rem", fontWeight: 700, margin: 0 }}>Coffres d&apos;Ã‰pargne</h1>
+            <h1 style={{ fontSize: "1.5rem", fontWeight: 700, margin: 0 }}>Coffres d&apos;Épargne</h1>
             <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.6)", margin: 0 }}>
-              Mettez de l&apos;argent de cÃ´tÃ© pour vos projets
+              Mettez de l&apos;argent de côté pour vos projets
             </p>
           </div>
         </div>
@@ -178,7 +178,7 @@ export default function EpargnePage() {
       >
         <div style={{ position: "relative", zIndex: 1 }}>
           <span style={{ fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "1px", color: "rgba(255,255,255,0.5)", fontWeight: 700 }}>
-            TOTAL Ã‰PARGNÃ‰
+            TOTAL ÉPARGNÉ
           </span>
           <div style={{ fontSize: "2.2rem", fontWeight: 800, margin: "0.4rem 0", color: "#fff" }}>
             {formatMoney(totalSavedCents, currency)}
@@ -207,7 +207,7 @@ export default function EpargnePage() {
         {loading ? (
           <div style={{ textAlign: "center", padding: "3rem", color: "rgba(255,255,255,0.5)" }}>
             <i className="fa-solid fa-circle-notch fa-spin" style={{ fontSize: "1.5rem" }}></i>
-            <p style={{ marginTop: "0.5rem" }}>Chargement de vos coffresâ€¦</p>
+            <p style={{ marginTop: "0.5rem" }}>Chargement de vos coffres…</p>
           </div>
         ) : vaults.length === 0 ? (
           <div
@@ -222,9 +222,9 @@ export default function EpargnePage() {
             <div style={{ width: "64px", height: "64px", borderRadius: "50%", background: "rgba(59, 130, 246, 0.1)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 1rem" }}>
               <i className="fa-solid fa-piggy-bank" style={{ fontSize: "1.75rem", color: "#60a5fa" }}></i>
             </div>
-            <h3 style={{ fontSize: "1.1rem", fontWeight: 600, marginBottom: "0.5rem" }}>Aucun coffre crÃ©Ã©</h3>
+            <h3 style={{ fontSize: "1.1rem", fontWeight: 600, marginBottom: "0.5rem" }}>Aucun coffre créé</h3>
             <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.5)", maxWidth: "380px", margin: "0 auto 1.5rem" }}>
-              CrÃ©ez un coffre pour mettre de l&apos;argent de cÃ´tÃ© automatiquement (vacances, sÃ©curitÃ©, auto, etc.).
+              Créez un coffre pour mettre de l&apos;argent de côté automatiquement (vacances, sécurité, auto, etc.).
             </p>
             <button
               type="button"
@@ -239,7 +239,7 @@ export default function EpargnePage() {
                 cursor: "pointer",
               }}
             >
-              CrÃ©er mon premier coffre
+              Créer mon premier coffre
             </button>
           </div>
         ) : (
@@ -380,20 +380,20 @@ export default function EpargnePage() {
             }}
           >
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.25rem" }}>
-              <h2 style={{ fontSize: "1.2rem", fontWeight: 700, margin: 0 }}>CrÃ©er un nouveau coffre</h2>
+              <h2 style={{ fontSize: "1.2rem", fontWeight: 700, margin: 0 }}>Créer un nouveau coffre</h2>
               <button
                 type="button"
                 onClick={() => setShowCreateModal(false)}
                 style={{ background: "transparent", border: "none", color: "rgba(255,255,255,0.6)", fontSize: "1.2rem", cursor: "pointer" }}
               >
-                âœ•
+                ✕
               </button>
             </div>
 
             <form onSubmit={createVault}>
               <div style={{ marginBottom: "1rem" }}>
                 <label style={{ display: "block", fontSize: "0.85rem", color: "rgba(255,255,255,0.7)", marginBottom: "0.4rem" }}>
-                  Nom du coffre (ex: Vacances d&apos;Ã©tÃ©, Urgences...)
+                  Nom du coffre (ex: Vacances d&apos;été, Urgences...)
                 </label>
                 <input
                   type="text"
@@ -417,7 +417,7 @@ export default function EpargnePage() {
 
               <div style={{ marginBottom: "1.5rem" }}>
                 <label style={{ display: "block", fontSize: "0.85rem", color: "rgba(255,255,255,0.7)", marginBottom: "0.4rem" }}>
-                  Objectif Ã  atteindre (â‚¬)
+                  Objectif à atteindre (€)
                 </label>
                 <input
                   type="number"
@@ -472,7 +472,7 @@ export default function EpargnePage() {
                     boxShadow: "0 4px 15px rgba(59, 130, 246, 0.4)",
                   }}
                 >
-                  {saving ? "CrÃ©ationâ€¦" : "Confirmer"}
+                  {saving ? "Création…" : "Confirmer"}
                 </button>
               </div>
             </form>
@@ -520,14 +520,14 @@ export default function EpargnePage() {
                 onClick={() => setSelectedVault(null)}
                 style={{ background: "transparent", border: "none", color: "rgba(255,255,255,0.6)", fontSize: "1.2rem", cursor: "pointer" }}
               >
-                âœ•
+                ✕
               </button>
             </div>
 
             <form onSubmit={moveFunds}>
               <div style={{ marginBottom: "1.5rem" }}>
                 <label style={{ display: "block", fontSize: "0.85rem", color: "rgba(255,255,255,0.7)", marginBottom: "0.4rem" }}>
-                  Montant Ã  {actionType === "deposit" ? "verser" : "retirer"} ({currency})
+                  Montant à {actionType === "deposit" ? "verser" : "retirer"} ({currency})
                 </label>
                 <input
                   type="number"
@@ -594,7 +594,7 @@ export default function EpargnePage() {
                     cursor: saving ? "wait" : "pointer",
                   }}
                 >
-                  {saving ? "Traitementâ€¦" : actionType === "deposit" ? "Confirmer le versement" : "Confirmer le retrait"}
+                  {saving ? "Traitement…" : actionType === "deposit" ? "Confirmer le versement" : "Confirmer le retrait"}
                 </button>
               </div>
             </form>

@@ -77,17 +77,17 @@ export default function CtaSection() {
             </div>
             <div className="stat-item">
               <span className="stat-number">
-                {formatNumber(counts.capital)} â‚¬
+                {formatNumber(counts.capital)} €
               </span>
-              <span className="stat-label">Capital libÃ©rÃ©</span>
+              <span className="stat-label">Capital libéré</span>
             </div>
             <div className="stat-item">
               <span className="stat-number">{counts.languages}</span>
-              <span className="stat-label">Langues supportÃ©es</span>
+              <span className="stat-label">Langues supportées</span>
             </div>
             <div className="stat-item">
               <span className="stat-number">{counts.year}</span>
-              <span className="stat-label">SiÃ¨ge Ã  Bruxelles</span>
+              <span className="stat-label">Siège à Bruxelles</span>
             </div>
           </div>
         </div>
@@ -98,12 +98,12 @@ export default function CtaSection() {
 
           <div className="cta-content">
             <h2 className="cta-title">
-              PrÃªt Ã  transformer votre{" "}
-              <span className="gradient-text">expÃ©rience bancaire ?</span>
+              Prêt à transformer votre{" "}
+              <span className="gradient-text">expérience bancaire ?</span>
             </h2>
 
             <p className="cta-description">
-              Ouvrez votre compte en moins de 5 minutes. Sans frais cachÃ©s, sans engagement.
+              Ouvrez votre compte en moins de 5 minutes. Sans frais cachés, sans engagement.
             </p>
 
             <div className="cta-actions">
@@ -111,7 +111,7 @@ export default function CtaSection() {
                 Ouvrir un compte <i className="fa-solid fa-arrow-right"></i>
               </Link>
               <Link href="/FR/download" className="btn-cta-glow">
-                DÃ©couvrir l'application
+                Découvrir l'application
               </Link>
             </div>
           </div>

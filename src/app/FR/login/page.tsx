@@ -56,7 +56,7 @@ export default function LoginPage() {
         <div className="auth-card">
           <div className="auth-header">
             <h1 className="auth-title">Bon retour sur CBG Banque</h1>
-            <p className="auth-subtitle">Connectez-vous Ã  votre espace sÃ©curisÃ©</p>
+            <p className="auth-subtitle">Connectez-vous à votre espace sécurisé</p>
           </div>
 
           {errorMessage && (
@@ -90,7 +90,7 @@ export default function LoginPage() {
                   type={showPassword ? "text" : "password"}
                   id="password"
                   required
-                  placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                  placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="form-input"
@@ -112,7 +112,7 @@ export default function LoginPage() {
                 <span>Se souvenir de moi</span>
               </label>
               <Link href="/FR/mot-de-passe-oublie" className="forgot-link">
-                Mot de passe oubliÃ© ?
+                Mot de passe oublié ?
               </Link>
             </div>
 

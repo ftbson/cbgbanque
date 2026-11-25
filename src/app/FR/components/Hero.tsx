@@ -41,16 +41,16 @@ export default function Hero() {
         <div className="hero-content">
           <div className="hero-badge">
             <span className="pulse-dot"></span>
-            <span>La Neo-Banque de Nouvelle GÃ©nÃ©ration</span>
+            <span>La Neo-Banque de Nouvelle Génération</span>
           </div>
 
           <h1 className="hero-title">
-            Repensez votre libertÃ©{" "}
-            <span className="hero-gradient-text">financiÃ¨re.</span>
+            Repensez votre liberté{" "}
+            <span className="hero-gradient-text">financière.</span>
           </h1>
 
           <p className="hero-subtitle">
-            Compte sans frais, rÃ©munÃ©ration jusqu'Ã  4,2 %, cartes virtuelles instantanÃ©es et transferts zÃ©ro dÃ©lai. Prenez le contrÃ´le de votre argent avec CBGBanque.
+            Compte sans frais, rémunération jusqu'à 4,2 %, cartes virtuelles instantanées et transferts zéro délai. Prenez le contrôle de votre argent avec CBGBanque.
           </p>
 
           <div className="hero-actions">
@@ -59,7 +59,7 @@ export default function Hero() {
             </Link>
             <div className="hero-secondary-group">
               <Link href="/FR/login" className="btn-hero-secondary">
-                J'ai dÃ©jÃ  un compte
+                J'ai déjà un compte
               </Link>
               <Link href="/FR/download" className="btn-hero-outline">
                 <i className="fa-solid fa-download"></i> App Mobile
@@ -74,11 +74,11 @@ export default function Hero() {
             </div>
             <div className="trust-item">
               <i className="fa-solid fa-circle-check"></i>
-              <span>AgrÃ©ment Banque Digitale</span>
+              <span>Agrément Banque Digitale</span>
             </div>
             <div className="trust-item">
               <i className="fa-solid fa-lock"></i>
-              <span>SÃ©curitÃ© militaire</span>
+              <span>Sécurité militaire</span>
             </div>
           </div>
         </div>
@@ -90,8 +90,8 @@ export default function Hero() {
                 <i className="fa-solid fa-arrow-up"></i>
               </div>
               <div className="badge-info">
-                <span className="badge-title">Salaire reÃ§u</span>
-                <span className="badge-amount">+2 450,00 â‚¬</span>
+                <span className="badge-title">Salaire reçu</span>
+                <span className="badge-amount">+2 450,00 €</span>
               </div>
             </div>
 
@@ -100,8 +100,8 @@ export default function Hero() {
                 <i className="fa-solid fa-paper-plane"></i>
               </div>
               <div className="badge-info">
-                <span className="badge-title">Virement instantanÃ©</span>
-                <span className="badge-amount">-120,00 â‚¬</span>
+                <span className="badge-title">Virement instantané</span>
+                <span className="badge-amount">-120,00 €</span>
               </div>
             </div>
 
@@ -119,10 +119,10 @@ export default function Hero() {
                 <span className="balance-label">Solde disponible</span>
                 <div className="balance-amount">
                   {integerPart}
-                  <span className="balance-cents">,{centsPart} â‚¬</span>
+                  <span className="balance-cents">,{centsPart} €</span>
                 </div>
                 <div className="balance-trend">
-                  <i className="fa-solid fa-arrow-trend-up"></i> +245,30 â‚¬ aujourd'hui
+                  <i className="fa-solid fa-arrow-trend-up"></i> +245,30 € aujourd'hui
                 </div>
               </div>
 
@@ -180,7 +180,7 @@ export default function Hero() {
                   <span className="card-brand">CBG BANQUE</span>
                   <div className="card-chip"></div>
                 </div>
-                <div className="card-number">â€¢â€¢â€¢â€¢ 5403</div>
+                <div className="card-number">•••• 5403</div>
                 <div className="card-bottom">
                   <span className="card-holder">KENDRA D.</span>
                   <i className="fa-brands fa-cc-visa visa-icon"></i>

@@ -1,8 +1,13 @@
 ﻿"use client";
 
 import { usePathname } from "next/navigation";
+import NavbarFR from "@/app/FR/components/Navbar";
+import NavbarDE from "@/app/DE/components/Navbar";
+import NavbarES from "@/app/ES/components/Navbar";
+import FooterFR from "@/app/FR/components/Footer";
+import FooterDE from "@/app/DE/components/Footer";
+import FooterES from "@/app/ES/components/Footer";
 import { useEffect } from "react";
-import dynamic from "next/dynamic";
 import CookieBanner from "@/components/CookieBanner";
 
 interface SiteFrameProps {
@@ -14,13 +19,6 @@ function getLocaleFromPath(pathname: string): "fr" | "de" | "es" {
   if (pathname === "/ES" || pathname.startsWith("/ES/")) return "es";
   return "fr";
 }
-
-const NavbarFR = dynamic(() => import("@/app/FR/components/Navbar"), { ssr: false });
-const NavbarDE = dynamic(() => import("@/app/DE/components/Navbar"), { ssr: false });
-const NavbarES = dynamic(() => import("@/app/ES/components/Navbar"), { ssr: false });
-const FooterFR = dynamic(() => import("@/app/FR/components/Footer"), { ssr: false });
-const FooterDE = dynamic(() => import("@/app/DE/components/Footer"), { ssr: false });
-const FooterES = dynamic(() => import("@/app/ES/components/Footer"), { ssr: false });
 
 export default function SiteFrame({ children }: SiteFrameProps) {
   const pathname = usePathname();

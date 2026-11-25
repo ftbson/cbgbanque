@@ -90,15 +90,15 @@ export default function ActivitePage() {
         <div className="history-header">
           <div className="history-title-group">
             <h1 className="history-main-title">Historique</h1>
-            <span className="history-count-badge">{filtered.length} opÃ©ration(s)</span>
+            <span className="history-count-badge">{filtered.length} opération(s)</span>
           </div>
         </div>
         <div className="history-search-box">
-          <label className="sr-only" htmlFor="activity-search">Rechercher une opÃ©ration</label>
+          <label className="sr-only" htmlFor="activity-search">Rechercher une opération</label>
           <input
             id="activity-search"
             type="search"
-            placeholder="Rechercher une opÃ©ration"
+            placeholder="Rechercher une opération"
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             className="history-search-input"
@@ -107,7 +107,7 @@ export default function ActivitePage() {
         <div className="history-pills-row">
           {(["all", "pending", "completed"] as const).map((value) => (
             <button key={value} className={`pill-filter ${filter === value ? "active" : ""}`} onClick={() => setFilter(value)}>
-              {value === "all" ? "Tout" : value === "pending" ? "En attente" : "TerminÃ©es"}
+              {value === "all" ? "Tout" : value === "pending" ? "En attente" : "Terminées"}
             </button>
           ))}
         </div>
@@ -115,7 +115,7 @@ export default function ActivitePage() {
         {error ? <p role="alert">{error}</p> : filtered.length === 0 ? (
           <div className="history-empty-card">
             <div className="empty-icon-circle"><i className="fa-solid fa-bars-staggered"></i></div>
-            <p className="empty-state-text">Aucune opÃ©ration enregistrÃ©e.</p>
+            <p className="empty-state-text">Aucune opération enregistrée.</p>
           </div>
         ) : (
           <div className="history-list-wrapper">
@@ -132,14 +132,14 @@ export default function ActivitePage() {
                     <div className="history-item-texts">
                       <span className="history-item-title">{item.description}</span>
                       <span className="history-item-sub">
-                        {new Date(item.createdAt).toLocaleString("fr-FR")} Â· {item.status === "pending" ? "En attente" : "EnregistrÃ©e"}
+                        {new Date(item.createdAt).toLocaleString("fr-FR")} · {item.status === "pending" ? "En attente" : "Enregistrée"}
                       </span>
                     </div>
                   </div>
                   <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "0.35rem" }}>
                     <span className="history-item-amount">
                       {item.amountCents === 0
-                        ? "â€”"
+                        ? "—"
                         : new Intl.NumberFormat("fr-FR", { style: "currency", currency: item.currency }).format(signedCents / 100)}
                     </span>
                     {isWithdrawal && item.status === "pending" && (
@@ -161,7 +161,7 @@ export default function ActivitePage() {
                             gap: "0.35rem",
                             boxShadow: "0 0 10px rgba(234, 179, 8, 0.25)",
                           }}
-                          title="Cliquer pour suivre l'Ã©tat du virement"
+                          title="Cliquer pour suivre l'état du virement"
                         >
                           <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#fbbf24" }}></span>
                           En attente
@@ -179,7 +179,7 @@ export default function ActivitePage() {
         )}
         {hasMore && (
           <button type="button" className="btn-table-details" onClick={() => void loadMore()} disabled={loadingMore}>
-            {loadingMore ? "Chargementâ€¦" : "Charger plus d'opÃ©rations"}
+            {loadingMore ? "Chargement…" : "Charger plus d'opérations"}
           </button>
         )}
       </div>

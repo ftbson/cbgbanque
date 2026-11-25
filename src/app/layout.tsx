@@ -1,0 +1,57 @@
+import type { Metadata } from "next";
+import "./globals.css";
+import "./layout.css";
+
+export const metadata: Metadata = {
+  title: "CBGBanque - Votre banque en ligne et services financiers",
+  description:
+    "Découvrez les services bancaires en ligne de CBGBanque. Gestion de compte, solutions de paiement et accompagnement sur mesure.",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "CBGBanque",
+  },
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html suppressHydrationWarning>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+
+        <link
+          href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        />
+        <link rel="shortcut icon" href="/img/image.png" type="image/x-icon" />
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="apple-touch-icon" href="/img/image.png" />
+        <meta name="theme-color" content="#030712" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="CBGBanque" />
+
+<link
+href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" />
+
+      </head>
+      <body>
+        {children}
+      </body>
+    </html>
+  );
+}

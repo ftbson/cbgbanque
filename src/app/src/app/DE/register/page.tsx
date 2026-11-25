@@ -120,6 +120,7 @@ export default function RegisterPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          signupLocale: "DE",
           email: formData.email,
           otpCode: formData.otpCode.join(""),
         }),

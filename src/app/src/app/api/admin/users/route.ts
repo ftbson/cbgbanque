@@ -5,7 +5,7 @@ import { accountsTable, notificationsTable, usersTable } from "@/lib/schema";
 import { and, eq } from "drizzle-orm";
 import { isAdminAuthenticated } from "@/lib/auth";
 import { sendApprovalEmail, sendAccountStatusEmail, sendTransferAccessRestoredEmail } from "@/lib/mail";
-import { generateIban, getCountryCodeFromResidence } from "@/lib/iban";
+import { generateIban } from "@/lib/iban";
 
 export async function GET() {
   try {
@@ -75,6 +75,7 @@ export async function PATCH(request: Request) {
         firstName: usersTable.firstName,
         status: usersTable.status,
         transfersBlocked: usersTable.transfersBlocked,
+        signupLocale: usersTable.signupLocale,
       })
       .from(usersTable)
       .where(eq(usersTable.id, userId))
@@ -139,17 +140,6 @@ export async function PATCH(request: Request) {
         return NextResponse.json({ success: false, message: "Le motif du blocage est obligatoire." }, { status: 400 });
       }
 
-      // Fetch user's residenceCountry for IBAN generation if approving
-      let userResidenceCountry: string | null = null;
-      if (status === "approved") {
-        const [userData] = await db
-          .select({ residenceCountry: usersTable.residenceCountry })
-          .from(usersTable)
-          .where(eq(usersTable.id, userId))
-          .limit(1);
-        userResidenceCountry = userData?.residenceCountry || null;
-      }
-
       const changed = await db.transaction(async (tx) => {
         const [updatedUser] = await tx
           .update(usersTable)
@@ -179,9 +169,8 @@ export async function PATCH(request: Request) {
         });
 
         // Generate IBAN when account is approved
-        if (status === "approved" && userResidenceCountry) {
-          const countryCode = getCountryCodeFromResidence(userResidenceCountry);
-          const ibanData = generateIban(userId, countryCode);
+        if (status === "approved") {
+          const ibanData = generateIban(userId, user.signupLocale);
 
           // Update or insert the account with the generated IBAN
           await tx

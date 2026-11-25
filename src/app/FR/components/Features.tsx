@@ -21,7 +21,7 @@ export default function Features() {
       iconBg: "gradient-blue",
       glowColor: "37, 99, 235",
       title: "Compte courant",
-      description: "IBAN belge, carte Visa, paiements instantanÃ©s. 0 â‚¬ de frais.",
+      description: "IBAN belge, carte Visa, paiements instantanés. 0 € de frais.",
     },
     {
       id: "savings",
@@ -29,9 +29,9 @@ export default function Features() {
       iconBg: "gradient-green",
       glowColor: "22, 163, 74",
       highlightColor: "#22c55e",
-      title: "Ã‰pargne",
+      title: "Épargne",
       highlight: "3,25 %",
-      description: "Coffres illimitÃ©s, intÃ©rÃªts journaliers. DisponibilitÃ© immÃ©diate.",
+      description: "Coffres illimités, intérêts journaliers. Disponibilité immédiate.",
     },
     {
       id: "virtual-cards",
@@ -39,7 +39,7 @@ export default function Features() {
       iconBg: "gradient-purple",
       glowColor: "147, 51, 234",
       title: "Cartes virtuelles",
-      description: "CrÃ©ez une carte jetable en 2 secondes. SÃ©curitÃ© maximale en ligne.",
+      description: "Créez une carte jetable en 2 secondes. Sécurité maximale en ligne.",
     },
     {
       id: "loans",
@@ -47,9 +47,9 @@ export default function Features() {
       iconBg: "gradient-amber",
       glowColor: "234, 88, 12",
       highlightColor: "#f97316",
-      title: "PrÃªts dÃ¨s",
+      title: "Prêts dès",
       highlight: "5,90 %",
-      description: "RÃ©ponse en 24h. Auto, immo, perso. Jusqu'Ã  50 000 â‚¬ sur 84 mois.",
+      description: "Réponse en 24h. Auto, immo, perso. Jusqu'à 50 000 € sur 84 mois.",
     },
     {
       id: "payments",
@@ -65,7 +65,7 @@ export default function Features() {
       iconBg: "gradient-pink",
       glowColor: "225, 29, 72",
       title: "Change",
-      description: "Payez et retirez Ã  l'Ã©tranger avec un change transparent.",
+      description: "Payez et retirez à l'étranger avec un change transparent.",
     },
     {
       id: "transfers",
@@ -81,7 +81,7 @@ export default function Features() {
       iconBg: "gradient-emerald",
       glowColor: "5, 150, 105",
       title: "Voyage",
-      description: "Gardez le contrÃ´le de votre carte oÃ¹ que vous soyez : blocage instantanÃ©.",
+      description: "Gardez le contrôle de votre carte où que vous soyez : blocage instantané.",
     },
   ];
 
@@ -97,7 +97,7 @@ export default function Features() {
             Tout pour piloter votre argent en un <span className="gradient-text">seul endroit.</span>
           </h2>
           <p className="features-subtitle">
-            Une expÃ©rience bancaire simplifiÃ©e, ultra-rapide et sÃ©curisÃ©e conÃ§ue pour votre quotidien.
+            Une expérience bancaire simplifiée, ultra-rapide et sécurisée conçue pour votre quotidien.
           </p>
         </div>
 

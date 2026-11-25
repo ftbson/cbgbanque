@@ -23,8 +23,8 @@ function formatMoney(amount: number, currency: string) {
 }
 
 function statusLabel(status: LoanRequest["status"]) {
-  if (status === "approved") return "Demande acceptÃ©e";
-  if (status === "rejected") return "Demande refusÃ©e";
+  if (status === "approved") return "Demande acceptée";
+  if (status === "rejected") return "Demande refusée";
   return "En attente";
 }
 
@@ -82,7 +82,7 @@ export default function PretPage() {
       setAmount("");
       setDurationMonths("");
       setPurpose("");
-      setSuccessMessage(data.message ?? "Demande enregistrÃ©e.");
+      setSuccessMessage(data.message ?? "Demande enregistrée.");
       await loadLoans();
     } catch (cause) {
       setErrorMessage(cause instanceof Error ? cause.message : "Erreur lors de l'enregistrement.");
@@ -104,14 +104,14 @@ export default function PretPage() {
       <section className="pret-form-card">
         <h2 className="pret-card-title">Enregistrer une demande</h2>
         <p className="pret-card-sub">
-          Les conditions, taux et frais ne sont pas configurÃ©s. Cette demande ne constitue pas une offre de crÃ©dit et aucun fonds ne sera crÃ©ditÃ© automatiquement.
+          Les conditions, taux et frais ne sont pas configurés. Cette demande ne constitue pas une offre de crédit et aucun fonds ne sera crédité automatiquement.
         </p>
         {errorMessage && <p role="alert">{errorMessage}</p>}
         {successMessage && <p role="status">{successMessage}</p>}
 
         <form onSubmit={submitRequest} className="pret-simulator-form">
           <label className="field-label" htmlFor="loan-amount">
-            Montant demandÃ©{currency ? ` (${currency})` : ""}
+            Montant demandé{currency ? ` (${currency})` : ""}
           </label>
           <input
             id="loan-amount"
@@ -125,7 +125,7 @@ export default function PretPage() {
             className="step-input"
           />
 
-          <label className="field-label" htmlFor="loan-duration">DurÃ©e souhaitÃ©e (mois)</label>
+          <label className="field-label" htmlFor="loan-duration">Durée souhaitée (mois)</label>
           <input
             id="loan-duration"
             type="number"
@@ -149,7 +149,7 @@ export default function PretPage() {
           />
 
           <button type="submit" disabled={submitting || !currency} className="btn-submit-loan">
-            {submitting ? "Enregistrementâ€¦" : "Enregistrer la demande"}
+            {submitting ? "Enregistrement…" : "Enregistrer la demande"}
           </button>
         </form>
       </section>
@@ -164,7 +164,7 @@ export default function PretPage() {
                   <div>
                     <strong className="loan-item-purpose">{loan.purpose}</strong>
                     <div className="loan-item-date">
-                      {new Date(loan.createdAt).toLocaleDateString("fr-FR")} Â· {loan.durationMonths} mois
+                      {new Date(loan.createdAt).toLocaleDateString("fr-FR")} · {loan.durationMonths} mois
                     </div>
                   </div>
                   <span className={`badge-loan-status ${loan.status}`}>
@@ -173,7 +173,7 @@ export default function PretPage() {
                 </div>
                 <div className="loan-item-grid">
                   <div>
-                    <span className="loan-meta-key">Montant demandÃ©</span>
+                    <span className="loan-meta-key">Montant demandé</span>
                     <span className="loan-meta-val">{formatMoney(loan.amount, currency)}</span>
                   </div>
                 </div>
