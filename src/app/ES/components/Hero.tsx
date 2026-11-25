@@ -56,7 +56,7 @@ export default function Hero() {
           </p>
 
           <div className="hero-actions">
-            <Link href="/ES/abrir-cuenta" className="btn-hero-primary">
+            <Link href="/ES/register" className="btn-hero-primary">
               Abrir mi cuenta <i className="fa-solid fa-arrow-right"></i>
             </Link>
             <div className="hero-secondary-group">

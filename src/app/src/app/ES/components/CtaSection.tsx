@@ -21,7 +21,7 @@ export default function CtaSection() {
           if (sectionRef.current) observer.unobserve(sectionRef.current);
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.2 },
     );
 
     if (sectionRef.current) {
@@ -64,7 +64,6 @@ export default function CtaSection() {
   return (
     <section ref={sectionRef} className="cta-section">
       <div className={`cta-container ${isVisible ? "is-visible" : ""}`}>
-
         <div className="stats-card reveal-item reveal-card-1">
           <div className="stats-tag">CBGBANCO EN CIFRAS</div>
 
@@ -103,11 +102,12 @@ export default function CtaSection() {
             </h2>
 
             <p className="cta-description">
-              Abre tu cuenta en menos de 5 minutos. Sin comisiones ocultas, sin compromiso.
+              Abre tu cuenta en menos de 5 minutos. Sin comisiones ocultas, sin
+              compromiso.
             </p>
 
             <div className="cta-actions">
-              <Link href="/ES/abrir-cuenta" className="btn-cta-white">
+              <Link href="/ES/register" className="btn-cta-white">
                 Abrir una cuenta <i className="fa-solid fa-arrow-right"></i>
               </Link>
               <Link href="/ES/descargar" className="btn-cta-glow">
@@ -116,7 +116,6 @@ export default function CtaSection() {
             </div>
           </div>
         </div>
-
       </div>
     </section>
   );

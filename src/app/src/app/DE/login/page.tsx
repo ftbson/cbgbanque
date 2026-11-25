@@ -142,7 +142,7 @@ export default function LoginPage() {
               className="btn-auth-submit"
               disabled={loading}
             >
-              {loading ? "Anmeldung..." : "Anmelden"}
+              {loading ? "Anmeldung..." : "login"}
             </button>
           </form>
 

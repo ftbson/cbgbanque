@@ -88,7 +88,7 @@ const routes: Record<Locale, Record<string, string>> = {
     help: "/ES/ayuda",
     download: "/ES/descargar",
     login: "/ES/login",
-    register: "/ES/abrir-cuenta",
+    register: "/ES/register",
   },
 };
 
@@ -128,7 +128,7 @@ export default function Navbar({ locale }: { locale: Locale }) {
       "/ES/ayuda": "/FR/aide",
       "/ES/descargar": "/FR/download",
       "/ES/login": "/FR/login",
-      "/ES/abrir-cuenta": "/FR/register",
+      "/ES/register": "/FR/register",
     };
 
     const targetPath = pathMap[pathname] || routes[newLocale].home;

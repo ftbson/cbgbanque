@@ -34,7 +34,7 @@ const translations: Record<Locale, NavTranslations> = {
     commitments: "Versprechen",
     help: "Hilfe",
     downloadApp: "App herunterladen",
-    login: "Anmelden",
+    login: "login",
     register: "Konto eröffnen",
     language: "Sprache",
   },
@@ -78,7 +78,7 @@ const routes: Record<Locale, Record<string, string>> = {
     commitments: "/DE/versprechen",
     help: "/DE/hilfe",
     download: "/DE/download",
-    login: "/DE/anmelden",
+    login: "/DE/login",
     register: "/DE/register",
   },
   es: {
@@ -88,7 +88,7 @@ const routes: Record<Locale, Record<string, string>> = {
     help: "/ES/ayuda",
     download: "/ES/descargar",
     login: "/ES/iniciar-sesion",
-    register: "/ES/abrir-cuenta",
+    register: "/ES/register",
   },
 };
 
@@ -113,14 +113,14 @@ export default function Navbar({ locale }: { locale: Locale }) {
       "/FR/engagements": "/DE/versprechen",
       "/FR/aide": "/DE/hilfe",
       "/FR/download": "/DE/download",
-      "/FR/login": "/DE/anmelden",
+      "/FR/login": "/DE/login",
       "/FR/register": "/DE/register",
       "/DE": "/FR",
       "/DE/funktionen": "/FR/fonctionnalites",
       "/DE/versprechen": "/FR/engagements",
       "/DE/hilfe": "/FR/aide",
       "/DE/download": "/FR/download",
-      "/DE/anmelden": "/FR/login",
+      "/DE/login": "/FR/login",
       "/DE/register": "/FR/register",
       "/ES": "/FR",
       "/ES/funciones": "/FR/fonctionnalites",
@@ -128,7 +128,7 @@ export default function Navbar({ locale }: { locale: Locale }) {
       "/ES/ayuda": "/FR/aide",
       "/ES/descargar": "/FR/download",
       "/ES/iniciar-sesion": "/FR/login",
-      "/ES/abrir-cuenta": "/FR/register",
+      "/ES/register": "/FR/register",
     };
 
     const targetPath = pathMap[pathname] || routes[newLocale].home;
