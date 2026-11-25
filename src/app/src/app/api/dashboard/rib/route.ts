@@ -77,6 +77,7 @@ export async function GET() {
         address: usersTable.address,
         city: usersTable.city,
         postalCode: usersTable.postalCode,
+        residenceCountry: usersTable.residenceCountry,
         signupLocale: usersTable.signupLocale,
         email: usersTable.email,
         phone: usersTable.phone,
