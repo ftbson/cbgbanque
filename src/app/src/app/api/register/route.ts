@@ -37,7 +37,17 @@ export async function POST(request: Request) {
     }
 
     const payload = body as Record<string, unknown>;
-    const signupLocale = payload.signupLocale;
+    const refererLocale = (() => {
+      const referer = request.headers.get("referer");
+      if (!referer) return undefined;
+      try {
+        const segment = new URL(referer).pathname.split("/").filter(Boolean)[0]?.toUpperCase();
+        return segment === "FR" || segment === "ES" || segment === "DE" ? segment : undefined;
+      } catch {
+        return undefined;
+      }
+    })();
+    const signupLocale = payload.signupLocale ?? refererLocale;
     if (signupLocale !== "FR" && signupLocale !== "ES" && signupLocale !== "DE") {
       return NextResponse.json({ success: false, message: "Locale d'inscription invalide." }, { status: 400 });
     }
