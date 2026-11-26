@@ -36,6 +36,13 @@
       "when": 1795205813856,
       "tag": "0004_odd_bastion",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1795564800000,
+      "tag": "0005_signup_locale",
+      "breakpoints": true
     }
   ]
 }

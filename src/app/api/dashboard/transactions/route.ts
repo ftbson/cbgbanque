@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { and, eq, sql } from "drizzle-orm";
+import { and, desc, eq, sql } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { getApprovedUser } from "@/lib/auth";
 import { getOrCreateAccount } from "@/lib/dashboard-data";
@@ -14,6 +14,59 @@ function parseAmountCents(value: unknown) {
   const [whole, fraction = ""] = normalized.split(".");
   const cents = Number(whole) * 100 + Number(fraction.padEnd(2, "0"));
   return Number.isSafeInteger(cents) && cents > 0 ? cents : null;
+}
+
+export async function GET(request: Request) {
+  try {
+    const user = await getApprovedUser();
+    if (!user) return NextResponse.json({ success: false, message: "Authentification requise." }, { status: 401 });
+
+    const requestUrl = new URL(request.url);
+    const offsetValue = Number(requestUrl.searchParams.get("offset") ?? 0);
+    if (!Number.isSafeInteger(offsetValue) || offsetValue < 0 || offsetValue > 1000000) {
+      return NextResponse.json({ success: false, message: "Pagination invalide." }, { status: 400 });
+    }
+
+    const [account, [userData], transactions, recentTransfers] = await Promise.all([
+      getOrCreateAccount(user.id),
+      db.select({ transfersBlocked: usersTable.transfersBlocked, status: usersTable.status })
+        .from(usersTable)
+        .where(eq(usersTable.id, user.id))
+        .limit(1),
+      db.select().from(transactionsTable)
+        .where(eq(transactionsTable.userId, user.id))
+        .orderBy(desc(transactionsTable.createdAt))
+        .limit(100)
+        .offset(offsetValue),
+      db.select({
+        id: withdrawalRequestsTable.id,
+        recipientName: withdrawalRequestsTable.recipientName,
+        iban: withdrawalRequestsTable.iban,
+        bic: withdrawalRequestsTable.bic,
+        amountCents: withdrawalRequestsTable.amountCents,
+        description: withdrawalRequestsTable.description,
+        status: withdrawalRequestsTable.status,
+        createdAt: withdrawalRequestsTable.createdAt,
+      })
+        .from(withdrawalRequestsTable)
+        .where(eq(withdrawalRequestsTable.userId, user.id))
+        .orderBy(desc(withdrawalRequestsTable.createdAt))
+        .limit(10),
+    ]);
+    return NextResponse.json({
+      success: true,
+      availableBalanceCents: account.balanceCents - account.reservedCents,
+      currency: account.currency,
+      transfersBlocked: userData?.transfersBlocked === 1,
+      isAccountBlocked: userData?.status === "blocked",
+      transactions,
+      recentTransfers,
+      hasMore: transactions.length === 100,
+    });
+  } catch (error) {
+    console.error("Erreur lors du chargement des opérations :", error);
+    return NextResponse.json({ success: false, message: "Impossible de charger les opérations." }, { status: 500 });
+  }
 }
 
 export async function POST(request: Request) {
