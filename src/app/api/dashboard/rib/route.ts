@@ -78,6 +78,7 @@ export async function GET() {
         city: usersTable.city,
         postalCode: usersTable.postalCode,
         residenceCountry: usersTable.residenceCountry,
+        signupLocale: usersTable.signupLocale,
         email: usersTable.email,
         phone: usersTable.phone,
       }).from(usersTable).where(eq(usersTable.id, user.id)).limit(1),
@@ -85,14 +86,13 @@ export async function GET() {
 
     // Use stored IBAN from database, or fallback to deterministic generation for backwards compatibility
     let bankCoords: ParsedIban;
-    if (account.iban) {
+    const signupLocale = userData?.signupLocale ?? "FR";
+    if (account.iban?.startsWith(signupLocale)) {
       bankCoords = parseStoredIban(account.iban);
     } else {
-      // Fallback: generate deterministic IBAN (for existing users without stored IBAN)
-      // Default to France for backwards compatibility
-      const { generateIban, getCountryCodeFromResidence } = await import("@/lib/iban");
-      const countryCode = userData?.residenceCountry ? getCountryCodeFromResidence(userData.residenceCountry) : "FR";
-      const generated = generateIban(user.id, countryCode);
+      const { generateIban } = await import("@/lib/iban");
+      const generated = generateIban(user.id, signupLocale);
+      await db.update(accountsTable).set({ iban: generated.rawIban }).where(eq(accountsTable.userId, user.id));
       bankCoords = {
         iban: generated.formattedIban,
         rawIban: generated.rawIban,

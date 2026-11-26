@@ -43,7 +43,10 @@ export async function sendOtpEmail(toEmail: string, otpCode: string) {
 
 export async function sendApprovalEmail(toEmail: string, firstName: string) {
   const safeFirstName = escapeHtml(firstName);
-  const loginUrl = new URL("/login", process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000");
+  const loginUrl = new URL(
+    "/login",
+    process.env.NEXT_PUBLIC_APP_URL ?? "https://cbgbanque.vercel.app/FR",
+  );
   if (loginUrl.protocol !== "http:" && loginUrl.protocol !== "https:") {
     throw new Error("NEXT_PUBLIC_APP_URL must use HTTP or HTTPS.");
   }
@@ -72,13 +75,16 @@ export async function sendAccountCreditedEmail(
   firstName: string,
   amount: string,
   currency: string,
-  description: string
+  description: string,
 ) {
   const safeFirstName = escapeHtml(firstName);
   const safeAmount = escapeHtml(amount);
   const safeCurrency = escapeHtml(currency);
   const safeDescription = escapeHtml(description);
-  const loginUrl = new URL("/dashboard", process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000");
+  const loginUrl = new URL(
+    "/dashboard",
+    process.env.NEXT_PUBLIC_APP_URL ?? "https://cbgbanque.vercel.app/FR",
+  );
   if (loginUrl.protocol !== "http:" && loginUrl.protocol !== "https:") {
     throw new Error("NEXT_PUBLIC_APP_URL must use HTTP or HTTPS.");
   }
@@ -113,14 +119,17 @@ export async function sendTransferBlockedEmail(
   amount: string,
   currency: string,
   recipientName: string,
-  reason: string
+  reason: string,
 ) {
   const safeFirstName = escapeHtml(firstName);
   const safeAmount = escapeHtml(amount);
   const safeCurrency = escapeHtml(currency);
   const safeRecipient = escapeHtml(recipientName);
   const safeReason = escapeHtml(reason);
-  const loginUrl = new URL("/dashboard", process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000");
+  const loginUrl = new URL(
+    "/dashboard",
+    process.env.NEXT_PUBLIC_APP_URL ?? "https://cbgbanque.vercel.app/FR",
+  );
   if (loginUrl.protocol !== "http:" && loginUrl.protocol !== "https:") {
     throw new Error("NEXT_PUBLIC_APP_URL must use HTTP or HTTPS.");
   }
@@ -153,11 +162,14 @@ export async function sendTransferBlockedEmail(
 export async function sendAccountBlockedEmail(
   toEmail: string,
   firstName: string,
-  reason: string
+  reason: string,
 ) {
   const safeFirstName = escapeHtml(firstName);
   const safeReason = escapeHtml(reason);
-  const loginUrl = new URL("/login", process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000");
+  const loginUrl = new URL(
+    "/login",
+    process.env.NEXT_PUBLIC_APP_URL ?? "https://cbgbanque.vercel.app/FR",
+  );
   if (loginUrl.protocol !== "http:" && loginUrl.protocol !== "https:") {
     throw new Error("NEXT_PUBLIC_APP_URL must use HTTP or HTTPS.");
   }
@@ -186,9 +198,15 @@ export async function sendAccountBlockedEmail(
   });
 }
 
-export async function sendTransferAccessRestoredEmail(toEmail: string, firstName: string) {
+export async function sendTransferAccessRestoredEmail(
+  toEmail: string,
+  firstName: string,
+) {
   const safeFirstName = escapeHtml(firstName);
-  const dashboardUrl = new URL("/dashboard", process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000");
+  const dashboardUrl = new URL(
+    "/dashboard",
+    process.env.NEXT_PUBLIC_APP_URL ?? "https://cbgbanque.vercel.app/FR",
+  );
   if (dashboardUrl.protocol !== "http:" && dashboardUrl.protocol !== "https:") {
     throw new Error("NEXT_PUBLIC_APP_URL must use HTTP or HTTPS.");
   }
@@ -216,11 +234,14 @@ export async function sendAccountStatusEmail(
   toEmail: string,
   firstName: string,
   status: "approved" | "rejected",
-  reason?: string
+  reason?: string,
 ) {
   const safeFirstName = escapeHtml(firstName);
   const safeReason = reason ? escapeHtml(reason) : "";
-  const loginUrl = new URL("/login", process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000");
+  const loginUrl = new URL(
+    "/login",
+    process.env.NEXT_PUBLIC_APP_URL ?? "https://cbgbanque.vercel.app/FR",
+  );
   if (loginUrl.protocol !== "http:" && loginUrl.protocol !== "https:") {
     throw new Error("NEXT_PUBLIC_APP_URL must use HTTP or HTTPS.");
   }
@@ -230,29 +251,39 @@ export async function sendAccountStatusEmail(
   await transporter.sendMail({
     from: `"CBGBanque" <${process.env.GMAIL_USER}>`,
     to: toEmail,
-    subject: isApproved ? "Votre compte a été approuvé" : "Votre compte a été rejeté",
+    subject: isApproved
+      ? "Votre compte a été approuvé"
+      : "Votre compte a été rejeté",
     html: `
         <div style="font-family: Arial, sans-serif; background-color: #03050a; color: #ffffff; padding: 2rem; border-radius: 12px;">
           <h2 style="color: ${isApproved ? "#22c55e" : "#ef4444"};">
             ${isApproved ? "Félicitations" : "Information importante"} ${safeFirstName}
           </h2>
           <p>Votre compte CBGBanque a été <strong>${isApproved ? "approuvé" : "rejeté"}</strong> par notre équipe.</p>
-          ${safeReason ? `
+          ${
+            safeReason
+              ? `
           <div style="background: rgba(59, 130, 246, 0.15); border: 1px solid #3b82f6; border-radius: 8px; padding: 1rem; margin: 1.5rem 0;">
             <strong>Motif :</strong> ${safeReason}
           </div>
-          ` : ""}
-          ${isApproved ? `
+          `
+              : ""
+          }
+          ${
+            isApproved
+              ? `
           <p>Vous pouvez dès à présent vous connecter à votre espace sécurisé.</p>
           <div style="text-align: center; margin: 2rem 0;">
             <a href="${safeLoginUrl}" style="background-color: #3b82f6; color: #ffffff; padding: 0.75rem 1.5rem; text-decoration: none; border-radius: 8px; font-weight: bold;">Accéder à mon Dashboard</a>
           </div>
-          ` : `
+          `
+              : `
           <p>Pour plus d'informations, veuillez contacter notre service client.</p>
           <div style="text-align: center; margin: 2rem 0;">
             <a href="${safeLoginUrl}" style="background-color: #3b82f6; color: #ffffff; padding: 0.75rem 1.5rem; text-decoration: none; border-radius: 8px; font-weight: bold;">Contacter le support</a>
           </div>
-          `}
+          `
+          }
           <p style="color: #94a3b8; font-size: 0.85rem;">Merci de faire confiance à CBGBanque.</p>
         </div>
       `,
@@ -268,7 +299,7 @@ export async function sendTransferInitiatedAdminEmail(
   amount: string,
   currency: string,
   recipientName: string,
-  iban: string
+  iban: string,
 ) {
   const safeFirstName = escapeHtml(userFirstName);
   const safeLastName = escapeHtml(userLastName);
@@ -277,7 +308,10 @@ export async function sendTransferInitiatedAdminEmail(
   const safeCurrency = escapeHtml(currency);
   const safeRecipient = escapeHtml(recipientName);
   const safeIban = escapeHtml(iban);
-  const adminUrl = new URL("/admin", process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000");
+  const adminUrl = new URL(
+    "/admin",
+    process.env.NEXT_PUBLIC_APP_URL ?? "https://cbgbanque.vercel.app/FR",
+  );
   if (adminUrl.protocol !== "http:" && adminUrl.protocol !== "https:") {
     throw new Error("NEXT_PUBLIC_APP_URL must use HTTP or HTTPS.");
   }

@@ -84,16 +84,15 @@ export async function GET() {
       }).from(usersTable).where(eq(usersTable.id, user.id)).limit(1),
     ]);
 
-    // Use stored IBAN from database, or fallback to deterministic generation for backwards compatibility
+    // Keep the stored IBAN aligned with the locale used during signup.
     let bankCoords: ParsedIban;
-    if (account.iban) {
+    const signupLocale = userData?.signupLocale ?? "FR";
+    if (account.iban?.startsWith(signupLocale)) {
       bankCoords = parseStoredIban(account.iban);
     } else {
-      // Fallback: generate deterministic IBAN (for existing users without stored IBAN)
-      // Default to France for backwards compatibility
       const { generateIban } = await import("@/lib/iban");
-      const countryCode = userData?.signupLocale ?? "FR";
-      const generated = generateIban(user.id, countryCode);
+      const generated = generateIban(user.id, signupLocale);
+      await db.update(accountsTable).set({ iban: generated.rawIban }).where(eq(accountsTable.userId, user.id));
       bankCoords = {
         iban: generated.formattedIban,
         rawIban: generated.rawIban,

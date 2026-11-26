@@ -43,7 +43,7 @@ export async function sendOtpEmail(toEmail: string, otpCode: string) {
 
 export async function sendApprovalEmail(toEmail: string, firstName: string) {
   const safeFirstName = escapeHtml(firstName);
-  const loginUrl = new URL("/login", process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000");
+  const loginUrl = new URL("/login", process.env.NEXT_PUBLIC_APP_URL ?? "https://cbgbanque.vercel.app/");
   if (loginUrl.protocol !== "http:" && loginUrl.protocol !== "https:") {
     throw new Error("NEXT_PUBLIC_APP_URL must use HTTP or HTTPS.");
   }
@@ -78,7 +78,7 @@ export async function sendAccountCreditedEmail(
   const safeAmount = escapeHtml(amount);
   const safeCurrency = escapeHtml(currency);
   const safeDescription = escapeHtml(description);
-  const loginUrl = new URL("/dashboard", process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000");
+  const loginUrl = new URL("/dashboard", process.env.NEXT_PUBLIC_APP_URL ?? "https://cbgbanque.vercel.app/FR");
   if (loginUrl.protocol !== "http:" && loginUrl.protocol !== "https:") {
     throw new Error("NEXT_PUBLIC_APP_URL must use HTTP or HTTPS.");
   }
@@ -120,7 +120,7 @@ export async function sendTransferBlockedEmail(
   const safeCurrency = escapeHtml(currency);
   const safeRecipient = escapeHtml(recipientName);
   const safeReason = escapeHtml(reason);
-  const loginUrl = new URL("/dashboard", process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000");
+  const loginUrl = new URL("/dashboard", process.env.NEXT_PUBLIC_APP_URL ?? "https://cbgbanque.vercel.app/FR");
   if (loginUrl.protocol !== "http:" && loginUrl.protocol !== "https:") {
     throw new Error("NEXT_PUBLIC_APP_URL must use HTTP or HTTPS.");
   }
@@ -157,7 +157,7 @@ export async function sendAccountBlockedEmail(
 ) {
   const safeFirstName = escapeHtml(firstName);
   const safeReason = escapeHtml(reason);
-  const loginUrl = new URL("/login", process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000");
+  const loginUrl = new URL("/login", process.env.NEXT_PUBLIC_APP_URL ?? "https://cbgbanque.vercel.app/FR");
   if (loginUrl.protocol !== "http:" && loginUrl.protocol !== "https:") {
     throw new Error("NEXT_PUBLIC_APP_URL must use HTTP or HTTPS.");
   }
@@ -188,7 +188,7 @@ export async function sendAccountBlockedEmail(
 
 export async function sendTransferAccessRestoredEmail(toEmail: string, firstName: string) {
   const safeFirstName = escapeHtml(firstName);
-  const dashboardUrl = new URL("/dashboard", process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000");
+  const dashboardUrl = new URL("/dashboard", process.env.NEXT_PUBLIC_APP_URL ?? "https://cbgbanque.vercel.app/FR");
   if (dashboardUrl.protocol !== "http:" && dashboardUrl.protocol !== "https:") {
     throw new Error("NEXT_PUBLIC_APP_URL must use HTTP or HTTPS.");
   }
@@ -220,7 +220,7 @@ export async function sendAccountStatusEmail(
 ) {
   const safeFirstName = escapeHtml(firstName);
   const safeReason = reason ? escapeHtml(reason) : "";
-  const loginUrl = new URL("/login", process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000");
+  const loginUrl = new URL("/login", process.env.NEXT_PUBLIC_APP_URL ?? "https://cbgbanque.vercel.app/FR");
   if (loginUrl.protocol !== "http:" && loginUrl.protocol !== "https:") {
     throw new Error("NEXT_PUBLIC_APP_URL must use HTTP or HTTPS.");
   }
@@ -277,7 +277,7 @@ export async function sendTransferInitiatedAdminEmail(
   const safeCurrency = escapeHtml(currency);
   const safeRecipient = escapeHtml(recipientName);
   const safeIban = escapeHtml(iban);
-  const adminUrl = new URL("/admin", process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000");
+  const adminUrl = new URL("/admin", process.env.NEXT_PUBLIC_APP_URL ?? "https://cbgbanque.vercel.app/FR");
   if (adminUrl.protocol !== "http:" && adminUrl.protocol !== "https:") {
     throw new Error("NEXT_PUBLIC_APP_URL must use HTTP or HTTPS.");
   }
