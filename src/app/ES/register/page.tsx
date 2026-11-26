@@ -160,6 +160,7 @@ export default function RegisterPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          signupLocale: "ES",
           email: formData.email,
           password: formData.password,
           civility: formData.civility,
